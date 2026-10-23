@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌅 منصة الفجر — Al-Fajr Platform
 
-## Getting Started
+منصة تعليمية كاملة لربط طلاب القرآن والقراءات بالمعلمين، مع مكالمات فيديو مباشرة، جدولة حصص، ونظام تحفيزي (نقاط، شارات، متتالية مواظبة).
 
-First, run the development server:
+- قاعدة البيانات: PostgreSQL (عبر [Neon](https://neon.tech) — باقة مجانية دائمة، بدون بطاقة ائتمان)
+- الاستضافة: [Render](https://render.com) — باقة مجانية، بدون بطاقة ائتمان
+- الفيديو: Jitsi Meet العام (`meet.jit.si`) — بدون مفاتيح API
+
+## التشغيل محليًا
+
+يحتاج التشغيل المحلي أيضًا قاعدة بيانات Postgres (يمكن استخدام نفس قاعدة Neon المجانية، أو فرع منفصل منها للتطوير):
 
 ```bash
+npm install
+# أنشئ ملف .env وضع فيه DATABASE_URL و DIRECT_URL (انظر القسم التالي) و JWT_SECRET
+npx prisma migrate dev --name init   # أول مرة فقط (ينشئ الجداول)
+npx prisma db seed                   # إضافة بيانات تجريبية (معلمين + طلاب + حصص)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+افتح [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## حسابات تجريبية جاهزة
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| الدور | البريد الإلكتروني | كلمة المرور |
+|---|---|---|
+| طالب | student@fajr.app | 123456 |
+| معلم | teacher@fajr.app | 123456 |
+| مدير | admin@fajr.app | 123456 |
 
-## Learn More
+## الميزات المنفذة
 
-To learn more about Next.js, take a look at the following resources:
+- تسجيل/دخول بثلاثة أدوار (طالب، معلم، مدير) مع جلسات محمية بـ JWT في كوكي httpOnly
+- لوحة تحكم للطالب: الحصة القادمة، النقاط، المتتالية، الشارات، سجل الحصص، تقدم الحفظ
+- حجز حصة: تصفح المعلمين + اختيار موعد متاح تلقائيًا بناءً على جدول تواجد المعلم
+- لوحة تحكم للمعلم: الحصص القادمة والمكتملة، إدارة أوقات التواجد الأسبوعية، تحديث تقدم كل طالب
+- لوحة إدارة: إحصائيات المنصة، توثيق المعلمين، مراقبة الحصص
+- غرفة حصة بفيديو مباشر (Jitsi) + نموذج إنهاء الحصة بتقييم وملاحظات
+- نظام تحفيزي تلقائي: نقاط لكل حصة مكتملة، متتالية أيام، شارات عند بلوغ إنجازات معينة
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## النشر الفعلي (Render + Neon) — بدون أي تكلفة
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1) قاعدة البيانات — Neon
 
-## Deploy on Vercel
+1. أنشئ حسابًا مجانيًا على [neon.tech](https://neon.tech) (لا تحتاج بطاقة ائتمان).
+2. أنشئ مشروعًا جديدًا — ستحصل على رابطين للاتصال:
+   - **Pooled connection** (يحتوي على `-pooler` في العنوان) → يُستخدم كقيمة `DATABASE_URL`.
+   - **Direct connection** → يُستخدم كقيمة `DIRECT_URL` (تحتاجه خطوات الـ migration).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2) رفع الكود إلى GitHub
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+git remote add origin <رابط المستودع الذي أنشأته على GitHub>
+git push -u origin master
+```
+
+### 3) الاستضافة — Render
+
+1. أنشئ حسابًا مجانيًا على [render.com](https://render.com) وصِل حساب GitHub الخاص بك.
+2. اختر **New → Blueprint** وحدد هذا المستودع — سيقرأ Render ملف `render.yaml` تلقائيًا ويهيئ كل الإعدادات (أوامر البناء والتشغيل، وتوليد `JWT_SECRET` تلقائيًا).
+3. أضف القيمتين `DATABASE_URL` و`DIRECT_URL` من Neon في إعدادات الخدمة على Render (هذان الحقلان الوحيدان المتروكان فارغين عمدًا في `render.yaml`).
+4. اضغط Deploy. أول نشر سيشغّل `prisma migrate deploy` تلقائيًا لإنشاء الجداول على قاعدة بيانات Neon.
+5. (اختياري) لإضافة بيانات تجريبية على الإنتاج، شغّل محليًا مرة واحدة مع تصدير نفس `DATABASE_URL` الخاص بـ Neon:
+   ```bash
+   DATABASE_URL="<pooled-connection-string>" DIRECT_URL="<direct-connection-string>" npx prisma db seed
+   ```
+
+> ملاحظة: الخطة المجانية في Render تُسكت الخدمة بعد 15 دقيقة من عدم الاستخدام، وتستغرق حوالي 30 ثانية لإعادة التشغيل عند أول زيارة بعد فترة الخمول — طبيعي تمامًا لمنصة تجريبية.
+
+## إعادة تصفير البيانات التجريبية
+
+```bash
+npx prisma db seed
+```
+
+هذا الأمر يمسح كل البيانات الحالية ويعيد إدخال البيانات التجريبية من جديد.

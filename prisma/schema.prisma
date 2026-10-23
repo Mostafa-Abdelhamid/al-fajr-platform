@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Role: "STUDENT" | "TEACHER" | "ADMIN"
+// SessionStatus: "SCHEDULED" | "COMPLETED" | "CANCELLED"
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String
+  timezone  String   @default("Asia/Riyadh")
+  avatarEmoji String @default("🧑")
+  createdAt DateTime @default(now())
+
+  teacherProfile   TeacherProfile?
+  studentSessions  Session[] @relation("StudentSessions")
+  teacherSessions  Session[] @relation("TeacherSessions")
+  progress         Progress[]
+  badges           Badge[]
+  points           Int      @default(0)
+  streak           Int      @default(0)
+}
+
+model TeacherProfile {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  qiraat     String   @default("حفص عن عاصم")
+  bio        String   @default("")
+  yearsExperience Int @default(1)
+  rating     Float    @default(5)
+  ratingCount Int     @default(0)
+  isVerified Boolean  @default(false)
+
+  availability Availability[]
+}
+
+model Availability {
+  id         String   @id @default(cuid())
+  teacherId  String
+  teacher    TeacherProfile @relation(fields: [teacherId], references: [id])
+  dayOfWeek  Int      // 0 = Sunday ... 6 = Saturday
+  startTime  String   // "16:00"
+  endTime    String   // "20:00"
+}
+
+model Session {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     User     @relation("StudentSessions", fields: [studentId], references: [id])
+  teacherId   String
+  teacher     User     @relation("TeacherSessions", fields: [teacherId], references: [id])
+  startAt     DateTime
+  endAt       DateTime
+  status      String   @default("SCHEDULED")
+  roomName    String
+  surahFocus  String   @default("")
+  teacherNotes String  @default("")
+  rating      Int?
+  createdAt   DateTime @default(now())
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  studentId String
+  student   User     @relation(fields: [studentId], references: [id])
+  surah     String
+  status    String   @default("قيد الحفظ") // قيد الحفظ | مكتمل | مراجعة
+  notes     String   @default("")
+  updatedAt DateTime @default(now())
+}
+
+model Badge {
+  id        String   @id @default(cuid())
+  studentId String
+  student   User     @relation(fields: [studentId], references: [id])
+  type      String
+  label     String
+  icon      String
+  earnedAt  DateTime @default(now())
+}

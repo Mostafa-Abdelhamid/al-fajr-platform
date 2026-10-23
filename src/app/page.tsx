@@ -1,69 +1,207 @@
-import Image from "next/image";
+import Link from "next/link";
+
+const FEATURES = [
+  {
+    icon: "👨‍🏫",
+    title: "معلمون موثوقون",
+    desc: "معلمون ومعلمات مؤهلون بإجازات في القراءات المختلفة (حفص، ورش، وغيرها).",
+  },
+  {
+    icon: "🎥",
+    title: "مكالمات فيديو مباشرة",
+    desc: "حصة مباشرة وجهًا لوجه مع معلمك، بجودة عالية وسهولة دخول من أي جهاز.",
+  },
+  {
+    icon: "📅",
+    title: "جدول يناسبك",
+    desc: "احجز حصتك، وعدّل أو أجّل موعدك بسهولة من لوحة التحكم الخاصة بك.",
+  },
+  {
+    icon: "📈",
+    title: "تابع تقدمك",
+    desc: "شاهد تقدمك بعد كل حصة، واحصل على نقاط وشارات تحفيزية مع كل إنجاز.",
+  },
+];
+
+const STEPS = [
+  { num: 1, title: "سجّل بياناتك", desc: "أنشئ حسابك واختر القراءة التي تهمك في أقل من دقيقة." },
+  { num: 2, title: "اختر معلمك المناسب", desc: "تصفّح المعلمين المتاحين واحجز موعدًا من جدولهم مباشرة." },
+  { num: 3, title: "ابدأ حصتك الأولى", desc: "ادخل مكالمة الفيديو في الموعد المحدد وابدأ رحلتك التعليمية." },
+];
+
+const FAQS = [
+  {
+    q: "كم تستغرق الحصة الواحدة؟",
+    a: "تستغرق الحصة عادة نحو ساعة واحدة، ويمكنك تحديد ما تريد التركيز عليه قبل بدايتها.",
+  },
+  {
+    q: "هل أحتاج إلى تطبيق خاص؟",
+    a: "لا، الحصص تتم عبر مكالمة فيديو تفتح مباشرة من المتصفح، دون الحاجة لتثبيت أي برنامج إضافي.",
+  },
+  {
+    q: "هل يمكنني التسجيل كمعلم؟",
+    a: 'بالتأكيد، اختر "معلم / معلمة" عند إنشاء الحساب وابدأ بإضافة أوقات تواجدك فورًا.',
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <>
+      <header className="sticky top-0 z-50 bg-cream/90 backdrop-blur border-b border-black/5">
+        <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+          <div className="font-extrabold text-xl text-night flex items-center gap-2">
+            🌅 منصة الفجر
+          </div>
+          <nav className="hidden sm:flex items-center gap-7">
+            <a href="#features" className="text-sm font-semibold hover:text-dawn transition">المميزات</a>
+            <a href="#how" className="text-sm font-semibold hover:text-dawn transition">كيف تعمل</a>
+            <a href="#faq" className="text-sm font-semibold hover:text-dawn transition">الأسئلة الشائعة</a>
+          </nav>
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-sm font-bold text-night hidden sm:inline">
+              تسجيل الدخول
+            </Link>
+            <Link
+              href="/register"
+              className="bg-gradient-to-l from-dawn to-gold text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 transition"
+            >
+              سجّل الآن
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_80%_-10%,#2a3570_0%,#121833_55%,#121833_100%)] text-white py-24">
+        <div className="relative max-w-3xl mx-auto px-5 flex flex-col items-center text-center gap-6">
+          <span className="inline-flex items-center gap-2 bg-white/10 border border-white/25 px-5 py-2 rounded-full text-sm font-bold text-gold-light">
+            🎉 النسخة التجريبية متاحة الآن
+          </span>
+          <h1 className="text-4xl sm:text-5xl font-extrabold leading-snug">
+            تعلّم{" "}
+            <span className="bg-gradient-to-l from-gold-light to-dawn bg-clip-text text-transparent">
+              القرآن والقراءات
+            </span>{" "}
+            مباشرة من معلمين مؤهلين
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg text-gray-300 max-w-xl">
+            منصة الفجر تربطك بمعلمي القرآن عبر مكالمات فيديو مباشرة، بجدول يناسبك، ومتابعة حقيقية لتقدمك خطوة بخطوة.
           </p>
+          <div className="flex flex-wrap gap-4 justify-center mt-2">
+            <Link
+              href="/register"
+              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 transition"
+            >
+              احجز حصتك الأولى
+            </Link>
+            <a
+              href="#features"
+              className="border-2 border-white text-white font-bold px-7 py-3.5 rounded-full hover:bg-white hover:text-night transition"
+            >
+              تعرّف أكثر
+            </a>
+          </div>
+          <div className="flex gap-10 mt-10 flex-wrap justify-center">
+            {[
+              ["سهل", "تسجيل خلال دقائق"],
+              ["فيديو", "مباشر مع المعلم"],
+              ["جدول", "مرن حسب وقتك"],
+            ].map(([a, b]) => (
+              <div key={a} className="text-center">
+                <b className="block text-2xl text-gold font-extrabold">{a}</b>
+                <span className="text-xs text-gray-400">{b}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section id="features" className="py-24">
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="text-center max-w-xl mx-auto mb-14">
+            <span className="text-dawn font-bold text-sm">لماذا منصة الفجر</span>
+            <h2 className="text-3xl font-extrabold text-night mt-2">تجربة تعليمية متكاملة من أول حصة</h2>
+            <p className="text-muted mt-3">كل ما تحتاجه لتعلّم القرآن والقراءات بجدية واستمرارية، في مكان واحد.</p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {FEATURES.map((f) => (
+              <div
+                key={f.title}
+                className="bg-white border border-[#efe6d8] rounded-2xl p-7 hover:-translate-y-1.5 hover:shadow-xl transition"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#fff3df] to-[#ffe3c9] flex items-center justify-center text-2xl mb-4">
+                  {f.icon}
+                </div>
+                <h3 className="font-bold text-night mb-2">{f.title}</h3>
+                <p className="text-sm text-muted">{f.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section id="how" className="py-24 bg-[#fff3e4]">
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="text-center max-w-xl mx-auto mb-14">
+            <span className="text-dawn font-bold text-sm">خطوات بسيطة</span>
+            <h2 className="text-3xl font-extrabold text-night mt-2">كيف تبدأ في 3 خطوات</h2>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-8">
+            {STEPS.map((s) => (
+              <div key={s.num} className="text-center px-3">
+                <div className="w-12 h-12 rounded-full bg-night text-gold font-extrabold flex items-center justify-center mx-auto mb-4">
+                  {s.num}
+                </div>
+                <h3 className="font-bold text-night mb-2">{s.title}</h3>
+                <p className="text-sm text-muted">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-5">
+          <div className="bg-gradient-to-l from-night to-night-2 text-white rounded-[28px] p-10 sm:p-14 flex flex-wrap items-center justify-between gap-7">
+            <div>
+              <h3 className="text-2xl font-extrabold mb-2">هل أنت معلم/ـة قرآن؟</h3>
+              <p className="text-gray-300 max-w-md">
+                انضم إلى النسخة التجريبية كمعلم، وابدأ بتدريس طلابك عبر المنصة من أول يوم.
+              </p>
+            </div>
+            <Link
+              href="/register"
+              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full hover:-translate-y-0.5 transition"
+            >
+              سجّل كمعلم
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className="py-24">
+        <div className="max-w-3xl mx-auto px-5">
+          <div className="text-center mb-14">
+            <span className="text-dawn font-bold text-sm">الأسئلة الشائعة</span>
+            <h2 className="text-3xl font-extrabold text-night mt-2">كل ما تريد معرفته</h2>
+          </div>
+          <div className="space-y-4">
+            {FAQS.map((f) => (
+              <details key={f.q} className="bg-white border border-[#efe6d8] rounded-2xl p-5">
+                <summary className="font-bold text-night cursor-pointer flex justify-between items-center">
+                  {f.q}
+                  <span className="text-dawn text-xl">+</span>
+                </summary>
+                <p className="text-muted text-sm mt-3">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-night text-gray-400 py-10 text-center">
+        <div className="font-extrabold text-white text-lg mb-2">🌅 منصة الفجر</div>
+        <p className="text-sm">منصة تعليمية لربط طلاب القرآن والقراءات بالمعلمين — النسخة التجريبية 2026</p>
+      </footer>
+    </>
   );
 }
