@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthShell from "@/components/AuthShell";
+import { QIRAAT_GROUPS } from "@/lib/qiraat";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -117,11 +118,20 @@ export default function RegisterPage() {
                 onChange={(e) => setQiraat(e.target.value)}
                 className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
               >
-                <option>حفص عن عاصم</option>
-                <option>ورش عن نافع</option>
-                <option>قالون عن نافع</option>
+                {QIRAAT_GROUPS.map((group) => (
+                  <optgroup key={group.reciter} label={group.reciter}>
+                    {group.riwayat.map((r) => (
+                      <option key={r} value={r}>
+                        {r}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
                 <option>قراءة أخرى</option>
               </select>
+              <p className="text-xs text-muted mt-1.5">
+                يمكنك اختيار أي رواية من القراءات العشر المتواترة.
+              </p>
             </div>
           )}
 
