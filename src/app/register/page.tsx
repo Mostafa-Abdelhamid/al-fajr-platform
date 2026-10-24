@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthShell from "@/components/AuthShell";
-import { QIRAAT_GROUPS } from "@/lib/qiraat";
+import QiraatMultiSelect from "@/components/QiraatMultiSelect";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -12,13 +12,21 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [qiraat, setQiraat] = useState("حفص عن عاصم");
+  const [qiraat, setQiraat] = useState<string[]>(["حفص عن عاصم"]);
+  const [qiraatError, setQiraatError] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setQiraatError("");
+
+    if (role === "TEACHER" && qiraat.length === 0) {
+      setQiraatError("الرجاء اختيار قراءة واحدة على الأقل.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch("/api/auth/register", {
@@ -112,25 +120,16 @@ export default function RegisterPage() {
           </div>
           {role === "TEACHER" && (
             <div className="animate-fade-up">
-              <label className="block text-sm font-bold text-night mb-1">القراءة التي تُتقنها</label>
-              <select
-                value={qiraat}
-                onChange={(e) => setQiraat(e.target.value)}
-                className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
-              >
-                {QIRAAT_GROUPS.map((group) => (
-                  <optgroup key={group.reciter} label={group.reciter}>
-                    {group.riwayat.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-                <option>قراءة أخرى</option>
-              </select>
+              <label className="block text-sm font-bold text-night mb-1">
+                القراءات التي تُتقنها
+                {qiraat.length > 0 && (
+                  <span className="text-dawn font-normal"> ({qiraat.length} محدّدة)</span>
+                )}
+              </label>
+              <QiraatMultiSelect value={qiraat} onChange={setQiraat} />
+              {qiraatError && <p className="text-xs text-red-600 font-semibold mt-1.5">{qiraatError}</p>}
               <p className="text-xs text-muted mt-1.5">
-                يمكنك اختيار أي رواية من القراءات العشر المتواترة.
+                يمكنك اختيار أكثر من رواية من القراءات العشر المتواترة.
               </p>
             </div>
           )}

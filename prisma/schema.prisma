@@ -34,7 +34,7 @@ model TeacherProfile {
   id         String   @id @default(cuid())
   userId     String   @unique
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  qiraat     String   @default("حفص عن عاصم")
+  qiraat     String[] @default(["حفص عن عاصم"])
   bio        String   @default("")
   yearsExperience Int @default(1)
   rating     Float    @default(5)

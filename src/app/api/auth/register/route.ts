@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     email: string;
     password: string;
     role: "STUDENT" | "TEACHER";
-    qiraat?: string;
+    qiraat?: string[];
   };
 
   if (!name || !email || !password || !role) {
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         ? {
             teacherProfile: {
               create: {
-                qiraat: qiraat || "حفص عن عاصم",
+                qiraat: qiraat && qiraat.length > 0 ? qiraat : ["حفص عن عاصم"],
                 bio: "معلم جديد على منصة الفجر",
               },
             },

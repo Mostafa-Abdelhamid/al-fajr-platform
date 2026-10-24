@@ -8,7 +8,7 @@ type Teacher = {
   id: string;
   name: string;
   avatarEmoji: string;
-  qiraat: string;
+  qiraat: string[];
   bio: string;
   yearsExperience: number;
   rating: number;
@@ -74,7 +74,7 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
           </div>
           <div>
             <h3 className="font-extrabold text-night">{teacher.name}</h3>
-            <p className="text-sm text-dawn font-semibold">{teacher.qiraat}</p>
+            <p className="text-sm text-dawn font-semibold">{teacher.qiraat.join("، ")}</p>
             <p className="text-xs text-muted mt-1 max-w-sm">{teacher.bio}</p>
             <div className="flex items-center gap-3 mt-2 text-xs text-muted">
               <span>⭐ {teacher.rating.toFixed(1)} ({teacher.ratingCount} تقييم)</span>

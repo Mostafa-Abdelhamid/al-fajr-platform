@@ -73,10 +73,21 @@ export default function DashboardNav({
               </span>
             </div>
           )}
-          <span className="hidden sm:flex items-center gap-2 text-sm text-gray-300">
+          <Link
+            href="/account/change-password"
+            className="hidden sm:flex items-center gap-2 text-sm text-gray-300 hover:text-white transition"
+            title="تغيير كلمة المرور"
+          >
             <span className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">{avatarEmoji}</span>
             {name}
-          </span>
+          </Link>
+          <Link
+            href="/account/change-password"
+            className="sm:hidden text-sm font-bold bg-white/10 hover:bg-white/20 rounded-full px-3 py-2 transition"
+            title="تغيير كلمة المرور"
+          >
+            ⚙️
+          </Link>
           <button
             onClick={handleLogout}
             className="text-sm font-bold bg-white/10 hover:bg-white/20 rounded-full px-4 py-2 transition"

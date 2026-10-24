@@ -28,7 +28,7 @@ async function main() {
       avatarEmoji: "👨‍🏫",
       teacherProfile: {
         create: {
-          qiraat: "حفص عن عاصم",
+          qiraat: ["حفص عن عاصم"],
           bio: "حافظ للقرآن الكريم ومجاز بالسند المتصل، خبرة 12 سنة في تعليم الأطفال والكبار.",
           yearsExperience: 12,
           rating: 4.8,
@@ -56,7 +56,7 @@ async function main() {
       avatarEmoji: "👩‍🏫",
       teacherProfile: {
         create: {
-          qiraat: "ورش عن نافع",
+          qiraat: ["ورش عن نافع"],
           bio: "معلمة قرآن متخصصة في قراءة ورش، إجازة بالسند، تحب تعليم الأطفال بأسلوب تفاعلي.",
           yearsExperience: 7,
           rating: 4.9,

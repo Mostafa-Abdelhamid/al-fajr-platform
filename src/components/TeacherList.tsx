@@ -7,7 +7,7 @@ type Teacher = {
   id: string;
   name: string;
   avatarEmoji: string;
-  qiraat: string;
+  qiraat: string[];
   bio: string;
   yearsExperience: number;
   rating: number;
@@ -19,12 +19,12 @@ export default function TeacherList({ teachers }: { teachers: Teacher[] }) {
   const [filter, setFilter] = useState("الكل");
 
   const availableQiraat = useMemo(() => {
-    return Array.from(new Set(teachers.map((t) => t.qiraat))).sort((a, b) =>
+    return Array.from(new Set(teachers.flatMap((t) => t.qiraat))).sort((a, b) =>
       a.localeCompare(b, "ar")
     );
   }, [teachers]);
 
-  const filtered = filter === "الكل" ? teachers : teachers.filter((t) => t.qiraat === filter);
+  const filtered = filter === "الكل" ? teachers : teachers.filter((t) => t.qiraat.includes(filter));
 
   return (
     <div className="space-y-5">

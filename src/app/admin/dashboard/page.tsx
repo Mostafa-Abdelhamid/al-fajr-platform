@@ -84,7 +84,7 @@ export default async function AdminDashboard() {
                       <span className="text-xs text-muted font-normal">({t.user.email})</span>
                     </p>
                     <p className="text-xs text-muted mt-0.5">
-                      {t.qiraat} • ⭐ {t.rating.toFixed(1)} ({t.ratingCount} تقييم) • {t.availability.length} أوقات تواجد مُعرّفة
+                      {t.qiraat.join("، ")} • ⭐ {t.rating.toFixed(1)} ({t.ratingCount} تقييم) • {t.availability.length} أوقات تواجد مُعرّفة
                     </p>
                   </div>
                 </div>

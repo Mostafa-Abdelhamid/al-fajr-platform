@@ -52,3 +52,6 @@ next-env.d.ts
 /.claude
 /.windsurf
 /skills-lock.json
+
+# validated migration(s) awaiting explicit approval before being applied to production
+/.pending-migrations
