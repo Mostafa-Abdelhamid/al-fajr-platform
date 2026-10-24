@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { createVideoRoom } from "@/lib/daily";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -23,13 +24,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "هذا الموعد لم يعد متاحًا، اختر موعدًا آخر" }, { status: 409 });
   }
 
+  const baseId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const roomName = await createVideoRoom(baseId, end);
+
   const session = await prisma.session.create({
     data: {
       studentId: user.id,
       teacherId,
       startAt: start,
       endAt: end,
-      roomName: `fajr-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      roomName,
       surahFocus: surahFocus || "",
     },
   });

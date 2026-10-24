@@ -47,9 +47,15 @@ export default function SessionRoom({
     }
   }
 
-  const jitsiUrl = `https://meet.jit.si/${session.roomName}#config.prejoinPageEnabled=false&userInfo.displayName=%22${encodeURIComponent(
-    session.otherPartyName
-  )}%22`;
+  // New sessions get a real Daily.co room (full URL, e.g. "https://team.daily.co/room").
+  // Sessions booked before Daily.co was wired up stored a bare room name for Jitsi —
+  // keep those working by falling back to meet.jit.si for them.
+  const isDailyRoom = session.roomName.startsWith("http");
+  const videoUrl = isDailyRoom
+    ? session.roomName
+    : `https://meet.jit.si/${session.roomName}#config.prejoinPageEnabled=false&userInfo.displayName=%22${encodeURIComponent(
+        session.otherPartyName
+      )}%22`;
 
   return (
     <div className="flex-1 flex flex-col lg:flex-row gap-0 h-[calc(100vh-72px)]">
@@ -64,7 +70,7 @@ export default function SessionRoom({
           </div>
         ) : (
           <iframe
-            src={jitsiUrl}
+            src={videoUrl}
             allow="camera; microphone; fullscreen; display-capture; autoplay"
             className="w-full h-full border-0"
           />
