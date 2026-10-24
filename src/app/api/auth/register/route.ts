@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { createSessionCookie } from "@/lib/auth";
+import { assertRealEmail } from "@/lib/emailCheck";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -15,6 +16,11 @@ export async function POST(req: NextRequest) {
 
   if (!name || !email || !password || !role) {
     return NextResponse.json({ error: "الرجاء تعبئة جميع الحقول" }, { status: 400 });
+  }
+
+  const emailError = await assertRealEmail(email);
+  if (emailError) {
+    return NextResponse.json({ error: emailError }, { status: 400 });
   }
 
   const existing = await prisma.user.findUnique({ where: { email } });

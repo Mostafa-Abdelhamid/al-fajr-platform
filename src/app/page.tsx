@@ -47,10 +47,10 @@ const FAQS = [
 export default function Home() {
   return (
     <>
-      <header className="sticky top-0 z-50 bg-cream/90 backdrop-blur border-b border-black/5">
+      <header className="sticky top-0 z-50 bg-cream/80 backdrop-blur-lg border-b border-black/5">
         <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
           <div className="font-extrabold text-xl text-night flex items-center gap-2">
-            🌅 منصة الفجر
+            <span className="animate-float inline-block">🌅</span> منصة الفجر
           </div>
           <nav className="hidden sm:flex items-center gap-7">
             <a href="#features" className="text-sm font-semibold hover:text-dawn transition">المميزات</a>
@@ -71,36 +71,39 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_80%_-10%,#2a3570_0%,#121833_55%,#121833_100%)] text-white py-24">
+      <section className="relative overflow-hidden bg-fajr-night text-white py-28">
+        <div className="absolute inset-0 bg-dot-grid opacity-40" />
+        <div className="fajr-orb w-96 h-96 bg-gold/25 -top-20 -right-20" />
+        <div className="fajr-orb w-80 h-80 bg-dawn/25 bottom-0 -left-10" />
         <div className="relative max-w-3xl mx-auto px-5 flex flex-col items-center text-center gap-6">
-          <span className="inline-flex items-center gap-2 bg-white/10 border border-white/25 px-5 py-2 rounded-full text-sm font-bold text-gold-light">
+          <span className="animate-fade-up inline-flex items-center gap-2 bg-white/10 border border-white/25 px-5 py-2 rounded-full text-sm font-bold text-gold-light">
             🎉 النسخة التجريبية متاحة الآن
           </span>
-          <h1 className="text-4xl sm:text-5xl font-extrabold leading-snug">
+          <h1 className="animate-fade-up stagger-1 text-4xl sm:text-5xl font-extrabold leading-snug">
             تعلّم{" "}
             <span className="bg-gradient-to-l from-gold-light to-dawn bg-clip-text text-transparent">
               القرآن والقراءات
             </span>{" "}
             مباشرة من معلمين مؤهلين
           </h1>
-          <p className="text-lg text-gray-300 max-w-xl">
+          <p className="animate-fade-up stagger-2 text-lg text-gray-300 max-w-xl">
             منصة الفجر تربطك بمعلمي القرآن عبر مكالمات فيديو مباشرة، بجدول يناسبك، ومتابعة حقيقية لتقدمك خطوة بخطوة.
           </p>
-          <div className="flex flex-wrap gap-4 justify-center mt-2">
+          <div className="animate-fade-up stagger-3 flex flex-wrap gap-4 justify-center mt-2">
             <Link
               href="/register"
-              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 transition"
+              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-orange-300/60 transition-all"
             >
               احجز حصتك الأولى
             </Link>
             <a
               href="#features"
-              className="border-2 border-white text-white font-bold px-7 py-3.5 rounded-full hover:bg-white hover:text-night transition"
+              className="border-2 border-white text-white font-bold px-7 py-3.5 rounded-full hover:bg-white hover:text-night transition-all"
             >
               تعرّف أكثر
             </a>
           </div>
-          <div className="flex gap-10 mt-10 flex-wrap justify-center">
+          <div className="animate-fade-up stagger-4 flex gap-10 mt-10 flex-wrap justify-center">
             {[
               ["سهل", "تسجيل خلال دقائق"],
               ["فيديو", "مباشر مع المعلم"],
@@ -123,10 +126,10 @@ export default function Home() {
             <p className="text-muted mt-3">كل ما تحتاجه لتعلّم القرآن والقراءات بجدية واستمرارية، في مكان واحد.</p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {FEATURES.map((f) => (
+            {FEATURES.map((f, i) => (
               <div
                 key={f.title}
-                className="bg-white border border-[#efe6d8] rounded-2xl p-7 hover:-translate-y-1.5 hover:shadow-xl transition"
+                className={`hover-lift animate-fade-up stagger-${Math.min(i + 1, 6)} bg-white border border-[#efe6d8] rounded-2xl p-7 hover:shadow-xl`}
               >
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#fff3df] to-[#ffe3c9] flex items-center justify-center text-2xl mb-4">
                   {f.icon}
@@ -146,9 +149,9 @@ export default function Home() {
             <h2 className="text-3xl font-extrabold text-night mt-2">كيف تبدأ في 3 خطوات</h2>
           </div>
           <div className="grid sm:grid-cols-3 gap-8">
-            {STEPS.map((s) => (
-              <div key={s.num} className="text-center px-3">
-                <div className="w-12 h-12 rounded-full bg-night text-gold font-extrabold flex items-center justify-center mx-auto mb-4">
+            {STEPS.map((s, i) => (
+              <div key={s.num} className={`animate-fade-up stagger-${i + 1} text-center px-3`}>
+                <div className="w-12 h-12 rounded-full bg-night text-gold font-extrabold flex items-center justify-center mx-auto mb-4 animate-pulse-ring">
                   {s.num}
                 </div>
                 <h3 className="font-bold text-night mb-2">{s.title}</h3>
@@ -161,8 +164,10 @@ export default function Home() {
 
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-5">
-          <div className="bg-gradient-to-l from-night to-night-2 text-white rounded-[28px] p-10 sm:p-14 flex flex-wrap items-center justify-between gap-7">
-            <div>
+          <div className="relative overflow-hidden bg-fajr-night text-white rounded-[28px] p-10 sm:p-14 flex flex-wrap items-center justify-between gap-7 hover-lift">
+            <div className="absolute inset-0 bg-dot-grid opacity-30" />
+            <div className="fajr-orb w-56 h-56 bg-gold/30 -top-16 -left-10" />
+            <div className="relative">
               <h3 className="text-2xl font-extrabold mb-2">هل أنت معلم/ـة قرآن؟</h3>
               <p className="text-gray-300 max-w-md">
                 انضم إلى النسخة التجريبية كمعلم، وابدأ بتدريس طلابك عبر المنصة من أول يوم.
@@ -170,7 +175,7 @@ export default function Home() {
             </div>
             <Link
               href="/register"
-              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full hover:-translate-y-0.5 transition"
+              className="relative bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-400/30 transition-all"
             >
               سجّل كمعلم
             </Link>
@@ -185,11 +190,14 @@ export default function Home() {
             <h2 className="text-3xl font-extrabold text-night mt-2">كل ما تريد معرفته</h2>
           </div>
           <div className="space-y-4">
-            {FAQS.map((f) => (
-              <details key={f.q} className="bg-white border border-[#efe6d8] rounded-2xl p-5">
-                <summary className="font-bold text-night cursor-pointer flex justify-between items-center">
+            {FAQS.map((f, i) => (
+              <details
+                key={f.q}
+                className={`animate-fade-up stagger-${i + 1} group bg-white border border-[#efe6d8] rounded-2xl p-5 open:border-dawn/40 open:shadow-md transition-shadow`}
+              >
+                <summary className="font-bold text-night cursor-pointer flex justify-between items-center list-none">
                   {f.q}
-                  <span className="text-dawn text-xl">+</span>
+                  <span className="text-dawn text-xl transition-transform group-open:rotate-45">+</span>
                 </summary>
                 <p className="text-muted text-sm mt-3">{f.a}</p>
               </details>
@@ -198,9 +206,10 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-night text-gray-400 py-10 text-center">
-        <div className="font-extrabold text-white text-lg mb-2">🌅 منصة الفجر</div>
-        <p className="text-sm">منصة تعليمية لربط طلاب القرآن والقراءات بالمعلمين — النسخة التجريبية 2026</p>
+      <footer className="relative overflow-hidden bg-fajr-night text-gray-400 py-12 text-center">
+        <div className="absolute inset-0 bg-dot-grid opacity-20" />
+        <div className="relative font-extrabold text-white text-lg mb-2">🌅 منصة الفجر</div>
+        <p className="relative text-sm">منصة تعليمية لربط طلاب القرآن والقراءات بالمعلمين — النسخة التجريبية 2026</p>
       </footer>
     </>
   );

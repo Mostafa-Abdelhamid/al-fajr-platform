@@ -38,3 +38,117 @@ body {
 details summary::-webkit-details-marker {
   display: none;
 }
+
+/* ---------- Shared entrance / interaction animations ---------- */
+
+@keyframes fajr-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fajr-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fajr-scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fajr-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(242, 177, 52, 0.45); }
+  70%  { box-shadow: 0 0 0 10px rgba(242, 177, 52, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(242, 177, 52, 0); }
+}
+
+@keyframes fajr-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.animate-fade-up {
+  animation: fajr-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-fade-in {
+  animation: fajr-fade-in 0.5s ease-out both;
+}
+.animate-scale-in {
+  animation: fajr-scale-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-float {
+  animation: fajr-float 5s ease-in-out infinite;
+}
+.animate-pulse-ring {
+  animation: fajr-pulse-ring 2s ease-out infinite;
+}
+
+.stagger-1 { animation-delay: 0.06s; }
+.stagger-2 { animation-delay: 0.12s; }
+.stagger-3 { animation-delay: 0.18s; }
+.stagger-4 { animation-delay: 0.24s; }
+.stagger-5 { animation-delay: 0.3s; }
+.stagger-6 { animation-delay: 0.36s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up, .animate-fade-in, .animate-scale-in, .animate-float, .animate-pulse-ring {
+    animation: none !important;
+  }
+}
+
+/* Smooth hover lift for interactive cards */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(18, 24, 51, 0.1);
+}
+
+/* ---------- Decorative "dawn glow" backgrounds ---------- */
+
+.bg-fajr-night {
+  background:
+    radial-gradient(circle at 15% 15%, rgba(242, 177, 52, 0.18), transparent 40%),
+    radial-gradient(circle at 85% 0%, rgba(242, 112, 74, 0.22), transparent 45%),
+    radial-gradient(circle at 50% 100%, rgba(255, 215, 122, 0.08), transparent 50%),
+    linear-gradient(160deg, #121833 0%, #1c2550 60%, #121833 100%);
+}
+
+.bg-fajr-sunrise {
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(255, 215, 122, 0.55), transparent 60%),
+    radial-gradient(ellipse at 50% 150%, rgba(242, 112, 74, 0.45), transparent 65%),
+    linear-gradient(180deg, #121833 0%, #1c2550 100%);
+}
+
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.bg-dot-grid-dark {
+  background-image: radial-gradient(rgba(18, 24, 51, 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.text-gradient-dawn {
+  background: linear-gradient(90deg, var(--color-gold-light), var(--color-dawn));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* soft blurred color orbs used as absolutely-positioned decoration */
+.fajr-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  pointer-events: none;
+}

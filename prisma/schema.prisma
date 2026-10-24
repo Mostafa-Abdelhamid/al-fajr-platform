@@ -33,7 +33,7 @@ model User {
 model TeacherProfile {
   id         String   @id @default(cuid())
   userId     String   @unique
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   qiraat     String   @default("حفص عن عاصم")
   bio        String   @default("")
   yearsExperience Int @default(1)
@@ -47,7 +47,7 @@ model TeacherProfile {
 model Availability {
   id         String   @id @default(cuid())
   teacherId  String
-  teacher    TeacherProfile @relation(fields: [teacherId], references: [id])
+  teacher    TeacherProfile @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   dayOfWeek  Int      // 0 = Sunday ... 6 = Saturday
   startTime  String   // "16:00"
   endTime    String   // "20:00"
@@ -56,9 +56,9 @@ model Availability {
 model Session {
   id          String   @id @default(cuid())
   studentId   String
-  student     User     @relation("StudentSessions", fields: [studentId], references: [id])
+  student     User     @relation("StudentSessions", fields: [studentId], references: [id], onDelete: Cascade)
   teacherId   String
-  teacher     User     @relation("TeacherSessions", fields: [teacherId], references: [id])
+  teacher     User     @relation("TeacherSessions", fields: [teacherId], references: [id], onDelete: Cascade)
   startAt     DateTime
   endAt       DateTime
   status      String   @default("SCHEDULED")
@@ -72,7 +72,7 @@ model Session {
 model Progress {
   id        String   @id @default(cuid())
   studentId String
-  student   User     @relation(fields: [studentId], references: [id])
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
   surah     String
   status    String   @default("قيد الحفظ") // قيد الحفظ | مكتمل | مراجعة
   notes     String   @default("")
@@ -82,9 +82,21 @@ model Progress {
 model Badge {
   id        String   @id @default(cuid())
   studentId String
-  student   User     @relation(fields: [studentId], references: [id])
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
   type      String
   label     String
   icon      String
   earnedAt  DateTime @default(now())
+}
+
+model PasswordResetOtp {
+  id        String   @id @default(cuid())
+  email     String
+  codeHash  String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([email])
 }

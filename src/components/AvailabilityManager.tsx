@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const DAYS = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+const DAYS_SHORT = ["أحد", "اثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت"];
 
 type Slot = { id: string; dayOfWeek: number; startTime: string; endTime: string };
 
@@ -39,23 +40,28 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
 
   return (
     <div className="space-y-6">
-      <div className="bg-white rounded-2xl border border-gray-100 p-6">
+      <div className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <h3 className="font-extrabold text-night mb-4">إضافة وقت تواجد جديد</h3>
-        <div className="flex flex-wrap items-end gap-4">
-          <div>
-            <label className="block text-xs font-bold text-muted mb-1">اليوم</label>
-            <select
-              value={dayOfWeek}
-              onChange={(e) => setDayOfWeek(Number(e.target.value))}
-              className="rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm focus:border-dawn focus:outline-none"
+
+        <label className="block text-xs font-bold text-muted mb-2">اليوم</label>
+        <div className="flex flex-wrap gap-2 mb-5" dir="rtl">
+          {DAYS_SHORT.map((d, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setDayOfWeek(i)}
+              className={`w-12 h-12 rounded-full text-xs font-bold flex flex-col items-center justify-center transition ${
+                dayOfWeek === i
+                  ? "bg-dawn text-white shadow-md scale-105"
+                  : "bg-gray-50 text-night hover:bg-orange-50"
+              }`}
             >
-              {DAYS.map((d, i) => (
-                <option key={i} value={i}>
-                  {d}
-                </option>
-              ))}
-            </select>
-          </div>
+              {d.slice(0, 2)}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap items-end gap-4">
           <div>
             <label className="block text-xs font-bold text-muted mb-1">من الساعة</label>
             <input
@@ -85,7 +91,7 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
         {error && <p className="text-sm text-red-600 font-semibold mt-3">{error}</p>}
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-100 p-6">
+      <div className="hover-lift animate-fade-up stagger-1 bg-white rounded-2xl border border-gray-100 p-6">
         <h3 className="font-extrabold text-night mb-4">أوقاتي المتاحة حاليًا</h3>
         {initialSlots.length === 0 ? (
           <p className="text-sm text-muted">لم تضف أي أوقات تواجد بعد. الطلاب لن يتمكنوا من حجز حصص معك حتى تضيف أوقاتًا.</p>
@@ -94,10 +100,10 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
             {initialSlots
               .slice()
               .sort((a, b) => a.dayOfWeek - b.dayOfWeek)
-              .map((s) => (
+              .map((s, i) => (
                 <li
                   key={s.id}
-                  className="flex items-center justify-between bg-orange-50 rounded-xl px-4 py-3 text-sm"
+                  className={`animate-scale-in stagger-${Math.min(i + 1, 6)} flex items-center justify-between bg-orange-50 rounded-xl px-4 py-3 text-sm`}
                 >
                   <span className="font-semibold text-night">
                     {DAYS[s.dayOfWeek]} — من {s.startTime} إلى {s.endTime}

@@ -44,19 +44,26 @@ export default async function TeacherDashboard() {
 
   return (
     <div className="space-y-10">
-      <div>
-        <h1 className="text-2xl font-extrabold text-night">أهلًا بك، {user.name} 👨‍🏫</h1>
-        <p className="text-muted mt-1">إليك نظرة سريعة على جدولك وطلابك.</p>
+      <div className="relative overflow-hidden bg-fajr-night text-white rounded-3xl p-7 animate-fade-up">
+        <div className="absolute inset-0 bg-dot-grid opacity-30" />
+        <div className="fajr-orb w-64 h-64 bg-gold/25 -top-20 -left-10" />
+        <div className="relative flex items-center gap-3">
+          <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-2xl">👨‍🏫</span>
+          <div>
+            <h1 className="text-2xl font-extrabold">أهلًا بك، {user.name}</h1>
+            <p className="text-gray-300 mt-1 text-sm">إليك نظرة سريعة على جدولك وطلابك.</p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard icon="📅" label="حصص قادمة" value={upcoming.length} />
-        <StatCard icon="✅" label="حصص مكتملة" value={completed.length} />
-        <StatCard icon="🧑‍🎓" label="عدد الطلاب" value={students.length} />
-        <StatCard icon="⭐" label="التقييم" value={profile ? Number(profile.rating.toFixed(1)) : 5} />
+        <StatCard icon="📅" label="حصص قادمة" value={upcoming.length} delay={1} />
+        <StatCard icon="✅" label="حصص مكتملة" value={completed.length} delay={2} />
+        <StatCard icon="🧑‍🎓" label="عدد الطلاب" value={students.length} delay={3} />
+        <StatCard icon="⭐" label="التقييم" value={profile ? Number(profile.rating.toFixed(1)) : 5} delay={4} />
       </div>
 
-      <section className="bg-white rounded-2xl border border-gray-100 p-6">
+      <section className="hover-lift animate-fade-up stagger-3 bg-white rounded-2xl border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-extrabold text-night">حصصك القادمة</h3>
           <Link href="/teacher/availability" className="text-sm text-dawn font-bold">
@@ -80,7 +87,7 @@ export default async function TeacherDashboard() {
                 </div>
                 <Link
                   href={`/session/${s.id}`}
-                  className="bg-gradient-to-l from-dawn to-gold text-white font-bold text-sm px-5 py-2 rounded-full hover:-translate-y-0.5 transition"
+                  className="bg-gradient-to-l from-dawn to-gold text-white font-bold text-sm px-5 py-2 rounded-full hover:-translate-y-0.5 hover:shadow-lg transition-all"
                 >
                   🎥 ادخل الحصة
                 </Link>
@@ -90,7 +97,7 @@ export default async function TeacherDashboard() {
         )}
       </section>
 
-      <section className="bg-white rounded-2xl border border-gray-100 p-6">
+      <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <h3 className="font-extrabold text-night mb-4">طلابي ومتابعة تقدمهم</h3>
         {students.length === 0 ? (
           <p className="text-sm text-muted">سيظهر هنا طلابك بعد أول حصة محجوزة.</p>
@@ -108,7 +115,7 @@ export default async function TeacherDashboard() {
         )}
       </section>
 
-      <section className="bg-white rounded-2xl border border-gray-100 p-6">
+      <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <h3 className="font-extrabold text-night mb-4">آخر الحصص المكتملة</h3>
         {completed.length === 0 ? (
           <p className="text-sm text-muted">لا توجد حصص مكتملة بعد.</p>
@@ -136,9 +143,19 @@ export default async function TeacherDashboard() {
   );
 }
 
-function StatCard({ icon, label, value }: { icon: string; label: string; value: number }) {
+function StatCard({
+  icon,
+  label,
+  value,
+  delay = 0,
+}: {
+  icon: string;
+  label: string;
+  value: number;
+  delay?: number;
+}) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-5 text-center">
+    <div className={`hover-lift animate-fade-up stagger-${delay} bg-white rounded-2xl border border-gray-100 p-5 text-center`}>
       <div className="text-2xl mb-1">{icon}</div>
       <div className="text-xl font-extrabold text-night">{value}</div>
       <div className="text-xs text-muted mt-1">{label}</div>

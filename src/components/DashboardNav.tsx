@@ -39,10 +39,10 @@ export default function DashboardNav({
   }
 
   return (
-    <header className="bg-night text-white">
+    <header className="bg-fajr-night text-white sticky top-0 z-40 shadow-lg shadow-night/20">
       <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between flex-wrap gap-4">
         <Link href="/" className="font-extrabold text-lg flex items-center gap-2">
-          🌅 منصة الفجر
+          <span className="animate-float inline-block">🌅</span> منصة الفجر
         </Link>
 
         <nav className="flex items-center gap-6">
@@ -50,28 +50,32 @@ export default function DashboardNav({
             <Link
               key={l.href}
               href={l.href}
-              className={`text-sm font-semibold transition ${
+              className={`relative text-sm font-semibold transition py-1 ${
                 pathname === l.href ? "text-gold" : "text-gray-300 hover:text-white"
               }`}
             >
               {l.label}
+              {pathname === l.href && (
+                <span className="absolute -bottom-1 right-0 left-0 h-0.5 rounded-full bg-gold animate-scale-in" />
+              )}
             </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-4">
           {role === "STUDENT" && (
-            <div className="flex items-center gap-3 text-sm">
-              <span className="bg-white/10 rounded-full px-3 py-1.5 font-bold text-gold-light">
+            <div className="flex items-center gap-2 text-sm">
+              <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-gold-light transition-transform hover:scale-105">
                 ⭐ {points ?? 0} نقطة
               </span>
-              <span className="bg-white/10 rounded-full px-3 py-1.5 font-bold text-orange-300">
+              <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-orange-300 transition-transform hover:scale-105">
                 🔥 {streak ?? 0} متتالية
               </span>
             </div>
           )}
-          <span className="hidden sm:inline text-sm text-gray-300">
-            {avatarEmoji} {name}
+          <span className="hidden sm:flex items-center gap-2 text-sm text-gray-300">
+            <span className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">{avatarEmoji}</span>
+            {name}
           </span>
           <button
             onClick={handleLogout}

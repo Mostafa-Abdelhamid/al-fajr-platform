@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import AuthShell from "@/components/AuthShell";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,13 +43,14 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex-1 flex items-center justify-center bg-night px-4 py-14">
-      <div className="w-full max-w-md bg-cream rounded-3xl p-8 shadow-2xl">
+    <AuthShell eyebrow="أهلًا بعودتك" headline="واصل رحلتك في حفظ القرآن والقراءات">
+      <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl shadow-night/10 animate-scale-in">
         <div className="text-center mb-6">
-          <Link href="/" className="text-2xl font-extrabold text-night">
+          <Link href="/" className="lg:hidden text-2xl font-extrabold text-night">
             🌅 منصة الفجر
           </Link>
-          <p className="text-muted mt-2 text-sm">أهلًا بعودتك</p>
+          <h2 className="text-xl font-extrabold text-night mt-1">تسجيل الدخول</h2>
+          <p className="text-muted mt-1 text-sm">أهلًا بعودتك، أدخل بياناتك للمتابعة</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -59,50 +61,49 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:outline-none"
+              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
               placeholder="example@email.com"
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-night mb-1">كلمة المرور</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-sm font-bold text-night">كلمة المرور</label>
+              <Link href="/forgot-password" className="text-xs font-bold text-dawn hover:underline">
+                نسيت كلمة المرور؟
+              </Link>
+            </div>
             <input
               required
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:outline-none"
+              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
               placeholder="••••••••"
             />
           </div>
 
-          {error && <p className="text-sm text-red-600 font-semibold">{error}</p>}
+          {error && (
+            <p className="text-sm text-red-600 font-semibold bg-red-50 rounded-xl px-4 py-3 animate-fade-in">
+              {error}
+            </p>
+          )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 transition disabled:opacity-60"
+            className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-300/50 transition-all disabled:opacity-60 disabled:translate-y-0"
           >
             {loading ? "جارٍ الدخول..." : "تسجيل الدخول"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-muted mt-5">
+        <p className="text-center text-sm text-muted mt-6">
           ليس لديك حساب؟{" "}
-          <Link href="/register" className="text-dawn font-bold">
+          <Link href="/register" className="text-dawn font-bold hover:underline">
             سجّل الآن
           </Link>
         </p>
-
-        <div className="mt-6 border-t pt-4 text-xs text-muted text-center leading-6">
-          للتجربة السريعة (بيانات تجريبية مُهيّأة):
-          <br />
-          طالب: <b dir="ltr">student@fajr.app</b> / <b dir="ltr">123456</b>
-          <br />
-          معلم: <b dir="ltr">teacher@fajr.app</b> / <b dir="ltr">123456</b>
-          <br />
-          مدير: <b dir="ltr">admin@fajr.app</b> / <b dir="ltr">123456</b>
-        </div>
       </div>
-    </main>
+    </AuthShell>
   );
 }
