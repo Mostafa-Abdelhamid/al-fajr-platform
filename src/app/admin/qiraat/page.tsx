@@ -1,7 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import QiraatManager from "@/components/QiraatManager";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { admin } from "@/i18n/dictionaries/admin";
 
 export default async function AdminQiraatPage() {
+  const locale = await getLocale();
+  const t = makeT(admin, locale);
   const options = await prisma.qiraatOption.findMany({
     orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
   });
@@ -19,10 +24,8 @@ export default async function AdminQiraatPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-extrabold text-night">إدارة القراءات</h1>
-        <p className="text-sm text-muted mt-1">
-          أضف أو احذف الروايات التي يمكن للمعلمين اختيارها عند التسجيل.
-        </p>
+        <h1 className="text-xl font-extrabold text-night">{t("qiraatPageTitle")}</h1>
+        <p className="text-sm text-muted mt-1">{t("qiraatPageSubtitle")}</p>
       </div>
       <QiraatManager groups={groups} />
     </div>

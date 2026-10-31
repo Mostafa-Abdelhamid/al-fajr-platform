@@ -1,8 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { account } from "@/i18n/dictionaries/account";
 
 export default function ChangePasswordPage() {
+  const { locale } = useLocale();
+  const t = makeT(account, locale);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -16,7 +21,7 @@ export default function ChangePasswordPage() {
     setSuccess(false);
 
     if (newPassword !== confirmPassword) {
-      setError("كلمة المرور الجديدة وتأكيدها غير متطابقين");
+      setError(t("mismatchError"));
       return;
     }
 
@@ -29,7 +34,7 @@ export default function ChangePasswordPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "حدث خطأ ما");
+        setError(data.error || t("genericError"));
         setLoading(false);
         return;
       }
@@ -38,7 +43,7 @@ export default function ChangePasswordPage() {
       setNewPassword("");
       setConfirmPassword("");
     } catch {
-      setError("تعذر الاتصال بالخادم");
+      setError(t("connectionError"));
     } finally {
       setLoading(false);
     }
@@ -46,12 +51,12 @@ export default function ChangePasswordPage() {
 
   return (
     <div className="max-w-md animate-fade-up">
-      <h1 className="text-2xl font-extrabold text-night mb-1">تغيير كلمة المرور</h1>
-      <p className="text-muted mb-6 text-sm">حدّث كلمة مرور حسابك للحفاظ على أمانه.</p>
+      <h1 className="text-2xl font-extrabold text-night mb-1">{t("title")}</h1>
+      <p className="text-muted mb-6 text-sm">{t("subtitle")}</p>
 
       <form onSubmit={handleSubmit} className="hover-lift bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
         <div>
-          <label className="block text-sm font-bold text-night mb-1">كلمة المرور الحالية</label>
+          <label className="block text-sm font-bold text-night mb-1">{t("currentPassword")}</label>
           <input
             required
             type="password"
@@ -62,7 +67,7 @@ export default function ChangePasswordPage() {
           />
         </div>
         <div>
-          <label className="block text-sm font-bold text-night mb-1">كلمة المرور الجديدة</label>
+          <label className="block text-sm font-bold text-night mb-1">{t("newPassword")}</label>
           <input
             required
             type="password"
@@ -70,11 +75,11 @@ export default function ChangePasswordPage() {
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
-            placeholder="6 أحرف على الأقل"
+            placeholder={t("newPasswordPlaceholder")}
           />
         </div>
         <div>
-          <label className="block text-sm font-bold text-night mb-1">تأكيد كلمة المرور الجديدة</label>
+          <label className="block text-sm font-bold text-night mb-1">{t("confirmNewPassword")}</label>
           <input
             required
             type="password"
@@ -82,7 +87,7 @@ export default function ChangePasswordPage() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
-            placeholder="أعد كتابة كلمة المرور الجديدة"
+            placeholder={t("confirmPasswordPlaceholder")}
           />
         </div>
 
@@ -93,7 +98,7 @@ export default function ChangePasswordPage() {
         )}
         {success && (
           <p className="text-sm text-green font-semibold bg-green-50 rounded-xl px-4 py-3 animate-fade-in">
-            ✅ تم تغيير كلمة المرور بنجاح.
+            {t("successMessage")}
           </p>
         )}
 
@@ -102,7 +107,7 @@ export default function ChangePasswordPage() {
           disabled={loading}
           className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
         >
-          {loading ? "جارٍ الحفظ..." : "حفظ كلمة المرور الجديدة"}
+          {loading ? t("saving") : t("submit")}
         </button>
       </form>
     </div>

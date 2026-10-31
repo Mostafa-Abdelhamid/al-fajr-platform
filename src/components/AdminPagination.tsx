@@ -1,6 +1,9 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { admin } from "@/i18n/dictionaries/admin";
 
 export default function AdminPagination({
   page,
@@ -16,6 +19,8 @@ export default function AdminPagination({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { locale } = useLocale();
+  const t = makeT(admin, locale);
 
   if (totalPages <= 1) return null;
 
@@ -36,7 +41,7 @@ export default function AdminPagination({
   return (
     <div className="flex items-center justify-between flex-wrap gap-3 pt-4 mt-4 border-t border-gray-100">
       <p className="text-xs text-muted">
-        عرض {from}–{to} من {totalCount}
+        {t("showing")} {from}–{to} {t("of")} {totalCount}
       </p>
       <div className="flex items-center gap-1.5">
         <button
@@ -44,7 +49,7 @@ export default function AdminPagination({
           disabled={page <= 1}
           className="text-xs font-bold text-night bg-gray-50 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-gray-50 rounded-lg px-3 py-2 transition"
         >
-          السابق
+          {t("previous")}
         </button>
         {start > 1 && <span className="text-xs text-muted px-1">…</span>}
         {pageNumbers.map((n) => (
@@ -64,7 +69,7 @@ export default function AdminPagination({
           disabled={page >= totalPages}
           className="text-xs font-bold text-night bg-gray-50 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-gray-50 rounded-lg px-3 py-2 transition"
         >
-          التالي
+          {t("next")}
         </button>
       </div>
     </div>

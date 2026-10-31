@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { teacher, progressStatusLabels } from "@/i18n/dictionaries/teacher";
 
+// Surah names and progress-status values are stored as-is in the database
+// and compared elsewhere (e.g. student dashboard checks p.status === "مكتمل"),
+// so the underlying values stay Arabic in both locales — only the status
+// option's displayed label is translated (see progressStatusLabels).
 const SURAHS = [
   "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "يس", "الكهف",
   "الملك", "الرحمن", "الواقعة", "جزء عمّ", "أخرى",
@@ -11,6 +18,8 @@ const STATUSES = ["قيد الحفظ", "مراجعة", "مكتمل"];
 
 export default function ProgressForm({ studentId }: { studentId: string }) {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = makeT(teacher, locale);
   const [surah, setSurah] = useState(SURAHS[0]);
   const [status, setStatus] = useState(STATUSES[0]);
   const [loading, setLoading] = useState(false);
@@ -50,7 +59,7 @@ export default function ProgressForm({ studentId }: { studentId: string }) {
         className="rounded-lg border border-gray-200 px-2 py-1.5 text-xs focus:border-dawn focus:outline-none"
       >
         {SURAHS.map((s) => (
-          <option key={s}>{s}</option>
+          <option key={s} value={s}>{s}</option>
         ))}
       </select>
       <select
@@ -59,7 +68,7 @@ export default function ProgressForm({ studentId }: { studentId: string }) {
         className="rounded-lg border border-gray-200 px-2 py-1.5 text-xs focus:border-dawn focus:outline-none"
       >
         {STATUSES.map((s) => (
-          <option key={s}>{s}</option>
+          <option key={s} value={s}>{progressStatusLabels[locale][s]}</option>
         ))}
       </select>
       <button
@@ -67,7 +76,7 @@ export default function ProgressForm({ studentId }: { studentId: string }) {
         disabled={loading}
         className="bg-night text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-night-2 transition disabled:opacity-60"
       >
-        {error ? "فشل الحفظ" : done ? "تم ✓" : loading ? "..." : "تحديث التقدم"}
+        {error ? t("saveFailed") : done ? t("saved") : loading ? "..." : t("updateProgress")}
       </button>
     </div>
   );

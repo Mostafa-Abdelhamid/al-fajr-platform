@@ -2,11 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { admin } from "@/i18n/dictionaries/admin";
 
 type QiraatGroup = { reciter: string; riwayat: { id: string; riwaya: string }[] };
 
 export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = makeT(admin, locale);
   const [reciter, setReciter] = useState("");
   const [riwaya, setRiwaya] = useState("");
   const [error, setError] = useState("");
@@ -27,7 +32,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
     const data = await res.json();
     setLoading(false);
     if (!res.ok) {
-      setError(data.error || "تعذرت إضافة الرواية");
+      setError(data.error || t("addRiwayaFailed"));
       return;
     }
     setReciter("");
@@ -36,7 +41,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
   }
 
   async function handleDelete(id: string, riwaya: string) {
-    const confirmed = window.confirm(`هل تريد حذف رواية "${riwaya}" من قائمة القراءات؟`);
+    const confirmed = window.confirm(t("confirmDeleteRiwaya").replace("{riwaya}", riwaya));
     if (!confirmed) return;
 
     setDeletingId(id);
@@ -45,7 +50,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      window.alert(data.error || "تعذر حذف الرواية");
+      window.alert(data.error || t("deleteRiwayaFailed"));
       return;
     }
     router.refresh();
@@ -54,7 +59,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
   return (
     <div className="space-y-6">
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-        <h3 className="font-extrabold text-night mb-4">إضافة رواية جديدة</h3>
+        <h3 className="font-extrabold text-night mb-4">{t("addNewRiwayaTitle")}</h3>
         <form onSubmit={handleAdd} className="grid sm:grid-cols-[1fr_1fr_auto] gap-3 items-start">
           <div>
             <input
@@ -62,7 +67,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
               list="reciters-list"
               value={reciter}
               onChange={(e) => setReciter(e.target.value)}
-              placeholder="اسم القارئ (مثال: عاصم الكوفي)"
+              placeholder={t("reciterPlaceholder")}
               className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
             />
             <datalist id="reciters-list">
@@ -75,7 +80,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
             required
             value={riwaya}
             onChange={(e) => setRiwaya(e.target.value)}
-            placeholder="اسم الرواية (مثال: حفص عن عاصم)"
+            placeholder={t("riwayaPlaceholder")}
             className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
           />
           <button
@@ -83,7 +88,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
             disabled={loading}
             className="rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 text-sm shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:translate-y-0"
           >
-            {loading ? "جارٍ الإضافة..." : "+ إضافة"}
+            {loading ? t("addingLabel") : t("addButtonLabel")}
           </button>
         </form>
         {error && (
@@ -94,9 +99,9 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
       </section>
 
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-        <h3 className="font-extrabold text-night mb-4">القراءات الحالية</h3>
+        <h3 className="font-extrabold text-night mb-4">{t("currentQiraatTitle")}</h3>
         {groups.length === 0 ? (
-          <p className="text-sm text-muted">لا توجد قراءات بعد.</p>
+          <p className="text-sm text-muted">{t("noQiraatYet")}</p>
         ) : (
           <div className="space-y-4">
             {groups.map((group) => (
@@ -114,7 +119,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
                         onClick={() => handleDelete(r.id, r.riwaya)}
                         disabled={deletingId === r.id}
                         className="text-red-600 hover:text-red-800 disabled:opacity-50"
-                        title="حذف"
+                        title={t("deleteTitle")}
                       >
                         {deletingId === r.id ? "…" : "✕"}
                       </button>

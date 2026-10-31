@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { session as sessionDict } from "@/i18n/dictionaries/session";
+import { badgeLabel } from "@/i18n/dictionaries/badges";
 
 type SessionData = {
   id: string;
@@ -25,11 +29,13 @@ export default function SessionRoom({
   dashboardHref: string;
 }) {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = makeT(sessionDict, locale);
   const [showComplete, setShowComplete] = useState(false);
   const [notes, setNotes] = useState("");
   const [rating, setRating] = useState(5);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{ newlyEarned: { icon: string; label: string }[] } | null>(
+  const [result, setResult] = useState<{ newlyEarned: { icon: string; label: string; type: string }[] } | null>(
     null
   );
 
@@ -64,8 +70,8 @@ export default function SessionRoom({
           <div className="h-full flex items-center justify-center text-white text-center p-8">
             <div>
               <p className="text-4xl mb-3">✅</p>
-              <p className="text-lg font-bold">تم إنهاء هذه الحصة بالفعل</p>
-              <p className="text-gray-400 text-sm mt-2">يمكنك مراجعة تفاصيلها من لوحتك.</p>
+              <p className="text-lg font-bold">{t("alreadyCompleted")}</p>
+              <p className="text-gray-400 text-sm mt-2">{t("reviewFromDashboard")}</p>
             </div>
           </div>
         ) : (
@@ -79,16 +85,18 @@ export default function SessionRoom({
 
       <aside className="w-full lg:w-80 bg-cream p-6 overflow-y-auto">
         <Link href={dashboardHref} className="text-sm text-muted font-bold">
-          ← العودة للوحتي
+          {t("backToDashboard")}
         </Link>
 
         <div className="mt-5 bg-white rounded-2xl border border-gray-100 p-5">
-          <p className="text-xs text-muted font-bold mb-1">الحصة مع</p>
+          <p className="text-xs text-muted font-bold mb-1">{t("sessionWith")}</p>
           <p className="font-extrabold text-night">
             {session.otherPartyEmoji} {session.otherPartyName}
           </p>
           {session.surahFocus && (
-            <p className="text-sm text-dawn font-semibold mt-2">محور الحصة: {session.surahFocus}</p>
+            <p className="text-sm text-dawn font-semibold mt-2">
+              {t("sessionFocus")}: {session.surahFocus}
+            </p>
           )}
         </div>
 
@@ -100,19 +108,19 @@ export default function SessionRoom({
                   onClick={() => setShowComplete(true)}
                   className="w-full bg-night text-white font-bold py-3 rounded-xl text-sm"
                 >
-                  إنهاء الحصة وتقييمها
+                  {t("endSessionAndRate")}
                 </button>
               ) : (
                 <div className="space-y-3">
-                  <p className="font-bold text-sm text-night">ملاحظات للطالب</p>
+                  <p className="font-bold text-sm text-night">{t("notesForStudent")}</p>
                   <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     rows={3}
                     className="w-full rounded-xl border-2 border-gray-200 px-3 py-2 text-sm focus:border-dawn focus:outline-none"
-                    placeholder="مثال: أحسن في حفظ الآيات 1-10، يحتاج مراجعة المدود"
+                    placeholder={t("notesPlaceholder")}
                   />
-                  <p className="font-bold text-sm text-night">تقييم أداء الطالب</p>
+                  <p className="font-bold text-sm text-night">{t("rateStudentPerformance")}</p>
                   <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((n) => (
                       <button
@@ -129,20 +137,20 @@ export default function SessionRoom({
                     disabled={loading}
                     className="w-full bg-gradient-to-l from-dawn to-gold text-white font-bold py-3 rounded-xl text-sm disabled:opacity-60"
                   >
-                    {loading ? "جارٍ الحفظ..." : "حفظ وإنهاء الحصة"}
+                    {loading ? t("saving") : t("saveAndEnd")}
                   </button>
                 </div>
               )
             ) : (
               <div className="text-center">
-                <p className="font-extrabold text-green text-sm mb-2">✅ تم إنهاء الحصة بنجاح</p>
+                <p className="font-extrabold text-green text-sm mb-2">{t("completedSuccess")}</p>
                 {result.newlyEarned.length > 0 && (
                   <div className="mt-3">
-                    <p className="text-xs text-muted mb-2">حصل الطالب على شارات جديدة:</p>
+                    <p className="text-xs text-muted mb-2">{t("studentEarnedBadges")}</p>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {result.newlyEarned.map((b, i) => (
                         <span key={i} className="bg-orange-50 rounded-lg px-3 py-1 text-xs font-bold">
-                          {b.icon} {b.label}
+                          {b.icon} {badgeLabel(b.type, locale)}
                         </span>
                       ))}
                     </div>
@@ -152,7 +160,7 @@ export default function SessionRoom({
                   onClick={() => router.push(dashboardHref)}
                   className="mt-4 text-sm font-bold text-dawn"
                 >
-                  العودة للوحتي →
+                  {t("backToDashboardArrow")}
                 </button>
               </div>
             )}
@@ -161,7 +169,7 @@ export default function SessionRoom({
 
         {!isTeacher && session.status === "COMPLETED" && session.teacherNotes && (
           <div className="mt-5 bg-white rounded-2xl border border-gray-100 p-5">
-            <p className="text-xs text-muted font-bold mb-1">ملاحظة معلمك</p>
+            <p className="text-xs text-muted font-bold mb-1">{t("teacherNoteLabel")}</p>
             <p className="text-sm">{session.teacherNotes}</p>
           </div>
         )}

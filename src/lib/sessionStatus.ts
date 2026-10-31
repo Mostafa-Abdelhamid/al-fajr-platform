@@ -1,3 +1,5 @@
+import type { Locale } from "@/i18n/config";
+
 export type EffectiveStatus = "COMPLETED" | "SCHEDULED" | "MISSED" | "CANCELLED";
 
 // A session can sit at status "SCHEDULED" forever if nobody ever marks it
@@ -10,12 +12,24 @@ export function getEffectiveStatus(session: { status: string; startAt: Date }): 
   return session.status as EffectiveStatus;
 }
 
-export const STATUS_LABELS: Record<EffectiveStatus, string> = {
-  COMPLETED: "مكتملة",
-  SCHEDULED: "قادمة",
-  MISSED: "فائتة",
-  CANCELLED: "ملغاة",
+const LABELS: Record<Locale, Record<EffectiveStatus, string>> = {
+  ar: {
+    COMPLETED: "مكتملة",
+    SCHEDULED: "قادمة",
+    MISSED: "فائتة",
+    CANCELLED: "ملغاة",
+  },
+  en: {
+    COMPLETED: "Completed",
+    SCHEDULED: "Upcoming",
+    MISSED: "Missed",
+    CANCELLED: "Cancelled",
+  },
 };
+
+export function statusLabel(status: EffectiveStatus, locale: Locale): string {
+  return LABELS[locale][status];
+}
 
 export const STATUS_BADGE_CLASSES: Record<EffectiveStatus, string> = {
   COMPLETED: "bg-green-100 text-green-700",

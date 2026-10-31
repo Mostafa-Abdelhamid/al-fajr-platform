@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { nav } from "@/i18n/dictionaries/nav";
+import LocaleSwitcher from "./LocaleSwitcher";
 
 export default function DashboardNav({
   name,
@@ -18,23 +22,25 @@ export default function DashboardNav({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { locale } = useLocale();
+  const t = makeT(nav, locale);
 
   const links =
     role === "STUDENT"
       ? [
-          { href: "/student/dashboard", label: "لوحتي" },
-          { href: "/student/book", label: "احجز حصة" },
+          { href: "/student/dashboard", label: t("studentDashboard") },
+          { href: "/student/book", label: t("studentBook") },
         ]
       : role === "TEACHER"
       ? [
-          { href: "/teacher/dashboard", label: "لوحتي" },
-          { href: "/teacher/availability", label: "أوقات تواجدي" },
+          { href: "/teacher/dashboard", label: t("teacherDashboard") },
+          { href: "/teacher/availability", label: t("teacherAvailability") },
         ]
       : [
-          { href: "/admin/dashboard", label: "نظرة عامة" },
-          { href: "/admin/teachers", label: "المعلمون" },
-          { href: "/admin/students", label: "الطلاب" },
-          { href: "/admin/qiraat", label: "القراءات" },
+          { href: "/admin/dashboard", label: t("adminOverview") },
+          { href: "/admin/teachers", label: t("adminTeachers") },
+          { href: "/admin/students", label: t("adminStudents") },
+          { href: "/admin/qiraat", label: t("adminQiraat") },
         ];
 
   async function handleLogout() {
@@ -47,7 +53,7 @@ export default function DashboardNav({
     <header className="bg-fajr-night text-white sticky top-0 z-40 shadow-lg shadow-night/20">
       <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between flex-wrap gap-4">
         <Link href="/" className="font-extrabold text-lg flex items-center gap-2">
-          <span className="animate-float inline-block">🌅</span> منصة الفجر
+          <span className="animate-float inline-block">🌅</span> {t("brand")}
         </Link>
 
         <nav className="flex items-center gap-6">
@@ -71,17 +77,17 @@ export default function DashboardNav({
           {role === "STUDENT" && (
             <div className="flex items-center gap-2 text-sm">
               <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-gold-light transition-transform hover:scale-105">
-                ⭐ {points ?? 0} نقطة
+                ⭐ {points ?? 0} {t("points")}
               </span>
               <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-orange-300 transition-transform hover:scale-105">
-                🔥 {streak ?? 0} متتالية
+                🔥 {streak ?? 0} {t("streak")}
               </span>
             </div>
           )}
           <Link
             href="/account/change-password"
             className="hidden sm:flex items-center gap-2 text-sm text-gray-300 hover:text-white transition"
-            title="تغيير كلمة المرور"
+            title={t("changePassword")}
           >
             <span className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">{avatarEmoji}</span>
             {name}
@@ -89,15 +95,16 @@ export default function DashboardNav({
           <Link
             href="/account/change-password"
             className="sm:hidden text-sm font-bold bg-white/10 hover:bg-white/20 rounded-full px-3 py-2 transition"
-            title="تغيير كلمة المرور"
+            title={t("changePassword")}
           >
             ⚙️
           </Link>
+          <LocaleSwitcher />
           <button
             onClick={handleLogout}
             className="text-sm font-bold bg-white/10 hover:bg-white/20 rounded-full px-4 py-2 transition"
           >
-            خروج
+            {t("logout")}
           </button>
         </div>
       </div>

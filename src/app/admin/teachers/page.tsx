@@ -3,6 +3,9 @@ import VerifyToggle from "@/components/VerifyToggle";
 import DeleteUserButton from "@/components/DeleteUserButton";
 import AdminSearchBar from "@/components/AdminSearchBar";
 import AdminPagination from "@/components/AdminPagination";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { admin } from "@/i18n/dictionaries/admin";
 
 const PAGE_SIZE = 10;
 
@@ -11,6 +14,8 @@ export default async function AdminTeachersPage({
 }: {
   searchParams: Promise<{ page?: string; q?: string }>;
 }) {
+  const locale = await getLocale();
+  const t = makeT(admin, locale);
   const { page: pageParam, q } = await searchParams;
   const page = Math.max(1, Number(pageParam) || 1);
   const query = q?.trim() || "";
@@ -41,49 +46,49 @@ export default async function AdminTeachersPage({
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-extrabold text-night">إدارة المعلمين والتوثيق</h1>
-        <p className="text-sm text-muted mt-1">توثيق حسابات المعلمين أو حذفها عند الحاجة.</p>
+        <h1 className="text-xl font-extrabold text-night">{t("teachersPageTitle")}</h1>
+        <p className="text-sm text-muted mt-1">{t("teachersPageSubtitle")}</p>
       </div>
 
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
           <div className="flex items-center gap-2">
             <span className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-lg">👨‍🏫</span>
-            <h3 className="font-extrabold text-night">كل المعلمين</h3>
+            <h3 className="font-extrabold text-night">{t("allTeachersTitle")}</h3>
             <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">{totalCount}</span>
           </div>
           <div className="w-full sm:w-64">
-            <AdminSearchBar placeholder="ابحث بالاسم أو البريد الإلكتروني..." />
+            <AdminSearchBar placeholder={t("searchByNameEmail")} />
           </div>
         </div>
 
         {teachers.length === 0 ? (
-          <p className="text-sm text-muted">{query ? "لا توجد نتائج مطابقة." : "لا يوجد معلمون مسجلون بعد."}</p>
+          <p className="text-sm text-muted">{query ? t("noMatchingResults") : t("noTeachersYet")}</p>
         ) : (
           <ul className="space-y-3">
-            {teachers.map((t, i) => (
+            {teachers.map((t2, i) => (
               <li
-                key={t.id}
+                key={t2.id}
                 style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
                 className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-orange-50 hover:border-dawn/40 hover:shadow-lg hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center gap-3">
                   <span className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-lg shrink-0">
-                    {t.user.avatarEmoji}
+                    {t2.user.avatarEmoji}
                   </span>
                   <div>
                     <p className="font-semibold text-sm">
-                      {t.user.name}{" "}
-                      <span className="text-xs text-muted font-normal">({t.user.email})</span>
+                      {t2.user.name}{" "}
+                      <span className="text-xs text-muted font-normal">({t2.user.email})</span>
                     </p>
                     <p className="text-xs text-muted mt-0.5">
-                      {t.qiraat.join("، ")} • ⭐ {t.rating.toFixed(1)} ({t.ratingCount} تقييم) • {t.availability.length} أوقات تواجد مُعرّفة
+                      {t2.qiraat.join(t("listSeparator"))} • ⭐ {t2.rating.toFixed(1)} ({t2.ratingCount} {t("ratingsLabel")}) • {t2.availability.length} {t("availabilitySlotsLabel")}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <VerifyToggle teacherProfileId={t.id} initialVerified={t.isVerified} />
-                  <DeleteUserButton userId={t.user.id} userName={t.user.name} />
+                  <VerifyToggle teacherProfileId={t2.id} initialVerified={t2.isVerified} />
+                  <DeleteUserButton userId={t2.user.id} userName={t2.user.name} />
                 </div>
               </li>
             ))}

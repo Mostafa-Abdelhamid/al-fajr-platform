@@ -3,18 +3,24 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { assertRealEmail } from "@/lib/emailCheck";
 import { sendEmail, otpEmailHtml } from "@/lib/email";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { apiMessages } from "@/i18n/dictionaries/apiMessages";
 
 function generateOtp() {
   return String(Math.floor(100000 + Math.random() * 900000));
 }
 
 export async function POST(req: NextRequest) {
+  const locale = await getLocale();
+  const t = makeT(apiMessages, locale);
+
   const { email } = await req.json();
   if (!email) {
-    return NextResponse.json({ error: "الرجاء إدخال البريد الإلكتروني" }, { status: 400 });
+    return NextResponse.json({ error: t("enterEmail") }, { status: 400 });
   }
 
-  const emailError = await assertRealEmail(email);
+  const emailError = await assertRealEmail(email, locale);
   if (emailError) {
     return NextResponse.json({ error: emailError }, { status: 400 });
   }
@@ -26,7 +32,7 @@ export async function POST(req: NextRequest) {
   // so this endpoint can't be used to find out which emails are registered.
   const genericResponse = NextResponse.json({
     ok: true,
-    message: "إذا كان هذا البريد مسجلًا لدينا، سيصلك رمز التحقق خلال لحظات.",
+    message: t("otpGenericResponse"),
   });
 
   if (!user) return genericResponse;
@@ -43,7 +49,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  const sent = await sendEmail(normalized, "رمز إعادة تعيين كلمة المرور — منصة الفجر", otpEmailHtml(code));
+  const sent = await sendEmail(normalized, t("otpEmailSubject"), otpEmailHtml(code));
   if (!sent.ok) {
     console.error(`Password reset email failed to send to ${normalized}`);
   }

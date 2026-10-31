@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { rewardStudentForCompletedSession } from "@/lib/gamification";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { apiMessages } from "@/i18n/dictionaries/apiMessages";
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const locale = await getLocale();
+  const t = makeT(apiMessages, locale);
+
   const user = await getCurrentUser();
   if (!user || user.role !== "TEACHER") {
-    return NextResponse.json({ error: "غير مصرح" }, { status: 401 });
+    return NextResponse.json({ error: t("unauthorized") }, { status: 401 });
   }
 
   const { id } = await params;
@@ -14,10 +20,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
   const session = await prisma.session.findUnique({ where: { id } });
   if (!session || session.teacherId !== user.id) {
-    return NextResponse.json({ error: "غير موجود" }, { status: 404 });
+    return NextResponse.json({ error: t("notFound") }, { status: 404 });
   }
   if (session.status === "COMPLETED") {
-    return NextResponse.json({ error: "هذه الحصة مكتملة بالفعل" }, { status: 400 });
+    return NextResponse.json({ error: t("sessionAlreadyCompleted") }, { status: 400 });
   }
 
   await prisma.session.update({

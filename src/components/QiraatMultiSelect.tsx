@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { admin } from "@/i18n/dictionaries/admin";
 
 type QiraatGroup = { reciter: string; riwayat: { id: string; riwaya: string }[] };
 
@@ -11,6 +14,8 @@ export default function QiraatMultiSelect({
   value: string[];
   onChange: (next: string[]) => void;
 }) {
+  const { locale } = useLocale();
+  const t = makeT(admin, locale);
   const [groups, setGroups] = useState<QiraatGroup[] | null>(null);
   const [error, setError] = useState(false);
 
@@ -35,7 +40,7 @@ export default function QiraatMultiSelect({
   if (error) {
     return (
       <p className="text-sm text-red-600 font-semibold bg-red-50 rounded-xl px-4 py-3">
-        تعذّر تحميل قائمة القراءات. الرجاء إعادة تحميل الصفحة.
+        {t("loadQiraatFailed")}
       </p>
     );
   }
@@ -43,7 +48,7 @@ export default function QiraatMultiSelect({
   if (!groups) {
     return (
       <div className="rounded-xl border-2 border-gray-200 p-3 h-56 flex items-center justify-center">
-        <p className="text-sm text-muted">جارٍ تحميل القراءات...</p>
+        <p className="text-sm text-muted">{t("loadingQiraat")}</p>
       </div>
     );
   }

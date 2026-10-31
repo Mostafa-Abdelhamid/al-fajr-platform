@@ -4,11 +4,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthShell from "@/components/AuthShell";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { auth } from "@/i18n/dictionaries/auth";
+import { nav } from "@/i18n/dictionaries/nav";
 
 const STEPS = ["email", "reset", "done"] as const;
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = makeT(auth, locale);
+  const tNav = makeT(nav, locale);
   const [step, setStep] = useState<(typeof STEPS)[number]>("email");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -29,14 +36,14 @@ export default function ForgotPasswordPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "حدث خطأ ما");
+        setError(data.error || t("genericError"));
         setLoading(false);
         return;
       }
       setInfo(data.message);
       setStep("reset");
     } catch {
-      setError("تعذر الاتصال بالخادم");
+      setError(t("connectionError"));
     } finally {
       setLoading(false);
     }
@@ -54,13 +61,13 @@ export default function ForgotPasswordPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "حدث خطأ ما");
+        setError(data.error || t("genericError"));
         setLoading(false);
         return;
       }
       setStep("done");
     } catch {
-      setError("تعذر الاتصال بالخادم");
+      setError(t("connectionError"));
     } finally {
       setLoading(false);
     }
@@ -69,16 +76,16 @@ export default function ForgotPasswordPage() {
   const stepIndex = STEPS.indexOf(step);
 
   return (
-    <AuthShell eyebrow="استعادة الحساب" headline="رمز تحقق سريع وتعود لحسابك خلال دقيقة">
+    <AuthShell eyebrow={t("forgotEyebrow")} headline={t("forgotHeadline")}>
       <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl shadow-night/10 animate-scale-in">
         <div className="text-center mb-6">
           <Link href="/" className="lg:hidden text-2xl font-extrabold text-night">
-            🌅 منصة الفجر
+            🌅 {tNav("brand")}
           </Link>
           <h2 className="text-xl font-extrabold text-night mt-1">
-            {step === "email" && "استعادة كلمة المرور"}
-            {step === "reset" && "رمز التحقق وكلمة المرور الجديدة"}
-            {step === "done" && "تم بنجاح"}
+            {step === "email" && t("stepEmailTitle")}
+            {step === "reset" && t("stepResetTitle")}
+            {step === "done" && t("stepDoneTitle")}
           </h2>
 
           <div className="flex items-center justify-center gap-1.5 mt-4">
@@ -96,7 +103,7 @@ export default function ForgotPasswordPage() {
         {step === "email" && (
           <form onSubmit={handleRequestOtp} className="space-y-4 animate-fade-up">
             <div>
-              <label className="block text-sm font-bold text-night mb-1">البريد الإلكتروني</label>
+              <label className="block text-sm font-bold text-night mb-1">{t("emailLabel")}</label>
               <input
                 required
                 type="email"
@@ -114,7 +121,7 @@ export default function ForgotPasswordPage() {
               disabled={loading}
               className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
             >
-              {loading ? "جارٍ الإرسال..." : "إرسال رمز التحقق"}
+              {loading ? t("sendingCode") : t("sendCodeButton")}
             </button>
           </form>
         )}
@@ -125,7 +132,7 @@ export default function ForgotPasswordPage() {
               <p className="text-sm text-green font-semibold bg-green-50 rounded-xl p-3">{info}</p>
             )}
             <div>
-              <label className="block text-sm font-bold text-night mb-1">رمز التحقق (6 أرقام)</label>
+              <label className="block text-sm font-bold text-night mb-1">{t("codeLabel")}</label>
               <input
                 required
                 inputMode="numeric"
@@ -137,7 +144,7 @@ export default function ForgotPasswordPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-night mb-1">كلمة المرور الجديدة</label>
+              <label className="block text-sm font-bold text-night mb-1">{t("newPasswordLabel")}</label>
               <input
                 required
                 type="password"
@@ -145,7 +152,7 @@ export default function ForgotPasswordPage() {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
-                placeholder="6 أحرف على الأقل"
+                placeholder={t("passwordPlaceholderMin")}
               />
             </div>
             {error && (
@@ -156,14 +163,14 @@ export default function ForgotPasswordPage() {
               disabled={loading}
               className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
             >
-              {loading ? "جارٍ الحفظ..." : "تعيين كلمة المرور"}
+              {loading ? t("savingPassword") : t("setPasswordButton")}
             </button>
             <button
               type="button"
               onClick={() => setStep("email")}
               className="w-full text-xs font-bold text-muted hover:text-dawn transition"
             >
-              لم يصلك الرمز؟ أعد المحاولة ببريد آخر
+              {t("retryDifferentEmail")}
             </button>
           </form>
         )}
@@ -173,21 +180,21 @@ export default function ForgotPasswordPage() {
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-3xl mx-auto mb-4 animate-scale-in">
               ✅
             </div>
-            <p className="font-bold text-night mb-5">تم تغيير كلمة المرور بنجاح.</p>
+            <p className="font-bold text-night mb-5">{t("doneMessage")}</p>
             <button
               onClick={() => router.push("/login")}
               className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all"
             >
-              الذهاب لتسجيل الدخول
+              {t("goToLogin")}
             </button>
           </div>
         )}
 
         {step !== "done" && (
           <p className="text-center text-sm text-muted mt-6">
-            تذكّرت كلمة المرور؟{" "}
+            {t("rememberedPassword")}{" "}
             <Link href="/login" className="text-dawn font-bold hover:underline">
-              تسجيل الدخول
+              {t("loginLinkText")}
             </Link>
           </p>
         )}

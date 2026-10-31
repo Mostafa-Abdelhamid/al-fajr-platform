@@ -1,8 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { generateAvailableSlots } from "@/lib/slots";
 import TeacherList from "@/components/TeacherList";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { student } from "@/i18n/dictionaries/student";
 
 export default async function BookPage() {
+  const locale = await getLocale();
+  const t = makeT(student, locale);
+
   const teachers = await prisma.teacherProfile.findMany({
     include: { user: true, availability: true },
   });
@@ -35,12 +41,12 @@ export default async function BookPage() {
   return (
     <div className="space-y-8">
       <div className="animate-fade-up">
-        <h1 className="text-2xl font-extrabold text-night">احجز حصتك القادمة</h1>
-        <p className="text-muted mt-1">اختر المعلم المناسب لك والقراءة التي تريد تعلمها.</p>
+        <h1 className="text-2xl font-extrabold text-night">{t("bookPageTitle")}</h1>
+        <p className="text-muted mt-1">{t("bookPageSubtitle")}</p>
       </div>
 
       {teacherData.length === 0 ? (
-        <p className="text-muted text-sm">لا يوجد معلمون مسجلون بعد.</p>
+        <p className="text-muted text-sm">{t("noTeachersYet")}</p>
       ) : (
         <TeacherList teachers={teacherData} />
       )}

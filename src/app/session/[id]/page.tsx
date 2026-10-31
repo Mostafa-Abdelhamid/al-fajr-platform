@@ -1,6 +1,10 @@
 import { redirect, notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { session as sessionDict } from "@/i18n/dictionaries/session";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 import SessionRoom from "@/components/SessionRoom";
 
 export default async function SessionPage({ params }: { params: Promise<{ id: string }> }) {
@@ -21,10 +25,14 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
   const isTeacher = user.role === "TEACHER";
   const otherParty = isTeacher ? session.student : session.teacher;
 
+  const locale = await getLocale();
+  const t = makeT(sessionDict, locale);
+
   return (
     <div className="flex-1 flex flex-col">
       <div className="bg-night text-white px-5 py-3 flex items-center justify-between">
-        <span className="font-extrabold">🌅 منصة الفجر — غرفة الحصة</span>
+        <span className="font-extrabold">{t("roomHeader")}</span>
+        <LocaleSwitcher />
       </div>
       <SessionRoom
         session={{

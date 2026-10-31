@@ -1,9 +1,14 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { student, progressStatusLabel } from "@/i18n/dictionaries/student";
+import { badgeLabel } from "@/i18n/dictionaries/badges";
+import type { Locale } from "@/i18n/config";
 
-function formatDateTime(d: Date) {
-  return new Intl.DateTimeFormat("ar-SA", {
+function formatDateTime(d: Date, locale: Locale) {
+  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -15,6 +20,9 @@ function formatDateTime(d: Date) {
 export default async function StudentDashboard() {
   const user = await getCurrentUser();
   if (!user) return null;
+
+  const locale = await getLocale();
+  const t = makeT(student, locale);
 
   const [upcoming, past, progress, badges] = await Promise.all([
     prisma.session.findMany({
@@ -41,17 +49,17 @@ export default async function StudentDashboard() {
     <div className="space-y-10">
       <div className="animate-fade-up">
         <h1 className="text-2xl font-extrabold text-night">
-          أهلًا بك، {user.name} 👋
+          {t("welcome").replace("{name}", user.name)}
         </h1>
-        <p className="text-muted mt-1">إليك ملخص رحلتك التعليمية اليوم.</p>
+        <p className="text-muted mt-1">{t("dashboardSubtitle")}</p>
       </div>
 
       {/* Stats row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard icon="⭐" label="النقاط" value={user.points} delay={1} />
-        <StatCard icon="🔥" label="المتتالية" value={user.streak} suffix=" يوم" delay={2} />
-        <StatCard icon="✅" label="حصص مكتملة" value={completedCount} delay={3} />
-        <StatCard icon="🏅" label="الشارات" value={badges.length} delay={4} />
+        <StatCard icon="⭐" label={t("pointsLabel")} value={user.points} delay={1} />
+        <StatCard icon="🔥" label={t("streakLabel")} value={user.streak} suffix={t("streakSuffix")} delay={2} />
+        <StatCard icon="✅" label={t("completedSessionsLabel")} value={completedCount} delay={3} />
+        <StatCard icon="🏅" label={t("badgesLabel")} value={badges.length} delay={4} />
       </div>
 
       {/* Next session */}
@@ -61,33 +69,33 @@ export default async function StudentDashboard() {
         {nextSession ? (
           <div className="relative flex flex-wrap items-center justify-between gap-5">
             <div>
-              <span className="text-gold-light text-xs font-bold">حصتك القادمة</span>
+              <span className="text-gold-light text-xs font-bold">{t("nextSessionLabel")}</span>
               <h2 className="text-xl font-extrabold mt-1">
-                مع {nextSession.teacher.name} {nextSession.teacher.avatarEmoji}
+                {t("withTeacher")} {nextSession.teacher.name} {nextSession.teacher.avatarEmoji}
               </h2>
               <p className="text-gray-300 text-sm mt-1">
-                {formatDateTime(nextSession.startAt)}
-                {nextSession.surahFocus && ` • محور الحصة: ${nextSession.surahFocus}`}
+                {formatDateTime(nextSession.startAt, locale)}
+                {nextSession.surahFocus && ` • ${t("sessionFocusPrefix")} ${nextSession.surahFocus}`}
               </p>
             </div>
             <Link
               href={`/session/${nextSession.id}`}
               className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 rounded-full hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-400/30 transition-all animate-pulse-ring"
             >
-              🎥 ادخل الحصة
+              🎥 {t("enterSession")}
             </Link>
           </div>
         ) : (
           <div className="relative flex flex-wrap items-center justify-between gap-5">
             <div>
-              <h2 className="text-xl font-extrabold">لا توجد حصص قادمة بعد</h2>
-              <p className="text-gray-300 text-sm mt-1">احجز حصتك الأولى الآن وابدأ رحلتك!</p>
+              <h2 className="text-xl font-extrabold">{t("noUpcomingTitle")}</h2>
+              <p className="text-gray-300 text-sm mt-1">{t("noUpcomingSubtitle")}</p>
             </div>
             <Link
               href="/student/book"
               className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 rounded-full hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-400/30 transition-all"
             >
-              احجز حصة الآن
+              {t("bookNow")}
             </Link>
           </div>
         )}
@@ -96,9 +104,9 @@ export default async function StudentDashboard() {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Progress */}
         <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-          <h3 className="font-extrabold text-night mb-4">تقدمي في الحفظ والمراجعة</h3>
+          <h3 className="font-extrabold text-night mb-4">{t("progressTitle")}</h3>
           {progress.length === 0 ? (
-            <p className="text-sm text-muted">سيظهر تقدمك هنا بعد أول حصة مع معلمك.</p>
+            <p className="text-sm text-muted">{t("progressEmpty")}</p>
           ) : (
             <ul className="space-y-4">
               {progress.map((p) => {
@@ -118,7 +126,7 @@ export default async function StudentDashboard() {
                             : "bg-orange-100 text-orange-700"
                         }`}
                       >
-                        {p.status}
+                        {progressStatusLabel(p.status, locale)}
                       </span>
                     </div>
                     <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
@@ -136,19 +144,19 @@ export default async function StudentDashboard() {
 
         {/* Badges */}
         <section className="hover-lift animate-fade-up stagger-1 bg-white rounded-2xl border border-gray-100 p-6">
-          <h3 className="font-extrabold text-night mb-4">شاراتي</h3>
+          <h3 className="font-extrabold text-night mb-4">{t("badgesTitle")}</h3>
           {badges.length === 0 ? (
-            <p className="text-sm text-muted">أكمل حصتك الأولى لتحصل على أول شارة 🌱</p>
+            <p className="text-sm text-muted">{t("badgesEmpty")}</p>
           ) : (
             <div className="flex flex-wrap gap-3">
               {badges.map((b, i) => (
                 <div
                   key={b.id}
                   className={`animate-scale-in stagger-${Math.min(i + 1, 6)} flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-xl px-4 py-2 transition-transform hover:scale-105`}
-                  title={b.label}
+                  title={badgeLabel(b.type, locale)}
                 >
                   <span className="text-xl">{b.icon}</span>
-                  <span className="text-sm font-bold text-night">{b.label}</span>
+                  <span className="text-sm font-bold text-night">{badgeLabel(b.type, locale)}</span>
                 </div>
               ))}
             </div>
@@ -158,9 +166,9 @@ export default async function StudentDashboard() {
 
       {/* History */}
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-        <h3 className="font-extrabold text-night mb-4">سجل الحصص السابقة</h3>
+        <h3 className="font-extrabold text-night mb-4">{t("historyTitle")}</h3>
         {past.length === 0 ? (
-          <p className="text-sm text-muted">لا توجد حصص سابقة بعد.</p>
+          <p className="text-sm text-muted">{t("historyEmpty")}</p>
         ) : (
           <ul className="divide-y">
             {past.map((s) => (
@@ -169,9 +177,9 @@ export default async function StudentDashboard() {
                   <p className="font-semibold text-sm">
                     {s.teacher.avatarEmoji} {s.teacher.name}
                   </p>
-                  <p className="text-xs text-muted">{formatDateTime(s.startAt)}</p>
+                  <p className="text-xs text-muted">{formatDateTime(s.startAt, locale)}</p>
                   {s.teacherNotes && (
-                    <p className="text-xs text-muted mt-1">ملاحظة المعلم: {s.teacherNotes}</p>
+                    <p className="text-xs text-muted mt-1">{t("teacherNotePrefix")} {s.teacherNotes}</p>
                   )}
                 </div>
                 {s.rating && (

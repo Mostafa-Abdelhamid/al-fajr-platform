@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { teacher as teacherDict } from "@/i18n/dictionaries/teacher";
 import ProgressForm from "@/components/ProgressForm";
 
-function formatDateTime(d: Date) {
-  return new Intl.DateTimeFormat("ar-SA", {
+function formatDateTime(d: Date, locale: "ar" | "en") {
+  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -16,6 +19,9 @@ function formatDateTime(d: Date) {
 export default async function TeacherDashboard() {
   const user = await getCurrentUser();
   if (!user) return null;
+
+  const locale = await getLocale();
+  const t = makeT(teacherDict, locale);
 
   const [upcoming, missed, completed, profile] = await Promise.all([
     prisma.session.findMany({
@@ -55,28 +61,28 @@ export default async function TeacherDashboard() {
         <div className="relative flex items-center gap-3">
           <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-2xl">👨‍🏫</span>
           <div>
-            <h1 className="text-2xl font-extrabold">أهلًا بك، {user.name}</h1>
-            <p className="text-gray-300 mt-1 text-sm">إليك نظرة سريعة على جدولك وطلابك.</p>
+            <h1 className="text-2xl font-extrabold">{t("greeting")}{user.name}</h1>
+            <p className="text-gray-300 mt-1 text-sm">{t("dashboardSubtitle")}</p>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard icon="📅" label="حصص قادمة" value={upcoming.length} delay={1} />
-        <StatCard icon="✅" label="حصص مكتملة" value={completed.length} delay={2} />
-        <StatCard icon="🧑‍🎓" label="عدد الطلاب" value={students.length} delay={3} />
-        <StatCard icon="⭐" label="التقييم" value={profile ? Number(profile.rating.toFixed(1)) : 5} delay={4} />
+        <StatCard icon="📅" label={t("statUpcoming")} value={upcoming.length} delay={1} />
+        <StatCard icon="✅" label={t("statCompleted")} value={completed.length} delay={2} />
+        <StatCard icon="🧑‍🎓" label={t("statStudentCount")} value={students.length} delay={3} />
+        <StatCard icon="⭐" label={t("statRating")} value={profile ? Number(profile.rating.toFixed(1)) : 5} delay={4} />
       </div>
 
       <section className="hover-lift animate-fade-up stagger-3 bg-white rounded-2xl border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-extrabold text-night">حصصك القادمة</h3>
+          <h3 className="font-extrabold text-night">{t("upcomingSessionsTitle")}</h3>
           <Link href="/teacher/availability" className="text-sm text-dawn font-bold">
-            إدارة أوقات التواجد
+            {t("manageAvailabilityLink")}
           </Link>
         </div>
         {upcoming.length === 0 ? (
-          <p className="text-sm text-muted">لا توجد حصص قادمة حاليًا.</p>
+          <p className="text-sm text-muted">{t("noUpcoming")}</p>
         ) : (
           <ul className="divide-y">
             {upcoming.map((s) => (
@@ -86,7 +92,7 @@ export default async function TeacherDashboard() {
                     {s.student.avatarEmoji} {s.student.name}
                   </p>
                   <p className="text-xs text-muted">
-                    {formatDateTime(s.startAt)}
+                    {formatDateTime(s.startAt, locale)}
                     {s.surahFocus && ` • ${s.surahFocus}`}
                   </p>
                 </div>
@@ -94,7 +100,7 @@ export default async function TeacherDashboard() {
                   href={`/session/${s.id}`}
                   className="bg-gradient-to-l from-dawn to-gold text-white font-bold text-sm px-5 py-2 rounded-full hover:-translate-y-0.5 hover:shadow-lg transition-all"
                 >
-                  🎥 ادخل الحصة
+                  {t("enterSession")}
                 </Link>
               </li>
             ))}
@@ -105,13 +111,13 @@ export default async function TeacherDashboard() {
       {missed.length > 0 && (
         <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-red-200 p-6">
           <div className="flex items-center gap-2 mb-4">
-            <h3 className="font-extrabold text-night">حصص فائتة</h3>
+            <h3 className="font-extrabold text-night">{t("missedTitle")}</h3>
             <span className="text-xs font-bold text-red-700 bg-red-100 rounded-full px-2.5 py-1">
               {missed.length}
             </span>
           </div>
           <p className="text-xs text-muted -mt-2 mb-4">
-            هذه الحصص انتهى وقتها دون أن يتم تسجيلها كمكتملة. ادخل كل حصة وأنهِها لتحديث سجل الطالب.
+            {t("missedDesc")}
           </p>
           <ul className="divide-y">
             {missed.map((s) => (
@@ -121,7 +127,7 @@ export default async function TeacherDashboard() {
                     {s.student.avatarEmoji} {s.student.name}
                   </p>
                   <p className="text-xs text-muted">
-                    {formatDateTime(s.startAt)}
+                    {formatDateTime(s.startAt, locale)}
                     {s.surahFocus && ` • ${s.surahFocus}`}
                   </p>
                 </div>
@@ -129,7 +135,7 @@ export default async function TeacherDashboard() {
                   href={`/session/${s.id}`}
                   className="bg-red-100 text-red-800 font-bold text-sm px-5 py-2 rounded-full hover:bg-red-200 transition"
                 >
-                  إنهاء الحصة
+                  {t("finishSession")}
                 </Link>
               </li>
             ))}
@@ -138,9 +144,9 @@ export default async function TeacherDashboard() {
       )}
 
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-        <h3 className="font-extrabold text-night mb-4">طلابي ومتابعة تقدمهم</h3>
+        <h3 className="font-extrabold text-night mb-4">{t("studentsTitle")}</h3>
         {students.length === 0 ? (
-          <p className="text-sm text-muted">سيظهر هنا طلابك بعد أول حصة محجوزة.</p>
+          <p className="text-sm text-muted">{t("noStudents")}</p>
         ) : (
           <ul className="divide-y">
             {students.map((st) => (
@@ -156,9 +162,9 @@ export default async function TeacherDashboard() {
       </section>
 
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-        <h3 className="font-extrabold text-night mb-4">آخر الحصص المكتملة</h3>
+        <h3 className="font-extrabold text-night mb-4">{t("recentCompletedTitle")}</h3>
         {completed.length === 0 ? (
-          <p className="text-sm text-muted">لا توجد حصص مكتملة بعد.</p>
+          <p className="text-sm text-muted">{t("noCompleted")}</p>
         ) : (
           <ul className="divide-y">
             {completed.map((s) => (
@@ -167,7 +173,7 @@ export default async function TeacherDashboard() {
                   <p className="font-semibold text-sm">
                     {s.student.avatarEmoji} {s.student.name}
                   </p>
-                  <p className="text-xs text-muted">{formatDateTime(s.startAt)}</p>
+                  <p className="text-xs text-muted">{formatDateTime(s.startAt, locale)}</p>
                 </div>
                 {s.rating && (
                   <span className="text-gold font-bold text-sm">

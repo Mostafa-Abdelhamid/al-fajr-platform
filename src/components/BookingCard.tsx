@@ -3,6 +3,9 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import MonthCalendar, { dateKey } from "./MonthCalendar";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { student } from "@/i18n/dictionaries/student";
 
 type Teacher = {
   id: string;
@@ -17,6 +20,8 @@ type Teacher = {
 
 export default function BookingCard({ teacher, slots }: { teacher: Teacher; slots: string[] }) {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = makeT(student, locale);
   const [open, setOpen] = useState(false);
   const [surahFocus, setSurahFocus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -57,7 +62,7 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error || "تعذر الحجز");
+      setError(data.error || t("bookingFailedDefault"));
       setLoading(false);
       return;
     }
@@ -77,8 +82,8 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
             <p className="text-sm text-dawn font-semibold">{teacher.qiraat.join("، ")}</p>
             <p className="text-xs text-muted mt-1 max-w-sm">{teacher.bio}</p>
             <div className="flex items-center gap-3 mt-2 text-xs text-muted">
-              <span>⭐ {teacher.rating.toFixed(1)} ({teacher.ratingCount} تقييم)</span>
-              <span>📘 {teacher.yearsExperience} سنوات خبرة</span>
+              <span>⭐ {teacher.rating.toFixed(1)} ({teacher.ratingCount} {t("reviewsSuffix")})</span>
+              <span>📘 {teacher.yearsExperience} {t("yearsExperienceSuffix")}</span>
             </div>
           </div>
         </div>
@@ -86,18 +91,18 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
           onClick={() => setOpen((v) => !v)}
           className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-5 py-2.5 rounded-full text-sm hover:-translate-y-0.5 hover:shadow-lg transition-all"
         >
-          {open ? "إغلاق" : "عرض المواعيد والحجز"}
+          {open ? t("close") : t("viewSlotsAndBook")}
         </button>
       </div>
 
       {open && (
         <div className="mt-5 border-t pt-5 animate-fade-up">
           {slots.length === 0 ? (
-            <p className="text-sm text-muted">لا توجد مواعيد متاحة حاليًا لهذا المعلم.</p>
+            <p className="text-sm text-muted">{t("noSlotsAvailable")}</p>
           ) : (
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-bold text-night mb-2">اختر يومًا</label>
+                <label className="block text-sm font-bold text-night mb-2">{t("chooseDay")}</label>
                 <MonthCalendar
                   availableDateKeys={availableDateKeys}
                   selectedDateKey={selectedDate}
@@ -106,14 +111,14 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-night mb-2">اختر وقتًا</label>
+                <label className="block text-sm font-bold text-night mb-2">{t("chooseTime")}</label>
                 {timesForSelectedDate.length === 0 ? (
-                  <p className="text-sm text-muted">اختر يومًا من التقويم لعرض الأوقات المتاحة.</p>
+                  <p className="text-sm text-muted">{t("chooseDateFirst")}</p>
                 ) : (
                   <div className="flex flex-wrap gap-2 mb-4">
                     {timesForSelectedDate.map((s) => {
                       const d = new Date(s);
-                      const label = new Intl.DateTimeFormat("ar-SA", {
+                      const label = new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
                         hour: "numeric",
                         minute: "2-digit",
                       }).format(d);
@@ -135,12 +140,12 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
                 )}
 
                 <label className="block text-sm font-bold text-night mb-2">
-                  ما الذي تريد التركيز عليه؟ (اختياري)
+                  {t("focusQuestion")}
                 </label>
                 <input
                   value={surahFocus}
                   onChange={(e) => setSurahFocus(e.target.value)}
-                  placeholder="مثال: سورة البقرة، مراجعة التجويد..."
+                  placeholder={t("focusPlaceholder")}
                   className="w-full rounded-xl border-2 border-gray-200 px-4 py-2.5 text-sm mb-4 focus:border-dawn focus:outline-none"
                 />
 
@@ -151,7 +156,7 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
                   disabled={loading || !selected}
                   className="w-full sm:w-auto bg-night text-white font-bold px-6 py-3 rounded-full text-sm hover:-translate-y-0.5 transition disabled:opacity-50"
                 >
-                  {loading ? "جارٍ الحجز..." : "تأكيد الحجز"}
+                  {loading ? t("bookingInProgress") : t("confirmBooking")}
                 </button>
               </div>
             </div>

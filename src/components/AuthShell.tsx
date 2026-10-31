@@ -1,10 +1,11 @@
-import Link from "next/link";
+"use client";
 
-const HIGHLIGHTS = [
-  { icon: "🎥", text: "مكالمات فيديو مباشرة مع معلمك" },
-  { icon: "📅", text: "جدول حصص يناسب وقتك" },
-  { icon: "🏅", text: "نقاط وشارات تحفّزك على الاستمرار" },
-];
+import Link from "next/link";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { auth } from "@/i18n/dictionaries/auth";
+import { nav } from "@/i18n/dictionaries/nav";
+import LocaleSwitcher from "./LocaleSwitcher";
 
 export default function AuthShell({
   children,
@@ -15,8 +16,21 @@ export default function AuthShell({
   eyebrow: string;
   headline: string;
 }) {
+  const { locale } = useLocale();
+  const t = makeT(auth, locale);
+  const tNav = makeT(nav, locale);
+
+  const HIGHLIGHTS = [
+    { icon: "🎥", text: t("highlight1") },
+    { icon: "📅", text: t("highlight2") },
+    { icon: "🏅", text: t("highlight3") },
+  ];
+
   return (
-    <main className="flex-1 grid lg:grid-cols-2 min-h-[calc(100vh-0px)]">
+    <main className="relative flex-1 grid lg:grid-cols-2 min-h-[calc(100vh-0px)]">
+      <div className="absolute top-4 end-4 z-20">
+        <LocaleSwitcher className="bg-night/10 text-night hover:bg-night/20" />
+      </div>
       {/* Decorative panel */}
       <div className="relative hidden lg:flex flex-col justify-between bg-fajr-night text-white p-12 overflow-hidden">
         <div className="absolute inset-0 bg-dot-grid opacity-60" />
@@ -24,7 +38,7 @@ export default function AuthShell({
         <div className="fajr-orb w-80 h-80 bg-dawn/30 bottom-0 -left-16" />
 
         <Link href="/" className="relative z-10 text-2xl font-extrabold flex items-center gap-2 w-fit">
-          🌅 منصة الفجر
+          🌅 {tNav("brand")}
         </Link>
 
         <div className="relative z-10 animate-fade-up">
@@ -48,7 +62,7 @@ export default function AuthShell({
         </div>
 
         <p className="relative z-10 text-xs text-gray-400">
-          منصة تعليمية لربط طلاب القرآن والقراءات بالمعلمين
+          {t("tagline")}
         </p>
       </div>
 

@@ -4,9 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthShell from "@/components/AuthShell";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { auth } from "@/i18n/dictionaries/auth";
+import { nav } from "@/i18n/dictionaries/nav";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = makeT(auth, locale);
+  const tNav = makeT(nav, locale);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +31,7 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "حدث خطأ ما");
+        setError(data.error || t("genericError"));
         setLoading(false);
         return;
       }
@@ -37,25 +44,25 @@ export default function LoginPage() {
       router.push(dest);
       router.refresh();
     } catch {
-      setError("تعذر الاتصال بالخادم");
+      setError(t("connectionError"));
       setLoading(false);
     }
   }
 
   return (
-    <AuthShell eyebrow="أهلًا بعودتك" headline="واصل رحلتك في حفظ القرآن والقراءات">
+    <AuthShell eyebrow={t("loginEyebrow")} headline={t("loginHeadline")}>
       <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl shadow-night/10 animate-scale-in">
         <div className="text-center mb-6">
           <Link href="/" className="lg:hidden text-2xl font-extrabold text-night">
-            🌅 منصة الفجر
+            🌅 {tNav("brand")}
           </Link>
-          <h2 className="text-xl font-extrabold text-night mt-1">تسجيل الدخول</h2>
-          <p className="text-muted mt-1 text-sm">أهلًا بعودتك، أدخل بياناتك للمتابعة</p>
+          <h2 className="text-xl font-extrabold text-night mt-1">{t("loginTitle")}</h2>
+          <p className="text-muted mt-1 text-sm">{t("loginSubtitle")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-bold text-night mb-1">البريد الإلكتروني</label>
+            <label className="block text-sm font-bold text-night mb-1">{t("emailLabel")}</label>
             <input
               required
               type="email"
@@ -67,9 +74,9 @@ export default function LoginPage() {
           </div>
           <div>
             <div className="flex items-center justify-between mb-1">
-              <label className="block text-sm font-bold text-night">كلمة المرور</label>
+              <label className="block text-sm font-bold text-night">{t("passwordLabel")}</label>
               <Link href="/forgot-password" className="text-xs font-bold text-dawn hover:underline">
-                نسيت كلمة المرور؟
+                {t("forgotPasswordLink")}
               </Link>
             </div>
             <input
@@ -93,14 +100,14 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-300/50 transition-all disabled:opacity-60 disabled:translate-y-0"
           >
-            {loading ? "جارٍ الدخول..." : "تسجيل الدخول"}
+            {loading ? t("loginLoading") : t("loginButton")}
           </button>
         </form>
 
         <p className="text-center text-sm text-muted mt-6">
-          ليس لديك حساب؟{" "}
+          {t("noAccount")}{" "}
           <Link href="/register" className="text-dawn font-bold hover:underline">
-            سجّل الآن
+            {t("registerNow")}
           </Link>
         </p>
       </div>

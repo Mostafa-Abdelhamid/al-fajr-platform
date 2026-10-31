@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { admin } from "@/i18n/dictionaries/admin";
 
 export default function VerifyToggle({
   teacherProfileId,
@@ -11,6 +14,8 @@ export default function VerifyToggle({
   initialVerified: boolean;
 }) {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = makeT(admin, locale);
   const [verified, setVerified] = useState(initialVerified);
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +40,7 @@ export default function VerifyToggle({
           : "bg-orange-100 text-dawn hover:bg-green-100 hover:text-green-700"
       }`}
     >
-      {verified ? "✅ موثّق — إلغاء التوثيق" : "⏳ غير موثّق — توثيق الآن"}
+      {verified ? t("verifiedRevoke") : t("unverifiedVerifyNow")}
     </button>
   );
 }

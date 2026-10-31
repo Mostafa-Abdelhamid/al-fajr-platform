@@ -5,9 +5,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthShell from "@/components/AuthShell";
 import QiraatMultiSelect from "@/components/QiraatMultiSelect";
+import { useLocale } from "@/i18n/LocaleProvider";
+import { makeT } from "@/i18n/t";
+import { auth } from "@/i18n/dictionaries/auth";
+import { nav } from "@/i18n/dictionaries/nav";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { locale } = useLocale();
+  const t = makeT(auth, locale);
+  const tNav = makeT(nav, locale);
   const [role, setRole] = useState<"STUDENT" | "TEACHER">("STUDENT");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +30,7 @@ export default function RegisterPage() {
     setQiraatError("");
 
     if (role === "TEACHER" && qiraat.length === 0) {
-      setQiraatError("الرجاء اختيار قراءة واحدة على الأقل.");
+      setQiraatError(t("qiraatValidationError"));
       return;
     }
 
@@ -36,27 +43,27 @@ export default function RegisterPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "حدث خطأ ما");
+        setError(data.error || t("genericError"));
         setLoading(false);
         return;
       }
       router.push(role === "TEACHER" ? "/teacher/dashboard" : "/student/dashboard");
       router.refresh();
     } catch {
-      setError("تعذر الاتصال بالخادم");
+      setError(t("connectionError"));
       setLoading(false);
     }
   }
 
   return (
-    <AuthShell eyebrow="انضم إلينا" headline="ابدأ رحلتك في تعلّم القرآن والقراءات اليوم">
+    <AuthShell eyebrow={t("registerEyebrow")} headline={t("registerHeadline")}>
       <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl shadow-night/10 animate-scale-in">
         <div className="text-center mb-6">
           <Link href="/" className="lg:hidden text-2xl font-extrabold text-night">
-            🌅 منصة الفجر
+            🌅 {tNav("brand")}
           </Link>
-          <h2 className="text-xl font-extrabold text-night mt-1">إنشاء حساب جديد</h2>
-          <p className="text-muted mt-1 text-sm">أنشئ حسابك وابدأ في أقل من دقيقة</p>
+          <h2 className="text-xl font-extrabold text-night mt-1">{t("registerTitle")}</h2>
+          <p className="text-muted mt-1 text-sm">{t("registerSubtitle")}</p>
         </div>
 
         <div className="flex gap-3 mb-5 bg-gray-50 p-1.5 rounded-2xl">
@@ -69,7 +76,7 @@ export default function RegisterPage() {
                 : "text-muted hover:text-night"
             }`}
           >
-            طالب / ولي أمر
+            {t("roleStudent")}
           </button>
           <button
             type="button"
@@ -80,23 +87,23 @@ export default function RegisterPage() {
                 : "text-muted hover:text-night"
             }`}
           >
-            معلم / معلمة
+            {t("roleTeacher")}
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-bold text-night mb-1">الاسم الكامل</label>
+            <label className="block text-sm font-bold text-night mb-1">{t("nameLabel")}</label>
             <input
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
-              placeholder="اكتب اسمك الكامل"
+              placeholder={t("namePlaceholder")}
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-night mb-1">البريد الإلكتروني</label>
+            <label className="block text-sm font-bold text-night mb-1">{t("emailLabel")}</label>
             <input
               required
               type="email"
@@ -107,7 +114,7 @@ export default function RegisterPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-bold text-night mb-1">كلمة المرور</label>
+            <label className="block text-sm font-bold text-night mb-1">{t("passwordLabel")}</label>
             <input
               required
               type="password"
@@ -115,21 +122,21 @@ export default function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
-              placeholder="6 أحرف على الأقل"
+              placeholder={t("passwordPlaceholderMin")}
             />
           </div>
           {role === "TEACHER" && (
             <div className="animate-fade-up">
               <label className="block text-sm font-bold text-night mb-1">
-                القراءات التي تُتقنها
+                {t("qiraatLabel")}
                 {qiraat.length > 0 && (
-                  <span className="text-dawn font-normal"> ({qiraat.length} محدّدة)</span>
+                  <span className="text-dawn font-normal"> ({qiraat.length} {t("selectedWord")})</span>
                 )}
               </label>
               <QiraatMultiSelect value={qiraat} onChange={setQiraat} />
               {qiraatError && <p className="text-xs text-red-600 font-semibold mt-1.5">{qiraatError}</p>}
               <p className="text-xs text-muted mt-1.5">
-                يمكنك اختيار أكثر من رواية من القراءات العشر المتواترة.
+                {t("qiraatHelper")}
               </p>
             </div>
           )}
@@ -145,14 +152,14 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-300/50 transition-all disabled:opacity-60 disabled:translate-y-0"
           >
-            {loading ? "جارٍ الإنشاء..." : "إنشاء الحساب"}
+            {loading ? t("registerLoading") : t("registerButton")}
           </button>
         </form>
 
         <p className="text-center text-sm text-muted mt-6">
-          لديك حساب بالفعل؟{" "}
+          {t("haveAccount")}{" "}
           <Link href="/login" className="text-dawn font-bold hover:underline">
-            تسجيل الدخول
+            {t("loginLinkText")}
           </Link>
         </p>
       </div>

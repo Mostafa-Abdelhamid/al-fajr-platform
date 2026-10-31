@@ -1,4 +1,7 @@
 import dns from "dns/promises";
+import type { Locale } from "@/i18n/config";
+import { makeT } from "@/i18n/t";
+import { apiMessages } from "@/i18n/dictionaries/apiMessages";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -21,25 +24,26 @@ const BLOCKED_DOMAINS = new Set([
  * or a domain with no mail server (MX record) at all. This is a best-effort
  * check (it can't confirm a specific mailbox exists), not full verification.
  */
-export async function assertRealEmail(email: string): Promise<string | null> {
+export async function assertRealEmail(email: string, locale: Locale): Promise<string | null> {
+  const t = makeT(apiMessages, locale);
   const trimmed = email.trim().toLowerCase();
 
   if (!EMAIL_REGEX.test(trimmed)) {
-    return "البريد الإلكتروني غير صالح.";
+    return t("invalidEmail");
   }
 
   const domain = trimmed.split("@")[1];
   if (BLOCKED_DOMAINS.has(domain)) {
-    return "الرجاء استخدام بريد إلكتروني حقيقي خاص بك.";
+    return t("useRealEmail");
   }
 
   try {
     const mx = await dns.resolveMx(domain);
     if (!mx || mx.length === 0) {
-      return "تعذر العثور على خادم بريد لهذا النطاق، تأكد من صحة البريد الإلكتروني.";
+      return t("noMailServerForDomain");
     }
   } catch {
-    return "تعذر العثور على خادم بريد لهذا النطاق، تأكد من صحة البريد الإلكتروني.";
+    return t("noMailServerForDomain");
   }
 
   return null;

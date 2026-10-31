@@ -1,5 +1,7 @@
-import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
+import { getLocale } from "@/i18n/getLocale";
+import { dirForLocale } from "@/i18n/config";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -8,17 +10,27 @@ const cairo = Cairo({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  title: "منصة الفجر — تعلّم القرآن والقراءات",
-  description:
-    "منصة الفجر تربطك بمعلمي القرآن والقراءات عبر مكالمات فيديو مباشرة، بجدول يناسبك ومتابعة حقيقية لتقدمك.",
-};
+export async function generateMetadata() {
+  const locale = await getLocale();
+  return locale === "en"
+    ? {
+        title: "Al-Fajr Platform — Learn Quran & Qira'at",
+        description:
+          "Al-Fajr connects you with Quran and Qira'at teachers through live video calls, a schedule that fits you, and real progress tracking.",
+      }
+    : {
+        title: "منصة الفجر — تعلّم القرآن والقراءات",
+        description:
+          "منصة الفجر تربطك بمعلمي القرآن والقراءات عبر مكالمات فيديو مباشرة، بجدول يناسبك ومتابعة حقيقية لتقدمك.",
+      };
+}
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = await getLocale();
   return (
-    <html lang="ar" dir="rtl" className={`${cairo.variable} h-full antialiased`}>
+    <html lang={locale} dir={dirForLocale(locale)} className={`${cairo.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-cream text-ink font-sans">
-        {children}
+        <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
       </body>
     </html>
   );

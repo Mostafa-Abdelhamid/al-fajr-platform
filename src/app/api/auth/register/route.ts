@@ -3,8 +3,14 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { createSessionCookie } from "@/lib/auth";
 import { assertRealEmail } from "@/lib/emailCheck";
+import { getLocale } from "@/i18n/getLocale";
+import { makeT } from "@/i18n/t";
+import { apiMessages } from "@/i18n/dictionaries/apiMessages";
 
 export async function POST(req: NextRequest) {
+  const locale = await getLocale();
+  const t = makeT(apiMessages, locale);
+
   const body = await req.json();
   const { name, email, password, role, qiraat } = body as {
     name: string;
@@ -15,10 +21,10 @@ export async function POST(req: NextRequest) {
   };
 
   if (!name || !email || !password || !role) {
-    return NextResponse.json({ error: "الرجاء تعبئة جميع الحقول" }, { status: 400 });
+    return NextResponse.json({ error: t("fillAllFields") }, { status: 400 });
   }
 
-  const emailError = await assertRealEmail(email);
+  const emailError = await assertRealEmail(email, locale);
   if (emailError) {
     return NextResponse.json({ error: emailError }, { status: 400 });
   }
@@ -27,7 +33,7 @@ export async function POST(req: NextRequest) {
   const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
   if (existing) {
     return NextResponse.json(
-      { error: "هذا البريد الإلكتروني مسجل مسبقًا" },
+      { error: t("emailAlreadyRegistered") },
       { status: 400 }
     );
   }
