@@ -70,12 +70,13 @@ export default async function AdminDashboard() {
           <p className="text-sm text-muted">لا توجد حصص بعد.</p>
         ) : (
           <ul className="space-y-3">
-            {recentSessions.map((s) => {
+            {recentSessions.map((s, i) => {
               const effectiveStatus = getEffectiveStatus(s);
               return (
                 <li
                   key={s.id}
-                  className="rounded-2xl border border-gray-100 bg-gray-50/60 p-4 flex items-center justify-between flex-wrap gap-2 text-sm cursor-pointer hover:bg-white hover:border-purple-200 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                  style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+                  className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-2 text-sm cursor-pointer hover:bg-white hover:border-purple-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
                   <span>
                     {s.student.avatarEmoji} {s.student.name} ← {s.teacher.avatarEmoji} {s.teacher.name}

@@ -103,10 +103,11 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
               <div key={group.reciter}>
                 <p className="text-xs font-bold text-muted mb-2">{group.reciter}</p>
                 <div className="flex flex-wrap gap-2">
-                  {group.riwayat.map((r) => (
+                  {group.riwayat.map((r, i) => (
                     <span
                       key={r.id}
-                      className="flex items-center gap-2 text-xs font-bold px-3 py-2 rounded-xl border-2 border-gray-200 text-night hover:border-dawn/40 hover:bg-orange-50/50 hover:shadow-md transition-all"
+                      style={{ animationDelay: `${Math.min(i * 0.04, 0.3)}s` }}
+                      className="animate-scale-in flex items-center gap-2 text-xs font-bold px-3 py-2 rounded-xl border-2 border-gray-200 bg-gray-50 shadow-sm text-night hover:border-dawn/40 hover:bg-orange-50/50 hover:shadow-md transition-all"
                     >
                       {r.riwaya}
                       <button
