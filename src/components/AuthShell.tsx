@@ -29,7 +29,7 @@ export default function AuthShell({
   return (
     <main className="relative flex-1 grid lg:grid-cols-2 min-h-[calc(100vh-0px)]">
       <div className="absolute top-4 end-4 z-20">
-        <LocaleSwitcher className="bg-night/10 text-night hover:bg-night/20" />
+        <LocaleSwitcher variant="light" />
       </div>
       {/* Decorative panel */}
       <div className="relative hidden lg:flex flex-col justify-between bg-fajr-night text-white p-12 overflow-hidden">

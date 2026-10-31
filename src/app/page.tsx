@@ -57,7 +57,7 @@ export default async function Home() {
             >
               {t("navRegister")}
             </Link>
-            <LocaleSwitcher className="bg-night/5 text-night hover:bg-night/10" />
+            <LocaleSwitcher variant="light" />
           </div>
         </div>
       </header>
