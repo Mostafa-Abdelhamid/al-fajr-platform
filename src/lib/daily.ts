@@ -32,6 +32,11 @@ export async function createVideoRoom(baseId: string, endAt: Date): Promise<stri
           enable_chat: true,
           enable_screenshare: true,
           eject_at_room_exp: true,
+          max_participants: 2,
+          enable_prejoin_ui: true,
+          enable_network_ui: true,
+          enable_noise_cancellation_ui: true,
+          enable_video_processing_ui: true,
         },
       }),
     });
