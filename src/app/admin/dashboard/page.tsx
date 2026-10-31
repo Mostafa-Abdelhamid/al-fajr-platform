@@ -72,7 +72,7 @@ export default async function AdminDashboard() {
             {recentSessions.map((s) => (
               <li
                 key={s.id}
-                className="py-3 px-2 -mx-2 rounded-xl flex items-center justify-between flex-wrap gap-2 text-sm hover:bg-gray-50 transition-colors"
+                className="py-3 px-2 -mx-2 rounded-xl flex items-center justify-between flex-wrap gap-2 text-sm hover:bg-gray-50 hover:shadow-md hover:-translate-y-0.5 transition-all"
               >
                 <span>
                   {s.student.avatarEmoji} {s.student.name} ← {s.teacher.avatarEmoji} {s.teacher.name}

@@ -106,7 +106,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
                   {group.riwayat.map((r) => (
                     <span
                       key={r.id}
-                      className="flex items-center gap-2 text-xs font-bold px-3 py-2 rounded-xl border-2 border-gray-200 text-night"
+                      className="flex items-center gap-2 text-xs font-bold px-3 py-2 rounded-xl border-2 border-gray-200 text-night hover:border-dawn/40 hover:bg-orange-50/50 hover:shadow-sm transition-all"
                     >
                       {r.riwaya}
                       <button
