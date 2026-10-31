@@ -65,7 +65,7 @@ export default async function AdminTeachersPage({
               <li
                 key={t.id}
                 style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
-                className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-white hover:border-dawn/40 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-orange-50 hover:border-dawn/40 hover:shadow-lg hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center gap-3">
                   <span className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-lg shrink-0">
