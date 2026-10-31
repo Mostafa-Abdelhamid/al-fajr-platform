@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getEffectiveStatus, STATUS_LABELS, STATUS_BADGE_CLASSES } from "@/lib/sessionStatus";
 
 function formatDateTime(d: Date) {
   return new Intl.DateTimeFormat("ar-SA", {
@@ -15,7 +16,7 @@ export default async function AdminDashboard() {
     await Promise.all([
       prisma.user.count({ where: { role: "STUDENT" } }),
       prisma.user.count({ where: { role: "TEACHER" } }),
-      prisma.session.count({ where: { status: "SCHEDULED" } }),
+      prisma.session.count({ where: { status: "SCHEDULED", startAt: { gte: new Date() } } }),
       prisma.session.count({ where: { status: "COMPLETED" } }),
       prisma.user.aggregate({ where: { role: "STUDENT" }, _sum: { points: true } }),
       prisma.teacherProfile.findMany(),
@@ -69,28 +70,23 @@ export default async function AdminDashboard() {
           <p className="text-sm text-muted">لا توجد حصص بعد.</p>
         ) : (
           <ul className="divide-y">
-            {recentSessions.map((s) => (
-              <li
-                key={s.id}
-                className="py-3 px-2 -mx-2 rounded-xl flex items-center justify-between flex-wrap gap-2 text-sm hover:bg-gray-50 hover:shadow-md hover:-translate-y-0.5 transition-all"
-              >
-                <span>
-                  {s.student.avatarEmoji} {s.student.name} ← {s.teacher.avatarEmoji} {s.teacher.name}
-                </span>
-                <span className="text-xs text-muted">{formatDateTime(s.startAt)}</span>
-                <span
-                  className={`text-xs font-bold px-3 py-1 rounded-full ${
-                    s.status === "COMPLETED"
-                      ? "bg-green-100 text-green-700"
-                      : s.status === "SCHEDULED"
-                      ? "bg-blue-100 text-blue-700"
-                      : "bg-gray-100 text-gray-600"
-                  }`}
+            {recentSessions.map((s) => {
+              const effectiveStatus = getEffectiveStatus(s);
+              return (
+                <li
+                  key={s.id}
+                  className="py-3 px-2 -mx-2 rounded-xl flex items-center justify-between flex-wrap gap-2 text-sm cursor-pointer hover:bg-gray-50 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
-                  {s.status === "COMPLETED" ? "مكتملة" : s.status === "SCHEDULED" ? "قادمة" : "ملغاة"}
-                </span>
-              </li>
-            ))}
+                  <span>
+                    {s.student.avatarEmoji} {s.student.name} ← {s.teacher.avatarEmoji} {s.teacher.name}
+                  </span>
+                  <span className="text-xs text-muted">{formatDateTime(s.startAt)}</span>
+                  <span className={`text-xs font-bold px-3 py-1 rounded-full ${STATUS_BADGE_CLASSES[effectiveStatus]}`}>
+                    {STATUS_LABELS[effectiveStatus]}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         )}
       </section>

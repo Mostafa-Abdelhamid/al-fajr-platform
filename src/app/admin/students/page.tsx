@@ -63,7 +63,7 @@ export default async function AdminStudentsPage({
             {students.map((s) => (
               <li
                 key={s.id}
-                className="py-3 px-2 -mx-2 rounded-xl flex items-center justify-between flex-wrap gap-3 hover:bg-blue-50/50 hover:shadow-md hover:-translate-y-0.5 transition-all"
+                className="py-3 px-2 -mx-2 rounded-xl flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-blue-50/50 hover:shadow-lg hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center gap-3">
                   <span className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg shrink-0">

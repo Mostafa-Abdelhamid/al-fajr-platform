@@ -18,7 +18,7 @@ export default async function StudentDashboard() {
 
   const [upcoming, past, progress, badges] = await Promise.all([
     prisma.session.findMany({
-      where: { studentId: user.id, status: "SCHEDULED" },
+      where: { studentId: user.id, status: "SCHEDULED", startAt: { gte: new Date() } },
       orderBy: { startAt: "asc" },
       include: { teacher: true },
     }),

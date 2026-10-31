@@ -17,10 +17,15 @@ export default async function TeacherDashboard() {
   const user = await getCurrentUser();
   if (!user) return null;
 
-  const [upcoming, completed, profile] = await Promise.all([
+  const [upcoming, missed, completed, profile] = await Promise.all([
     prisma.session.findMany({
-      where: { teacherId: user.id, status: "SCHEDULED" },
+      where: { teacherId: user.id, status: "SCHEDULED", startAt: { gte: new Date() } },
       orderBy: { startAt: "asc" },
+      include: { student: true },
+    }),
+    prisma.session.findMany({
+      where: { teacherId: user.id, status: "SCHEDULED", startAt: { lt: new Date() } },
+      orderBy: { startAt: "desc" },
       include: { student: true },
     }),
     prisma.session.findMany({
@@ -33,7 +38,7 @@ export default async function TeacherDashboard() {
   ]);
 
   const studentMap = new Map<string, { id: string; name: string; avatarEmoji: string }>();
-  [...upcoming, ...completed].forEach((s) => {
+  [...upcoming, ...missed, ...completed].forEach((s) => {
     studentMap.set(s.studentId, {
       id: s.student.id,
       name: s.student.name,
@@ -96,6 +101,41 @@ export default async function TeacherDashboard() {
           </ul>
         )}
       </section>
+
+      {missed.length > 0 && (
+        <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-amber-200 p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <h3 className="font-extrabold text-night">حصص فات موعدها ولم تُنهَ بعد</h3>
+            <span className="text-xs font-bold text-amber-700 bg-amber-100 rounded-full px-2.5 py-1">
+              {missed.length}
+            </span>
+          </div>
+          <p className="text-xs text-muted -mt-2 mb-4">
+            هذه الحصص انتهى وقتها دون أن يتم تسجيلها كمكتملة. ادخل كل حصة وأنهِها لتحديث سجل الطالب.
+          </p>
+          <ul className="divide-y">
+            {missed.map((s) => (
+              <li key={s.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
+                <div>
+                  <p className="font-semibold text-sm">
+                    {s.student.avatarEmoji} {s.student.name}
+                  </p>
+                  <p className="text-xs text-muted">
+                    {formatDateTime(s.startAt)}
+                    {s.surahFocus && ` • ${s.surahFocus}`}
+                  </p>
+                </div>
+                <Link
+                  href={`/session/${s.id}`}
+                  className="bg-amber-100 text-amber-800 font-bold text-sm px-5 py-2 rounded-full hover:bg-amber-200 transition"
+                >
+                  إنهاء الحصة
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <h3 className="font-extrabold text-night mb-4">طلابي ومتابعة تقدمهم</h3>
