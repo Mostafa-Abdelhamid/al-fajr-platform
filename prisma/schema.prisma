@@ -67,6 +67,13 @@ model Session {
   teacherNotes String  @default("")
   rating      Int?
   createdAt   DateTime @default(now())
+
+  // A partial unique index on (teacherId, startAt) WHERE status = 'SCHEDULED'
+  // is applied directly in prisma/migrations (not representable here) to make
+  // double-booking the same slot impossible at the DB level. Keep it in mind
+  // before running `prisma migrate dev` again — check the generated SQL
+  // doesn't drop it.
+  @@index([teacherId, startAt])
 }
 
 model Progress {
@@ -99,4 +106,14 @@ model PasswordResetOtp {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+model QiraatOption {
+  id        String   @id @default(cuid())
+  reciter   String
+  riwaya    String   @unique
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([reciter])
 }

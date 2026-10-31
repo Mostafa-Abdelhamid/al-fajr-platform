@@ -30,7 +30,12 @@ export default function DashboardNav({
           { href: "/teacher/dashboard", label: "لوحتي" },
           { href: "/teacher/availability", label: "أوقات تواجدي" },
         ]
-      : [{ href: "/admin/dashboard", label: "لوحة الإدارة" }];
+      : [
+          { href: "/admin/dashboard", label: "نظرة عامة" },
+          { href: "/admin/teachers", label: "المعلمون" },
+          { href: "/admin/students", label: "الطلاب" },
+          { href: "/admin/qiraat", label: "القراءات" },
+        ];
 
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
