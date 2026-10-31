@@ -13,13 +13,13 @@ export function getEffectiveStatus(session: { status: string; startAt: Date }): 
 export const STATUS_LABELS: Record<EffectiveStatus, string> = {
   COMPLETED: "مكتملة",
   SCHEDULED: "قادمة",
-  MISSED: "فاتت ولم تُسجَّل",
+  MISSED: "فائتة",
   CANCELLED: "ملغاة",
 };
 
 export const STATUS_BADGE_CLASSES: Record<EffectiveStatus, string> = {
   COMPLETED: "bg-green-100 text-green-700",
   SCHEDULED: "bg-blue-100 text-blue-700",
-  MISSED: "bg-amber-100 text-amber-700",
+  MISSED: "bg-red-100 text-red-700",
   CANCELLED: "bg-gray-100 text-gray-600",
 };

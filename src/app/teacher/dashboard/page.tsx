@@ -103,10 +103,10 @@ export default async function TeacherDashboard() {
       </section>
 
       {missed.length > 0 && (
-        <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-amber-200 p-6">
+        <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-red-200 p-6">
           <div className="flex items-center gap-2 mb-4">
-            <h3 className="font-extrabold text-night">حصص فات موعدها ولم تُنهَ بعد</h3>
-            <span className="text-xs font-bold text-amber-700 bg-amber-100 rounded-full px-2.5 py-1">
+            <h3 className="font-extrabold text-night">حصص فائتة</h3>
+            <span className="text-xs font-bold text-red-700 bg-red-100 rounded-full px-2.5 py-1">
               {missed.length}
             </span>
           </div>
@@ -127,7 +127,7 @@ export default async function TeacherDashboard() {
                 </div>
                 <Link
                   href={`/session/${s.id}`}
-                  className="bg-amber-100 text-amber-800 font-bold text-sm px-5 py-2 rounded-full hover:bg-amber-200 transition"
+                  className="bg-red-100 text-red-800 font-bold text-sm px-5 py-2 rounded-full hover:bg-red-200 transition"
                 >
                   إنهاء الحصة
                 </Link>
