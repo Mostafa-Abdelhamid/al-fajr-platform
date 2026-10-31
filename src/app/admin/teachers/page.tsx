@@ -60,11 +60,11 @@ export default async function AdminTeachersPage({
         {teachers.length === 0 ? (
           <p className="text-sm text-muted">{query ? "لا توجد نتائج مطابقة." : "لا يوجد معلمون مسجلون بعد."}</p>
         ) : (
-          <ul className="divide-y">
+          <ul className="space-y-3">
             {teachers.map((t) => (
               <li
                 key={t.id}
-                className="py-3 px-2 -mx-2 rounded-xl flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-orange-50/50 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                className="rounded-2xl border border-gray-100 bg-gray-50/60 p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-white hover:border-dawn/30 hover:shadow-lg hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center gap-3">
                   <span className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-lg shrink-0">

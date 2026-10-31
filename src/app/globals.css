@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Tailwind's preflight sets button cursor to "default" to match native
+   platforms; every button here is a web action, so restore the hand. */
+button:not(:disabled) {
+  cursor: pointer;
+}
+
 :root {
   --background: #fffaf2;
   --foreground: #20223a;
