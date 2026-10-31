@@ -23,7 +23,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: emailError }, { status: 400 });
   }
 
-  const existing = await prisma.user.findUnique({ where: { email } });
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } });
   if (existing) {
     return NextResponse.json(
       { error: "هذا البريد الإلكتروني مسجل مسبقًا" },
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
   const user = await prisma.user.create({
     data: {
       name,
-      email,
+      email: normalizedEmail,
       password: hashed,
       role,
       avatarEmoji: role === "TEACHER" ? "👨‍🏫" : "🧑‍🎓",

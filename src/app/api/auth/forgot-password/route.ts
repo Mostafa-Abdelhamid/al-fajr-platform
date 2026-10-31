@@ -43,7 +43,10 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  await sendEmail(normalized, "رمز إعادة تعيين كلمة المرور — منصة الفجر", otpEmailHtml(code));
+  const sent = await sendEmail(normalized, "رمز إعادة تعيين كلمة المرور — منصة الفجر", otpEmailHtml(code));
+  if (!sent.ok) {
+    console.error(`Password reset email failed to send to ${normalized}`);
+  }
 
   return genericResponse;
 }

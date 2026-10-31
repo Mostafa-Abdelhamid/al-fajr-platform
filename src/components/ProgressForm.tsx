@@ -15,18 +15,31 @@ export default function ProgressForm({ studentId }: { studentId: string }) {
   const [status, setStatus] = useState(STATUSES[0]);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [error, setError] = useState(false);
 
   async function handleSubmit() {
     setLoading(true);
-    await fetch("/api/progress/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ studentId, surah, status }),
-    });
-    setLoading(false);
-    setDone(true);
-    router.refresh();
-    setTimeout(() => setDone(false), 2000);
+    setError(false);
+    try {
+      const res = await fetch("/api/progress/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ studentId, surah, status }),
+      });
+      setLoading(false);
+      if (!res.ok) {
+        setError(true);
+        setTimeout(() => setError(false), 2500);
+        return;
+      }
+      setDone(true);
+      router.refresh();
+      setTimeout(() => setDone(false), 2000);
+    } catch {
+      setLoading(false);
+      setError(true);
+      setTimeout(() => setError(false), 2500);
+    }
   }
 
   return (
@@ -54,7 +67,7 @@ export default function ProgressForm({ studentId }: { studentId: string }) {
         disabled={loading}
         className="bg-night text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-night-2 transition disabled:opacity-60"
       >
-        {done ? "تم ✓" : loading ? "..." : "تحديث التقدم"}
+        {error ? "فشل الحفظ" : done ? "تم ✓" : loading ? "..." : "تحديث التقدم"}
       </button>
     </div>
   );

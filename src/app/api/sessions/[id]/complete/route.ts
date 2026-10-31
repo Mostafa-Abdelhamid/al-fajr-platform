@@ -29,18 +29,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     },
   });
 
-  if (rating) {
-    const profile = await prisma.teacherProfile.findUnique({ where: { userId: user.id } });
-    if (profile) {
-      const newCount = profile.ratingCount + 1;
-      const newAvg = (profile.rating * profile.ratingCount + Number(rating)) / newCount;
-      await prisma.teacherProfile.update({
-        where: { id: profile.id },
-        data: { rating: newAvg, ratingCount: newCount },
-      });
-    }
-  }
-
   const reward = await rewardStudentForCompletedSession(session.studentId);
 
   return NextResponse.json({ ok: true, reward });
