@@ -8,17 +8,17 @@ button:not(:disabled) {
 
 :root {
   --background: #fffaf2;
-  --foreground: #20223a;
+  --foreground: #2b0e17;
 
-  --color-night: #121833;
-  --color-night-2: #1c2550;
-  --color-gold: #f2b134;
-  --color-gold-light: #ffd77a;
-  --color-dawn: #f2704a;
+  --color-night: #4a0d1f;
+  --color-night-2: #8a1538;
+  --color-gold: #e8b923;
+  --color-gold-light: #ffe8a3;
+  --color-dawn: #c99a1f;
   --color-green: #1f9d55;
   --color-cream: #fffaf2;
-  --color-ink: #20223a;
-  --color-muted: #6b7089;
+  --color-ink: #2b0e17;
+  --color-muted: #6e5a60;
 }
 
 @theme inline {
@@ -63,9 +63,9 @@ details summary::-webkit-details-marker {
 }
 
 @keyframes fajr-pulse-ring {
-  0%   { box-shadow: 0 0 0 0 rgba(242, 177, 52, 0.45); }
-  70%  { box-shadow: 0 0 0 10px rgba(242, 177, 52, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(242, 177, 52, 0); }
+  0%   { box-shadow: 0 0 0 0 rgba(232, 185, 35, 0.45); }
+  70%  { box-shadow: 0 0 0 10px rgba(232, 185, 35, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(232, 185, 35, 0); }
 }
 
 @keyframes fajr-float {
@@ -108,24 +108,24 @@ details summary::-webkit-details-marker {
 }
 .hover-lift:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 32px rgba(18, 24, 51, 0.1);
+  box-shadow: 0 16px 32px rgba(74, 13, 31, 0.16);
 }
 
 /* ---------- Decorative "dawn glow" backgrounds ---------- */
 
 .bg-fajr-night {
   background:
-    radial-gradient(circle at 15% 15%, rgba(242, 177, 52, 0.18), transparent 40%),
-    radial-gradient(circle at 85% 0%, rgba(242, 112, 74, 0.22), transparent 45%),
-    radial-gradient(circle at 50% 100%, rgba(255, 215, 122, 0.08), transparent 50%),
-    linear-gradient(160deg, #121833 0%, #1c2550 60%, #121833 100%);
+    radial-gradient(circle at 15% 15%, rgba(232, 185, 35, 0.18), transparent 40%),
+    radial-gradient(circle at 85% 0%, rgba(236, 72, 153, 0.14), transparent 45%),
+    radial-gradient(circle at 50% 100%, rgba(255, 232, 163, 0.07), transparent 50%),
+    linear-gradient(160deg, #4a0d1f 0%, #8a1538 60%, #4a0d1f 100%);
 }
 
 .bg-fajr-sunrise {
   background:
-    radial-gradient(ellipse at 50% 120%, rgba(255, 215, 122, 0.55), transparent 60%),
-    radial-gradient(ellipse at 50% 150%, rgba(242, 112, 74, 0.45), transparent 65%),
-    linear-gradient(180deg, #121833 0%, #1c2550 100%);
+    radial-gradient(ellipse at 50% 120%, rgba(255, 232, 163, 0.5), transparent 60%),
+    radial-gradient(ellipse at 50% 150%, rgba(236, 72, 153, 0.35), transparent 65%),
+    linear-gradient(180deg, #4a0d1f 0%, #8a1538 100%);
 }
 
 .bg-dot-grid {

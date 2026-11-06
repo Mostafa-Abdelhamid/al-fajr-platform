@@ -74,7 +74,7 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
     <div className="hover-lift bg-white rounded-2xl border border-gray-100 p-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex gap-3">
-          <div className="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center text-2xl">
+          <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center text-2xl">
             {teacher.avatarEmoji}
           </div>
           <div>
@@ -128,7 +128,7 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
                           onClick={() => setSelected(s)}
                           className={`text-xs font-bold px-3 py-2 rounded-xl border-2 transition ${
                             selected === s
-                              ? "border-dawn bg-orange-50 text-dawn"
+                              ? "border-dawn bg-amber-50 text-dawn"
                               : "border-gray-200 text-muted hover:border-gray-300"
                           }`}
                         >

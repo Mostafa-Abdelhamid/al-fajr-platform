@@ -68,7 +68,7 @@ export default function QiraatMultiSelect({
                   onClick={() => toggle(r.riwaya)}
                   className={`text-xs font-bold px-3 py-2 rounded-xl border-2 transition ${
                     selected
-                      ? "border-dawn bg-orange-50 text-dawn"
+                      ? "border-dawn bg-amber-50 text-dawn"
                       : "border-gray-200 text-muted hover:border-gray-300"
                   }`}
                 >

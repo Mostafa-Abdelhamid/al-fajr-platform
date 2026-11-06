@@ -58,7 +58,7 @@ export default function MonthCalendar({
           type="button"
           onClick={() => canGoPrev && setViewMonth(new Date(viewMonth.getFullYear(), viewMonth.getMonth() - 1, 1))}
           disabled={!canGoPrev}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-night hover:bg-orange-50 disabled:opacity-20 disabled:cursor-not-allowed transition"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-night hover:bg-amber-50 disabled:opacity-20 disabled:cursor-not-allowed transition"
           aria-label={t("prevMonth")}
         >
           ‹
@@ -69,7 +69,7 @@ export default function MonthCalendar({
         <button
           type="button"
           onClick={() => setViewMonth(new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 1))}
-          className="w-8 h-8 rounded-full flex items-center justify-center text-night hover:bg-orange-50 transition"
+          className="w-8 h-8 rounded-full flex items-center justify-center text-night hover:bg-amber-50 transition"
           aria-label={t("nextMonth")}
         >
           ›
@@ -99,7 +99,7 @@ export default function MonthCalendar({
               onClick={() => onSelect(key)}
               className={`aspect-square rounded-full text-sm font-semibold transition flex items-center justify-center
                 ${isSelected ? "bg-dawn text-white shadow-md scale-105" : ""}
-                ${!isSelected && isAvailable ? "text-night hover:bg-orange-50 cursor-pointer" : ""}
+                ${!isSelected && isAvailable ? "text-night hover:bg-amber-50 cursor-pointer" : ""}
                 ${!isAvailable ? "text-gray-300 cursor-not-allowed" : ""}
                 ${isToday && !isSelected ? "ring-2 ring-dawn/40" : ""}
               `}

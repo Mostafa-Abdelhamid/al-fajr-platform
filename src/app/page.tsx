@@ -4,17 +4,30 @@ import { makeT } from "@/i18n/t";
 import { landing } from "@/i18n/dictionaries/landing";
 import { nav } from "@/i18n/dictionaries/nav";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
+import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
   const locale = await getLocale();
   const t = makeT(landing, locale);
   const tNav = makeT(nav, locale);
 
+  const [studentCount, teacherCount, completedCount] = await Promise.all([
+    prisma.user.count({ where: { role: "STUDENT" } }),
+    prisma.user.count({ where: { role: "TEACHER" } }),
+    prisma.session.count({ where: { status: "COMPLETED" } }),
+  ]);
+
+  const PLATFORM_STATS: [number, string, string][] = [
+    [studentCount, t("platformStatStudents"), "text-teal-300"],
+    [teacherCount, t("platformStatTeachers"), "text-gold"],
+    [completedCount, t("platformStatSessions"), "text-rose-300"],
+  ];
+
   const FEATURES = [
-    { icon: "👨‍🏫", title: t("feature1Title"), desc: t("feature1Desc") },
-    { icon: "🎥", title: t("feature2Title"), desc: t("feature2Desc") },
-    { icon: "📅", title: t("feature3Title"), desc: t("feature3Desc") },
-    { icon: "📈", title: t("feature4Title"), desc: t("feature4Desc") },
+    { icon: "👨‍🏫", title: t("feature1Title"), desc: t("feature1Desc"), colors: "from-blue-100 to-blue-200" },
+    { icon: "🎥", title: t("feature2Title"), desc: t("feature2Desc"), colors: "from-purple-100 to-purple-200" },
+    { icon: "📅", title: t("feature3Title"), desc: t("feature3Desc"), colors: "from-teal-100 to-teal-200" },
+    { icon: "📈", title: t("feature4Title"), desc: t("feature4Desc"), colors: "from-rose-100 to-rose-200" },
   ];
 
   const STEPS = [
@@ -29,10 +42,10 @@ export default async function Home() {
     { q: t("faq3Q"), a: t("faq3A") },
   ];
 
-  const STATS: [string, string][] = [
-    [t("statQuick"), t("statQuickDesc")],
-    [t("statVideo"), t("statVideoDesc")],
-    [t("statSchedule"), t("statScheduleDesc")],
+  const STATS: [string, string, string][] = [
+    [t("statQuick"), t("statQuickDesc"), "text-gold"],
+    [t("statVideo"), t("statVideoDesc"), "text-teal-300"],
+    [t("statSchedule"), t("statScheduleDesc"), "text-rose-300"],
   ];
 
   return (
@@ -53,7 +66,7 @@ export default async function Home() {
             </Link>
             <Link
               href="/register"
-              className="bg-gradient-to-l from-dawn to-gold text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 transition"
+              className="bg-gradient-to-l from-dawn to-gold text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 transition"
             >
               {t("navRegister")}
             </Link>
@@ -83,7 +96,7 @@ export default async function Home() {
           <div className="animate-fade-up stagger-3 flex flex-wrap gap-4 justify-center mt-2">
             <Link
               href="/register"
-              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-orange-300/60 transition-all"
+              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-amber-300/60 transition-all"
             >
               {t("heroCtaPrimary")}
             </Link>
@@ -95,9 +108,9 @@ export default async function Home() {
             </a>
           </div>
           <div className="animate-fade-up stagger-4 flex gap-10 mt-10 flex-wrap justify-center">
-            {STATS.map(([a, b]) => (
+            {STATS.map(([a, b, color]) => (
               <div key={a} className="text-center">
-                <b className="block text-2xl text-gold font-extrabold">{a}</b>
+                <b className={`block text-2xl font-extrabold ${color}`}>{a}</b>
                 <span className="text-xs text-gray-400">{b}</span>
               </div>
             ))}
@@ -118,7 +131,7 @@ export default async function Home() {
                 key={f.title}
                 className={`hover-lift animate-fade-up stagger-${Math.min(i + 1, 6)} bg-white border border-[#efe6d8] rounded-2xl p-7 hover:shadow-xl`}
               >
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#fff3df] to-[#ffe3c9] flex items-center justify-center text-2xl mb-4">
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${f.colors} flex items-center justify-center text-2xl mb-4`}>
                   {f.icon}
                 </div>
                 <h3 className="font-bold text-night mb-2">{f.title}</h3>
@@ -129,7 +142,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <section id="how" className="py-24 bg-[#fff3e4]">
+      <section id="how" className="py-24 bg-[#fbf3df]">
         <div className="max-w-6xl mx-auto px-5">
           <div className="text-center max-w-xl mx-auto mb-14">
             <span className="text-dawn font-bold text-sm">{t("howEyebrow")}</span>
@@ -149,6 +162,24 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="relative overflow-hidden bg-fajr-night py-20">
+        <div className="absolute inset-0 bg-dot-grid opacity-30" />
+        <div className="relative max-w-5xl mx-auto px-5">
+          <h2 className="text-center text-2xl font-extrabold text-white mb-12">{t("platformStatsTitle")}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {PLATFORM_STATS.map(([value, label, color], i) => (
+              <div
+                key={label}
+                className={`hover-lift animate-fade-up stagger-${i + 1} glass-panel rounded-2xl py-8 text-center`}
+              >
+                <b className={`block text-4xl font-extrabold ${color}`}>{value}</b>
+                <span className="text-sm text-gray-300 mt-2 block">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-5">
           <div className="relative overflow-hidden bg-fajr-night text-white rounded-[28px] p-10 sm:p-14 flex flex-wrap items-center justify-between gap-7 hover-lift">
@@ -162,7 +193,7 @@ export default async function Home() {
             </div>
             <Link
               href="/register"
-              className="relative bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-400/30 transition-all"
+              className="relative bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-400/30 transition-all"
             >
               {t("teacherCtaButton")}
             </Link>
@@ -193,10 +224,36 @@ export default async function Home() {
         </div>
       </section>
 
-      <footer className="relative overflow-hidden bg-fajr-night text-gray-400 py-12 text-center">
+      <footer className="relative overflow-hidden bg-fajr-night text-gray-400 pt-16 pb-8">
         <div className="absolute inset-0 bg-dot-grid opacity-20" />
-        <div className="relative font-extrabold text-white text-lg mb-2">🌅 {tNav("brand")}</div>
-        <p className="relative text-sm">{t("footerTagline")}</p>
+        <div className="relative max-w-6xl mx-auto px-5 grid sm:grid-cols-3 gap-10 text-center sm:text-start">
+          <div>
+            <div className="font-extrabold text-white text-lg mb-2">🌅 {tNav("brand")}</div>
+            <p className="text-sm max-w-xs mx-auto sm:mx-0">{t("footerTagline")}</p>
+          </div>
+          <div>
+            <h4 className="text-gold-light font-bold text-sm mb-4 pb-2 border-b border-white/10 inline-block">
+              {t("footerQuickLinks")}
+            </h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#features" className="hover:text-white transition">{t("navFeatures")}</a></li>
+              <li><a href="#how" className="hover:text-white transition">{t("navHow")}</a></li>
+              <li><a href="#faq" className="hover:text-white transition">{t("navFaq")}</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-gold-light font-bold text-sm mb-4 pb-2 border-b border-white/10 inline-block">
+              {t("footerAccount")}
+            </h4>
+            <ul className="space-y-2 text-sm">
+              <li><Link href="/login" className="hover:text-white transition">{t("navLogin")}</Link></li>
+              <li><Link href="/register" className="hover:text-white transition">{t("navRegister")}</Link></li>
+            </ul>
+          </div>
+        </div>
+        <div className="relative max-w-6xl mx-auto px-5 mt-12 pt-6 border-t border-white/10 text-center text-xs">
+          {t("footerCopyright")}
+        </div>
       </footer>
     </>
   );

@@ -86,7 +86,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
           <button
             type="submit"
             disabled={loading}
-            className="rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 text-sm shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:translate-y-0"
+            className="rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 text-sm shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:translate-y-0"
           >
             {loading ? t("addingLabel") : t("addButtonLabel")}
           </button>
@@ -112,7 +112,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
                     <span
                       key={r.id}
                       style={{ animationDelay: `${Math.min(i * 0.04, 0.3)}s` }}
-                      className="animate-scale-in flex items-center gap-2 text-xs font-bold px-3 py-2 rounded-xl border-2 border-gray-200 bg-gray-50 shadow-sm text-night hover:border-dawn/40 hover:bg-orange-50 hover:shadow-md transition-all"
+                      className="animate-scale-in flex items-center gap-2 text-xs font-bold px-3 py-2 rounded-xl border-2 border-gray-200 bg-gray-50 shadow-sm text-night hover:border-dawn/40 hover:bg-amber-50 hover:shadow-md transition-all"
                     >
                       {r.riwaya}
                       <button

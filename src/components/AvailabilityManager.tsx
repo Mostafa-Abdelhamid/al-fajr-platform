@@ -58,7 +58,7 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
               className={`w-12 h-12 rounded-full text-xs font-bold flex flex-col items-center justify-center transition ${
                 dayOfWeek === i
                   ? "bg-dawn text-white shadow-md scale-105"
-                  : "bg-gray-50 text-night hover:bg-orange-50"
+                  : "bg-gray-50 text-night hover:bg-amber-50"
               }`}
             >
               {locale === "ar" ? d.slice(0, 2) : d}
@@ -108,7 +108,7 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
               .map((s, i) => (
                 <li
                   key={s.id}
-                  className={`animate-scale-in stagger-${Math.min(i + 1, 6)} flex items-center justify-between bg-orange-50 rounded-xl px-4 py-3 text-sm`}
+                  className={`animate-scale-in stagger-${Math.min(i + 1, 6)} flex items-center justify-between bg-amber-50 rounded-xl px-4 py-3 text-sm`}
                 >
                   <span className="font-semibold text-night">
                     {DAYS[s.dayOfWeek]} {t("rangeFrom")} {s.startTime} {t("rangeTo")} {s.endTime}

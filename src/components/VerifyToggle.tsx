@@ -37,7 +37,7 @@ export default function VerifyToggle({
       className={`text-xs font-bold px-4 py-2 rounded-full transition ${
         verified
           ? "bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-700"
-          : "bg-orange-100 text-dawn hover:bg-green-100 hover:text-green-700"
+          : "bg-amber-100 text-dawn hover:bg-green-100 hover:text-green-700"
       }`}
     >
       {verified ? t("verifiedRevoke") : t("unverifiedVerifyNow")}
