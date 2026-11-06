@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { rewardStudentForCompletedSession } from "@/lib/gamification";
+import { rewardStudentForCompletedSession, awardTeacherBaseSessionPoints } from "@/lib/gamification";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { apiMessages } from "@/i18n/dictionaries/apiMessages";
@@ -36,6 +36,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   });
 
   const reward = await rewardStudentForCompletedSession(session.studentId);
+  await awardTeacherBaseSessionPoints(session.teacherId);
 
   return NextResponse.json({ ok: true, reward });
 }

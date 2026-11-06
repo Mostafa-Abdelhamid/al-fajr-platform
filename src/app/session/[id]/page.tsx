@@ -42,6 +42,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
           surahFocus: session.surahFocus,
           teacherNotes: session.teacherNotes,
           rating: session.rating,
+          studentRating: session.studentRating,
           otherPartyName: otherParty.name,
           otherPartyEmoji: otherParty.avatarEmoji,
         }}

@@ -4,6 +4,7 @@ export const student = {
   ar: {
     welcome: "أهلًا بك، {name} 👋",
     dashboardSubtitle: "إليك ملخص رحلتك التعليمية اليوم.",
+    myCertificatesLink: "شهاداتي",
     pointsLabel: "النقاط",
     streakLabel: "المتتالية",
     streakSuffix: " يوم",
@@ -52,6 +53,7 @@ export const student = {
   en: {
     welcome: "Welcome, {name} 👋",
     dashboardSubtitle: "Here's a summary of your learning journey today.",
+    myCertificatesLink: "My Certificates",
     pointsLabel: "Points",
     streakLabel: "Streak",
     streakSuffix: " day",

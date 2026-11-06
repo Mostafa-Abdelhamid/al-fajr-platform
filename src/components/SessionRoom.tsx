@@ -7,6 +7,7 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { session as sessionDict } from "@/i18n/dictionaries/session";
 import { badgeLabel } from "@/i18n/dictionaries/badges";
+import RateTeacherForm from "./RateTeacherForm";
 
 type SessionData = {
   id: string;
@@ -15,6 +16,7 @@ type SessionData = {
   surahFocus: string;
   teacherNotes: string;
   rating: number | null;
+  studentRating: number | null;
   otherPartyName: string;
   otherPartyEmoji: string;
 };
@@ -100,6 +102,16 @@ export default function SessionRoom({
           )}
         </div>
 
+        {!isTeacher && session.status === "COMPLETED" && (
+          <div className="mt-5">
+            <RateTeacherForm
+              sessionId={session.id}
+              teacherName={session.otherPartyName}
+              initialStudentRating={session.studentRating}
+            />
+          </div>
+        )}
+
         {isTeacher && session.status !== "COMPLETED" && (
           <div className="mt-5 bg-white rounded-2xl border border-gray-100 p-5">
             {!result ? (
@@ -149,7 +161,7 @@ export default function SessionRoom({
                     <p className="text-xs text-muted mb-2">{t("studentEarnedBadges")}</p>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {result.newlyEarned.map((b, i) => (
-                        <span key={i} className="bg-orange-50 rounded-lg px-3 py-1 text-xs font-bold">
+                        <span key={i} className="bg-amber-50 rounded-lg px-3 py-1 text-xs font-bold">
                           {b.icon} {badgeLabel(b.type, locale)}
                         </span>
                       ))}

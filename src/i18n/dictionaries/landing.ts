@@ -58,6 +58,14 @@ export const landing = {
     faq3A: 'بالتأكيد، اختر "معلم / معلمة" عند إنشاء الحساب وابدأ بإضافة أوقات تواجدك فورًا.',
 
     footerTagline: "منصة تعليمية لربط طلاب القرآن والقراءات بالمعلمين — النسخة التجريبية 2026",
+    footerQuickLinks: "روابط سريعة",
+    footerAccount: "حسابي",
+    footerCopyright: "© 2026 منصة الفجر. جميع الحقوق محفوظة.",
+
+    platformStatsTitle: "منصة الفجر بالأرقام",
+    platformStatStudents: "طالب مسجّل",
+    platformStatTeachers: "معلم موثوق",
+    platformStatSessions: "حصة مكتملة",
   },
   en: {
     navFeatures: "Features",
@@ -118,5 +126,13 @@ export const landing = {
     faq3A: 'Absolutely — choose "Teacher" when creating your account and start adding your availability right away.',
 
     footerTagline: "An educational platform connecting Quran and Qira'at students with teachers — Pilot 2026",
+    footerQuickLinks: "Quick Links",
+    footerAccount: "My Account",
+    footerCopyright: "© 2026 Al-Fajr Platform. All rights reserved.",
+
+    platformStatsTitle: "Al-Fajr in Numbers",
+    platformStatStudents: "Registered Students",
+    platformStatTeachers: "Trusted Teachers",
+    platformStatSessions: "Completed Sessions",
   },
 } as const;

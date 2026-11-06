@@ -28,6 +28,7 @@ export const admin = {
     noTeachersYet: "لا يوجد معلمون مسجلون بعد.",
     ratingsLabel: "تقييم",
     availabilitySlotsLabel: "أوقات تواجد مُعرّفة",
+    teacherPointsLabel: "نقطة",
     listSeparator: "، ",
 
     // admin/students
@@ -103,6 +104,7 @@ export const admin = {
     noTeachersYet: "No teachers registered yet.",
     ratingsLabel: "ratings",
     availabilitySlotsLabel: "availability slots set",
+    teacherPointsLabel: "points",
     listSeparator: ", ",
 
     studentsPageTitle: "Manage Students",

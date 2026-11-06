@@ -41,6 +41,7 @@ export default function DashboardNav({
           { href: "/admin/teachers", label: t("adminTeachers") },
           { href: "/admin/students", label: t("adminStudents") },
           { href: "/admin/qiraat", label: t("adminQiraat") },
+          { href: "/admin/leaderboard", label: t("adminLeaderboard") },
         ];
 
   async function handleLogout() {
@@ -79,7 +80,7 @@ export default function DashboardNav({
               <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-gold-light transition-transform hover:scale-105">
                 ⭐ {points ?? 0} {t("points")}
               </span>
-              <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-orange-300 transition-transform hover:scale-105">
+              <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-amber-300 transition-transform hover:scale-105">
                 🔥 {streak ?? 0} {t("streak")}
               </span>
             </div>

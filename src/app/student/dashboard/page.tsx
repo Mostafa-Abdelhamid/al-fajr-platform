@@ -5,6 +5,8 @@ import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { student, progressStatusLabel } from "@/i18n/dictionaries/student";
 import { badgeLabel } from "@/i18n/dictionaries/badges";
+import DownloadReportButton from "@/components/DownloadReportButton";
+import RateTeacherForm from "@/components/RateTeacherForm";
 import type { Locale } from "@/i18n/config";
 
 function formatDateTime(d: Date, locale: Locale) {
@@ -47,11 +49,22 @@ export default async function StudentDashboard() {
 
   return (
     <div className="space-y-10">
-      <div className="animate-fade-up">
-        <h1 className="text-2xl font-extrabold text-night">
-          {t("welcome").replace("{name}", user.name)}
-        </h1>
-        <p className="text-muted mt-1">{t("dashboardSubtitle")}</p>
+      <div className="animate-fade-up flex items-start justify-between flex-wrap gap-4">
+        <div>
+          <h1 className="text-2xl font-extrabold text-night">
+            {t("welcome").replace("{name}", user.name)}
+          </h1>
+          <p className="text-muted mt-1">{t("dashboardSubtitle")}</p>
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          <Link
+            href="/student/certificates"
+            className="text-sm font-bold text-night bg-white border border-gray-200 rounded-full px-5 py-2.5 hover:border-dawn/40 transition"
+          >
+            🏅 {t("myCertificatesLink")}
+          </Link>
+          <DownloadReportButton studentId={user.id} />
+        </div>
       </div>
 
       {/* Stats row */}
@@ -80,7 +93,7 @@ export default async function StudentDashboard() {
             </div>
             <Link
               href={`/session/${nextSession.id}`}
-              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 rounded-full hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-400/30 transition-all animate-pulse-ring"
+              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 rounded-full hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-400/30 transition-all animate-pulse-ring"
             >
               🎥 {t("enterSession")}
             </Link>
@@ -93,7 +106,7 @@ export default async function StudentDashboard() {
             </div>
             <Link
               href="/student/book"
-              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 rounded-full hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-400/30 transition-all"
+              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 rounded-full hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-400/30 transition-all"
             >
               {t("bookNow")}
             </Link>
@@ -123,7 +136,7 @@ export default async function StudentDashboard() {
                             ? "bg-green-100 text-green-700"
                             : p.status === "مراجعة"
                             ? "bg-blue-100 text-blue-700"
-                            : "bg-orange-100 text-orange-700"
+                            : "bg-amber-100 text-amber-700"
                         }`}
                       >
                         {progressStatusLabel(p.status, locale)}
@@ -152,7 +165,7 @@ export default async function StudentDashboard() {
               {badges.map((b, i) => (
                 <div
                   key={b.id}
-                  className={`animate-scale-in stagger-${Math.min(i + 1, 6)} flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-xl px-4 py-2 transition-transform hover:scale-105`}
+                  className={`animate-scale-in stagger-${Math.min(i + 1, 6)} flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-xl px-4 py-2 transition-transform hover:scale-105`}
                   title={badgeLabel(b.type, locale)}
                 >
                   <span className="text-xl">{b.icon}</span>
@@ -170,23 +183,32 @@ export default async function StudentDashboard() {
         {past.length === 0 ? (
           <p className="text-sm text-muted">{t("historyEmpty")}</p>
         ) : (
-          <ul className="divide-y">
+          <ul className="space-y-4">
             {past.map((s) => (
-              <li key={s.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="font-semibold text-sm">
-                    {s.teacher.avatarEmoji} {s.teacher.name}
-                  </p>
-                  <p className="text-xs text-muted">{formatDateTime(s.startAt, locale)}</p>
-                  {s.teacherNotes && (
-                    <p className="text-xs text-muted mt-1">{t("teacherNotePrefix")} {s.teacherNotes}</p>
+              <li key={s.id} className="pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div>
+                    <p className="font-semibold text-sm">
+                      {s.teacher.avatarEmoji} {s.teacher.name}
+                    </p>
+                    <p className="text-xs text-muted">{formatDateTime(s.startAt, locale)}</p>
+                    {s.teacherNotes && (
+                      <p className="text-xs text-muted mt-1">{t("teacherNotePrefix")} {s.teacherNotes}</p>
+                    )}
+                  </div>
+                  {s.rating && (
+                    <span className="text-gold font-bold text-sm">
+                      {"★".repeat(s.rating)}{"☆".repeat(5 - s.rating)}
+                    </span>
                   )}
                 </div>
-                {s.rating && (
-                  <span className="text-gold font-bold text-sm">
-                    {"★".repeat(s.rating)}{"☆".repeat(5 - s.rating)}
-                  </span>
-                )}
+                <div className="mt-3">
+                  <RateTeacherForm
+                    sessionId={s.id}
+                    teacherName={s.teacher.name}
+                    initialStudentRating={s.studentRating}
+                  />
+                </div>
               </li>
             ))}
           </ul>

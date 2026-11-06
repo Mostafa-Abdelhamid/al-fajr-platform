@@ -55,7 +55,7 @@ export default async function AdminDashboard() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         <StatCard icon="🧑‍🎓" label={t("statStudents")} value={studentCount} color="bg-blue-50" delay={1} />
-        <StatCard icon="👨‍🏫" label={t("statTeachers")} value={teacherCount} color="bg-orange-50" delay={2} />
+        <StatCard icon="👨‍🏫" label={t("statTeachers")} value={teacherCount} color="bg-amber-50" delay={2} />
         <StatCard icon="📅" label={t("statUpcoming")} value={scheduledCount} color="bg-purple-50" delay={3} />
         <StatCard icon="✅" label={t("statCompleted")} value={completedCount} color="bg-green-50" delay={4} />
         <StatCard icon="⭐" label={t("statAvgRating")} value={avgRating} color="bg-yellow-50" delay={5} />
@@ -63,9 +63,9 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid sm:grid-cols-3 gap-4">
-        <QuickLinkCard href="/admin/teachers" icon="👨‍🏫" title={t("quickManageTeachersTitle")} desc={t("quickManageTeachersDesc")} />
-        <QuickLinkCard href="/admin/students" icon="🧑‍🎓" title={t("quickManageStudentsTitle")} desc={t("quickManageStudentsDesc")} />
-        <QuickLinkCard href="/admin/qiraat" icon="📖" title={t("quickManageQiraatTitle")} desc={t("quickManageQiraatDesc")} />
+        <QuickLinkCard href="/admin/teachers" icon="👨‍🏫" title={t("quickManageTeachersTitle")} desc={t("quickManageTeachersDesc")} color="bg-amber-50" />
+        <QuickLinkCard href="/admin/students" icon="🧑‍🎓" title={t("quickManageStudentsTitle")} desc={t("quickManageStudentsDesc")} color="bg-blue-50" />
+        <QuickLinkCard href="/admin/qiraat" icon="📖" title={t("quickManageQiraatTitle")} desc={t("quickManageQiraatDesc")} color="bg-purple-50" />
       </div>
 
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
@@ -126,13 +126,25 @@ function StatCard({
   );
 }
 
-function QuickLinkCard({ href, icon, title, desc }: { href: string; icon: string; title: string; desc: string }) {
+function QuickLinkCard({
+  href,
+  icon,
+  title,
+  desc,
+  color = "bg-amber-50",
+}: {
+  href: string;
+  icon: string;
+  title: string;
+  desc: string;
+  color?: string;
+}) {
   return (
     <Link
       href={href}
       className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-5 flex items-center gap-4 hover:border-dawn/40 transition-colors"
     >
-      <span className="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center text-xl shrink-0">
+      <span className={`w-11 h-11 rounded-xl ${color} flex items-center justify-center text-xl shrink-0`}>
         {icon}
       </span>
       <div>

@@ -5,6 +5,9 @@ import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { teacher as teacherDict } from "@/i18n/dictionaries/teacher";
 import ProgressForm from "@/components/ProgressForm";
+import IssueCertificateButton from "@/components/IssueCertificateButton";
+import TeacherStudentLeaderboard from "@/components/TeacherStudentLeaderboard";
+import DownloadScheduleButton from "@/components/DownloadScheduleButton";
 
 function formatDateTime(d: Date, locale: "ar" | "en") {
   return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
@@ -67,12 +70,19 @@ export default async function TeacherDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         <StatCard icon="📅" label={t("statUpcoming")} value={upcoming.length} delay={1} />
         <StatCard icon="✅" label={t("statCompleted")} value={completed.length} delay={2} />
         <StatCard icon="🧑‍🎓" label={t("statStudentCount")} value={students.length} delay={3} />
         <StatCard icon="⭐" label={t("statRating")} value={profile ? Number(profile.rating.toFixed(1)) : 5} delay={4} />
+        <StatCard icon="🏆" label={t("statPoints")} value={profile?.points ?? 0} delay={5} />
       </div>
+
+      <div className="flex justify-end">
+        <DownloadScheduleButton teacherId={user.id} />
+      </div>
+
+      <TeacherStudentLeaderboard teacherId={user.id} />
 
       <section className="hover-lift animate-fade-up stagger-3 bg-white rounded-2xl border border-gray-100 p-6">
         <div className="flex items-center justify-between mb-4">
@@ -151,9 +161,12 @@ export default async function TeacherDashboard() {
           <ul className="divide-y">
             {students.map((st) => (
               <li key={st.id} className="py-4">
-                <p className="font-semibold text-sm">
-                  {st.avatarEmoji} {st.name}
-                </p>
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                  <p className="font-semibold text-sm">
+                    {st.avatarEmoji} {st.name}
+                  </p>
+                  <IssueCertificateButton studentId={st.id} studentName={st.name} />
+                </div>
                 <ProgressForm studentId={st.id} />
               </li>
             ))}

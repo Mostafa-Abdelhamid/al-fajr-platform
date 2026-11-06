@@ -98,7 +98,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-orange-300/40 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-300/50 transition-all disabled:opacity-60 disabled:translate-y-0"
+            className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-300/50 transition-all disabled:opacity-60 disabled:translate-y-0"
           >
             {loading ? t("loginLoading") : t("loginButton")}
           </button>

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import DeleteUserButton from "@/components/DeleteUserButton";
+import DownloadReportButton from "@/components/DownloadReportButton";
 import AdminSearchBar from "@/components/AdminSearchBar";
 import AdminPagination from "@/components/AdminPagination";
 import { getLocale } from "@/i18n/getLocale";
@@ -84,7 +85,10 @@ export default async function AdminStudentsPage({
                     </p>
                   </div>
                 </div>
-                <DeleteUserButton userId={s.id} userName={s.name} />
+                <div className="flex items-center gap-2">
+                  <DownloadReportButton studentId={s.id} className="!px-3 !py-1.5 !text-xs !shadow-none" />
+                  <DeleteUserButton userId={s.id} userName={s.name} />
+                </div>
               </li>
             ))}
           </ul>

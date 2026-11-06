@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import VerifyToggle from "@/components/VerifyToggle";
 import DeleteUserButton from "@/components/DeleteUserButton";
+import DownloadScheduleButton from "@/components/DownloadScheduleButton";
 import AdminSearchBar from "@/components/AdminSearchBar";
 import AdminPagination from "@/components/AdminPagination";
 import { getLocale } from "@/i18n/getLocale";
@@ -53,7 +54,7 @@ export default async function AdminTeachersPage({
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
           <div className="flex items-center gap-2">
-            <span className="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center text-lg">👨‍🏫</span>
+            <span className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center text-lg">👨‍🏫</span>
             <h3 className="font-extrabold text-night">{t("allTeachersTitle")}</h3>
             <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">{totalCount}</span>
           </div>
@@ -70,10 +71,10 @@ export default async function AdminTeachersPage({
               <li
                 key={t2.id}
                 style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
-                className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-orange-50 hover:border-dawn/40 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+                className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-amber-50 hover:border-dawn/40 hover:shadow-lg hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-lg shrink-0">
+                  <span className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-lg shrink-0">
                     {t2.user.avatarEmoji}
                   </span>
                   <div>
@@ -82,11 +83,12 @@ export default async function AdminTeachersPage({
                       <span className="text-xs text-muted font-normal">({t2.user.email})</span>
                     </p>
                     <p className="text-xs text-muted mt-0.5">
-                      {t2.qiraat.join(t("listSeparator"))} • ⭐ {t2.rating.toFixed(1)} ({t2.ratingCount} {t("ratingsLabel")}) • {t2.availability.length} {t("availabilitySlotsLabel")}
+                      {t2.qiraat.join(t("listSeparator"))} • ⭐ {t2.rating.toFixed(1)} ({t2.ratingCount} {t("ratingsLabel")}) • {t2.availability.length} {t("availabilitySlotsLabel")} • 🏆 {t2.points} {t("teacherPointsLabel")}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <DownloadScheduleButton teacherId={t2.user.id} />
                   <VerifyToggle teacherProfileId={t2.id} initialVerified={t2.isVerified} />
                   <DeleteUserButton userId={t2.user.id} userName={t2.user.name} />
                 </div>
