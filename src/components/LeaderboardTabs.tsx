@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { leaderboard } from "@/i18n/dictionaries/leaderboard";
+import AnimatedNumber from "./AnimatedNumber";
+import { staggerDelay } from "@/lib/animation";
 
 type StudentRow = { id: string; name: string; avatarEmoji: string; points: number; streak: number };
 type TeacherRow = {
@@ -58,7 +60,7 @@ export default function LeaderboardTabs({
             {students.map((s, i) => (
               <li
                 key={s.id}
-                style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+                style={{ animationDelay: staggerDelay(i) }}
                 className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 hover:bg-blue-50 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center gap-3">
@@ -76,10 +78,10 @@ export default function LeaderboardTabs({
                 </div>
                 <div className="flex items-center gap-4 text-xs font-bold">
                   <span className="text-gold bg-amber-50 rounded-full px-3 py-1.5">
-                    ⭐ {s.points} {t("pointsLabel")}
+                    ⭐ <AnimatedNumber value={s.points} /> {t("pointsLabel")}
                   </span>
                   <span className="text-rose-500 bg-rose-50 rounded-full px-3 py-1.5">
-                    🔥 {s.streak} {t("streakLabel")}
+                    🔥 <AnimatedNumber value={s.streak} /> {t("streakLabel")}
                   </span>
                 </div>
               </li>
@@ -93,7 +95,7 @@ export default function LeaderboardTabs({
           {teachers.map((tr, i) => (
             <li
               key={tr.id}
-              style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+              style={{ animationDelay: staggerDelay(i) }}
               className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 hover:bg-purple-50 hover:border-purple-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-center gap-3">
@@ -111,10 +113,10 @@ export default function LeaderboardTabs({
               </div>
               <div className="flex items-center gap-4 text-xs font-bold">
                 <span className="text-teal-600 bg-teal-50 rounded-full px-3 py-1.5">
-                  ⭐ {tr.rating.toFixed(1)} ({tr.ratingCount} {t("ratingsLabel")})
+                  ⭐ <AnimatedNumber value={tr.rating} decimals={1} /> (<AnimatedNumber value={tr.ratingCount} /> {t("ratingsLabel")})
                 </span>
                 <span className="text-gold bg-amber-50 rounded-full px-3 py-1.5">
-                  🏅 {tr.points} {t("pointsLabel")}
+                  🏅 <AnimatedNumber value={tr.points} /> {t("pointsLabel")}
                 </span>
               </div>
             </li>

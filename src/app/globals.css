@@ -73,6 +73,11 @@ details summary::-webkit-details-marker {
   50%      { transform: translateY(-6px); }
 }
 
+@keyframes fajr-grow-width {
+  from { width: 0%; }
+  to   { width: var(--bar-width, 100%); }
+}
+
 .animate-fade-up {
   animation: fajr-fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -88,6 +93,10 @@ details summary::-webkit-details-marker {
 .animate-pulse-ring {
   animation: fajr-pulse-ring 2s ease-out infinite;
 }
+.animate-grow-bar {
+  width: var(--bar-width, 100%);
+  animation: fajr-grow-width 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 
 .stagger-1 { animation-delay: 0.06s; }
 .stagger-2 { animation-delay: 0.12s; }
@@ -97,7 +106,7 @@ details summary::-webkit-details-marker {
 .stagger-6 { animation-delay: 0.36s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up, .animate-fade-in, .animate-scale-in, .animate-float, .animate-pulse-ring {
+  .animate-fade-up, .animate-fade-in, .animate-scale-in, .animate-float, .animate-pulse-ring, .animate-grow-bar {
     animation: none !important;
   }
 }

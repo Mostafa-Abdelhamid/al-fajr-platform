@@ -8,6 +8,7 @@ import ProgressForm from "@/components/ProgressForm";
 import IssueCertificateButton from "@/components/IssueCertificateButton";
 import TeacherStudentLeaderboard from "@/components/TeacherStudentLeaderboard";
 import DownloadScheduleButton from "@/components/DownloadScheduleButton";
+import AnimatedNumber from "@/components/AnimatedNumber";
 
 function formatDateTime(d: Date, locale: "ar" | "en") {
   return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
@@ -79,7 +80,13 @@ export default async function TeacherDashboard() {
         <StatCard icon="📅" label={t("statUpcoming")} value={upcoming.length} delay={1} />
         <StatCard icon="✅" label={t("statCompleted")} value={completed.length} delay={2} />
         <StatCard icon="🧑‍🎓" label={t("statStudentCount")} value={students.length} delay={3} />
-        <StatCard icon="⭐" label={t("statRating")} value={profile ? Number(profile.rating.toFixed(1)) : 5} delay={4} />
+        <StatCard
+          icon="⭐"
+          label={t("statRating")}
+          value={profile ? Number(profile.rating.toFixed(1)) : 5}
+          decimals={1}
+          delay={4}
+        />
         <StatCard icon="🏆" label={t("statPoints")} value={profile?.points ?? 0} delay={5} />
       </div>
 
@@ -128,7 +135,7 @@ export default async function TeacherDashboard() {
           <div className="flex items-center gap-2 mb-4">
             <h3 className="font-extrabold text-night">{t("missedTitle")}</h3>
             <span className="text-xs font-bold text-red-700 bg-red-100 rounded-full px-2.5 py-1">
-              {missed.length}
+              <AnimatedNumber value={missed.length} />
             </span>
           </div>
           <p className="text-xs text-muted -mt-2 mb-4">
@@ -183,7 +190,7 @@ export default async function TeacherDashboard() {
         <div className="flex items-center gap-2 mb-4">
           <h3 className="font-extrabold text-night">{t("issuedCertificatesTitle")}</h3>
           <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">
-            {issuedCertificates.length}
+            <AnimatedNumber value={issuedCertificates.length} />
           </span>
         </div>
         {issuedCertificates.length === 0 ? (
@@ -250,17 +257,21 @@ function StatCard({
   icon,
   label,
   value,
+  decimals = 0,
   delay = 0,
 }: {
   icon: string;
   label: string;
   value: number;
+  decimals?: number;
   delay?: number;
 }) {
   return (
     <div className={`hover-lift animate-fade-up stagger-${delay} bg-white rounded-2xl border border-gray-100 p-5 text-center`}>
       <div className="text-2xl mb-1">{icon}</div>
-      <div className="text-xl font-extrabold text-night">{value}</div>
+      <div className="text-xl font-extrabold text-night">
+        <AnimatedNumber value={value} decimals={decimals} />
+      </div>
       <div className="text-xs text-muted mt-1">{label}</div>
     </div>
   );

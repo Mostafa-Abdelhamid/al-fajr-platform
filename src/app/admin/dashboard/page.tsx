@@ -4,6 +4,8 @@ import { getEffectiveStatus, statusLabel, STATUS_BADGE_CLASSES } from "@/lib/ses
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { admin } from "@/i18n/dictionaries/admin";
+import AnimatedNumber from "@/components/AnimatedNumber";
+import { staggerDelay } from "@/lib/animation";
 import type { Locale } from "@/i18n/config";
 
 function formatDateTime(d: Date, locale: Locale) {
@@ -35,9 +37,7 @@ export default async function AdminDashboard() {
     ]);
 
   const avgRating =
-    teachers.length > 0
-      ? (teachers.reduce((sum, t) => sum + t.rating, 0) / teachers.length).toFixed(1)
-      : "—";
+    teachers.length > 0 ? teachers.reduce((sum, t) => sum + t.rating, 0) / teachers.length : null;
 
   return (
     <div className="space-y-10">
@@ -58,7 +58,7 @@ export default async function AdminDashboard() {
         <StatCard icon="👨‍🏫" label={t("statTeachers")} value={teacherCount} color="bg-amber-50" delay={2} />
         <StatCard icon="📅" label={t("statUpcoming")} value={scheduledCount} color="bg-purple-50" delay={3} />
         <StatCard icon="✅" label={t("statCompleted")} value={completedCount} color="bg-green-50" delay={4} />
-        <StatCard icon="⭐" label={t("statAvgRating")} value={avgRating} color="bg-yellow-50" delay={5} />
+        <StatCard icon="⭐" label={t("statAvgRating")} value={avgRating} decimals={1} color="bg-yellow-50" delay={5} />
         <StatCard icon="🏅" label={t("statTotalPoints")} value={pointsAgg._sum.points ?? 0} color="bg-red-50" delay={6} />
       </div>
 
@@ -82,7 +82,7 @@ export default async function AdminDashboard() {
               return (
                 <li
                   key={s.id}
-                  style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+                  style={{ animationDelay: staggerDelay(i) }}
                   className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-2 text-sm cursor-pointer hover:bg-purple-50 hover:border-purple-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
                   <span>
@@ -106,12 +106,14 @@ function StatCard({
   icon,
   label,
   value,
+  decimals = 0,
   color = "bg-gray-50",
   delay = 0,
 }: {
   icon: string;
   label: string;
-  value: number | string;
+  value: number | null;
+  decimals?: number;
   color?: string;
   delay?: number;
 }) {
@@ -120,7 +122,9 @@ function StatCard({
       <div className={`w-10 h-10 rounded-xl ${color} flex items-center justify-center text-xl mx-auto mb-2`}>
         {icon}
       </div>
-      <div className="text-xl font-extrabold text-night">{value}</div>
+      <div className="text-xl font-extrabold text-night">
+        {value === null ? "—" : <AnimatedNumber value={value} decimals={decimals} />}
+      </div>
       <div className="text-xs text-muted mt-1">{label}</div>
     </div>
   );

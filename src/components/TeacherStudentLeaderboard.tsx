@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { leaderboard } from "@/i18n/dictionaries/leaderboard";
+import AnimatedNumber from "./AnimatedNumber";
+import { staggerDelay } from "@/lib/animation";
 
 const MEDAL = ["🥇", "🥈", "🥉"];
 const RANK_COLOR = ["text-amber-500", "text-gray-400", "text-amber-700"];
@@ -38,7 +40,7 @@ export default async function TeacherStudentLeaderboard({ teacherId }: { teacher
           {students.map((s, i) => (
             <li
               key={s.id}
-              style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+              style={{ animationDelay: staggerDelay(i) }}
               className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-3 flex items-center justify-between flex-wrap gap-3 hover:bg-blue-50 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-center gap-3">
@@ -52,10 +54,10 @@ export default async function TeacherStudentLeaderboard({ teacherId }: { teacher
               </div>
               <div className="flex items-center gap-3 text-xs font-bold">
                 <span className="text-gold bg-amber-50 rounded-full px-3 py-1.5">
-                  ⭐ {s.points} {t("pointsLabel")}
+                  ⭐ <AnimatedNumber value={s.points} /> {t("pointsLabel")}
                 </span>
                 <span className="text-rose-500 bg-rose-50 rounded-full px-3 py-1.5">
-                  🔥 {s.streak} {t("streakLabel")}
+                  🔥 <AnimatedNumber value={s.streak} /> {t("streakLabel")}
                 </span>
               </div>
             </li>

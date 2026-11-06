@@ -6,6 +6,7 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { nav } from "@/i18n/dictionaries/nav";
 import LocaleSwitcher from "./LocaleSwitcher";
+import AnimatedNumber from "./AnimatedNumber";
 
 export default function DashboardNav({
   name,
@@ -79,10 +80,10 @@ export default function DashboardNav({
           {role === "STUDENT" && (
             <div className="flex items-center gap-2 text-sm">
               <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-gold-light transition-transform hover:scale-105">
-                ⭐ {points ?? 0} {t("points")}
+                ⭐ <AnimatedNumber value={points ?? 0} duration={800} /> {t("points")}
               </span>
               <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-amber-300 transition-transform hover:scale-105">
-                🔥 {streak ?? 0} {t("streak")}
+                🔥 <AnimatedNumber value={streak ?? 0} duration={800} /> {t("streak")}
               </span>
             </div>
           )}

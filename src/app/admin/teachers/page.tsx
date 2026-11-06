@@ -7,6 +7,8 @@ import AdminPagination from "@/components/AdminPagination";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { admin } from "@/i18n/dictionaries/admin";
+import AnimatedNumber from "@/components/AnimatedNumber";
+import { staggerDelay } from "@/lib/animation";
 
 const PAGE_SIZE = 10;
 
@@ -56,7 +58,9 @@ export default async function AdminTeachersPage({
           <div className="flex items-center gap-2">
             <span className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center text-lg">👨‍🏫</span>
             <h3 className="font-extrabold text-night">{t("allTeachersTitle")}</h3>
-            <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">{totalCount}</span>
+            <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">
+              <AnimatedNumber value={totalCount} />
+            </span>
           </div>
           <div className="w-full sm:w-64">
             <AdminSearchBar placeholder={t("searchByNameEmail")} />
@@ -70,7 +74,7 @@ export default async function AdminTeachersPage({
             {teachers.map((t2, i) => (
               <li
                 key={t2.id}
-                style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+                style={{ animationDelay: staggerDelay(i) }}
                 className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-amber-50 hover:border-dawn/40 hover:shadow-lg hover:-translate-y-0.5 transition-all"
               >
                 <div className="flex items-center gap-3">

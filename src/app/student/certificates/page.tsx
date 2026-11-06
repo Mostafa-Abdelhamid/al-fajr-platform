@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { certificates } from "@/i18n/dictionaries/certificates";
+import { staggerDelay } from "@/lib/animation";
 import type { Locale } from "@/i18n/config";
 
 function formatDate(d: Date, locale: Locale) {
@@ -46,7 +47,7 @@ export default async function StudentCertificatesPage() {
             return (
               <div
                 key={c.id}
-                style={{ animationDelay: `${Math.min(i * 0.06, 0.4)}s` }}
+                style={{ animationDelay: staggerDelay(i, 0.06) }}
                 className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6 flex flex-col gap-3"
               >
                 <div className="flex items-center gap-3">

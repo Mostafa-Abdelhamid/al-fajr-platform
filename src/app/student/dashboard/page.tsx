@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -7,6 +8,8 @@ import { student, progressStatusLabel } from "@/i18n/dictionaries/student";
 import { badgeLabel } from "@/i18n/dictionaries/badges";
 import DownloadReportButton from "@/components/DownloadReportButton";
 import RateTeacherForm from "@/components/RateTeacherForm";
+import AnimatedNumber from "@/components/AnimatedNumber";
+import { staggerDelay } from "@/lib/animation";
 import type { Locale } from "@/i18n/config";
 
 function formatDateTime(d: Date, locale: Locale) {
@@ -144,8 +147,8 @@ export default async function StudentDashboard() {
                     </div>
                     <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${barColor} transition-all duration-700`}
-                        style={{ width: `${pct}%` }}
+                        className={`h-full rounded-full ${barColor} animate-grow-bar`}
+                        style={{ "--bar-width": `${pct}%` } as CSSProperties}
                       />
                     </div>
                   </li>
@@ -165,7 +168,8 @@ export default async function StudentDashboard() {
               {badges.map((b, i) => (
                 <div
                   key={b.id}
-                  className={`animate-scale-in stagger-${Math.min(i + 1, 6)} flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-xl px-4 py-2 transition-transform hover:scale-105`}
+                  style={{ animationDelay: staggerDelay(i + 1) }}
+                  className="animate-scale-in flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-xl px-4 py-2 transition-transform hover:scale-105"
                   title={badgeLabel(b.type, locale)}
                 >
                   <span className="text-xl">{b.icon}</span>
@@ -237,8 +241,7 @@ function StatCard({
     >
       <div className="text-2xl mb-1">{icon}</div>
       <div className="text-xl font-extrabold text-night">
-        {value}
-        {suffix}
+        <AnimatedNumber value={value} suffix={suffix} />
       </div>
       <div className="text-xs text-muted mt-1">{label}</div>
     </div>

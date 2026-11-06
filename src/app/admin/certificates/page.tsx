@@ -5,6 +5,8 @@ import { certificates } from "@/i18n/dictionaries/certificates";
 import { admin } from "@/i18n/dictionaries/admin";
 import AdminSearchBar from "@/components/AdminSearchBar";
 import AdminPagination from "@/components/AdminPagination";
+import AnimatedNumber from "@/components/AnimatedNumber";
+import { staggerDelay } from "@/lib/animation";
 
 const PAGE_SIZE = 15;
 
@@ -71,7 +73,9 @@ export default async function AdminCertificatesPage({
           <div className="flex items-center gap-2">
             <span className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center text-lg">🏅</span>
             <h3 className="font-extrabold text-night">{t("allCertificatesTitle")}</h3>
-            <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">{totalCount}</span>
+            <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">
+              <AnimatedNumber value={totalCount} />
+            </span>
           </div>
           <div className="w-full sm:w-64">
             <AdminSearchBar placeholder={tAdmin("searchByNameEmail")} />
@@ -93,7 +97,7 @@ export default async function AdminCertificatesPage({
               return (
                 <li
                   key={c.id}
-                  style={{ animationDelay: `${Math.min(i * 0.05, 0.4)}s` }}
+                  style={{ animationDelay: staggerDelay(i) }}
                   className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-rose-50 hover:border-rose-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
                 >
                   <div className="flex items-center gap-3">
