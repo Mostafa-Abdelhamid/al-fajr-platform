@@ -30,6 +30,9 @@ export const apiMessages = {
     invalidEmail: "البريد الإلكتروني غير صالح.",
     useRealEmail: "الرجاء استخدام بريد إلكتروني حقيقي خاص بك.",
     noMailServerForDomain: "تعذر العثور على خادم بريد لهذا النطاق، تأكد من صحة البريد الإلكتروني.",
+    sessionNotCompletedYet: "لا يمكن تقييم المعلم قبل اكتمال الحصة",
+    alreadyRatedTeacher: "لقد قيّمت هذا المعلم لهذه الحصة بالفعل",
+    invalidRating: "الرجاء اختيار تقييم من 1 إلى 5",
   },
   en: {
     unauthorized: "Unauthorized",
@@ -62,5 +65,8 @@ export const apiMessages = {
     invalidEmail: "This email address is invalid.",
     useRealEmail: "Please use a real email address of your own.",
     noMailServerForDomain: "Couldn't find a mail server for this domain, please check the email is correct.",
+    sessionNotCompletedYet: "You can't rate the teacher before the session is completed",
+    alreadyRatedTeacher: "You've already rated this teacher for this session",
+    invalidRating: "Please choose a rating from 1 to 5",
   },
 } as const;
