@@ -8,6 +8,7 @@ import { makeT } from "@/i18n/t";
 import { session as sessionDict } from "@/i18n/dictionaries/session";
 import { badgeLabel } from "@/i18n/dictionaries/badges";
 import RateTeacherForm from "./RateTeacherForm";
+import LoadingDots from "./LoadingDots";
 
 type SessionData = {
   id: string;
@@ -149,7 +150,14 @@ export default function SessionRoom({
                     disabled={loading}
                     className="w-full bg-gradient-to-l from-dawn to-gold text-white font-bold py-3 rounded-xl text-sm disabled:opacity-60"
                   >
-                    {loading ? t("saving") : t("saveAndEnd")}
+                    {loading ? (
+                      <span className="inline-flex items-center gap-2">
+                        {t("saving")}
+                        <LoadingDots />
+                      </span>
+                    ) : (
+                      t("saveAndEnd")
+                    )}
                   </button>
                 </div>
               )

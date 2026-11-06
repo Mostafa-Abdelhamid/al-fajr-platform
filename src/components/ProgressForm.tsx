@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { teacher, progressStatusLabels } from "@/i18n/dictionaries/teacher";
+import LoadingDots from "./LoadingDots";
 
 // Surah names and progress-status values are stored as-is in the database
 // and compared elsewhere (e.g. student dashboard checks p.status === "مكتمل"),
@@ -76,7 +77,15 @@ export default function ProgressForm({ studentId }: { studentId: string }) {
         disabled={loading}
         className="bg-night text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-night-2 transition disabled:opacity-60"
       >
-        {error ? t("saveFailed") : done ? t("saved") : loading ? "..." : t("updateProgress")}
+        {error ? (
+          t("saveFailed")
+        ) : done ? (
+          t("saved")
+        ) : loading ? (
+          <LoadingDots />
+        ) : (
+          t("updateProgress")
+        )}
       </button>
     </div>
   );

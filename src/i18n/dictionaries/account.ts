@@ -11,7 +11,7 @@ export const account = {
     genericError: "حدث خطأ ما",
     connectionError: "تعذر الاتصال بالخادم",
     successMessage: "✅ تم تغيير كلمة المرور بنجاح.",
-    saving: "جارٍ الحفظ...",
+    saving: "جارٍ الحفظ",
     submit: "حفظ كلمة المرور الجديدة",
   },
   en: {
@@ -26,7 +26,7 @@ export const account = {
     genericError: "Something went wrong",
     connectionError: "Couldn't connect to the server",
     successMessage: "✅ Password changed successfully.",
-    saving: "Saving...",
+    saving: "Saving",
     submit: "Save New Password",
   },
 } as const;

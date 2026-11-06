@@ -6,6 +6,7 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { dirForLocale } from "@/i18n/config";
 import { makeT } from "@/i18n/t";
 import { teacher, DAYS_AR, DAYS_EN, DAYS_SHORT_AR, DAYS_SHORT_EN } from "@/i18n/dictionaries/teacher";
+import LoadingDots from "./LoadingDots";
 
 type Slot = { id: string; dayOfWeek: number; startTime: string; endTime: string };
 
@@ -90,7 +91,14 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
             disabled={loading}
             className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-2.5 rounded-full text-sm hover:-translate-y-0.5 transition disabled:opacity-60"
           >
-            {loading ? t("adding") : t("add")}
+            {loading ? (
+              <span className="inline-flex items-center gap-2">
+                {t("adding")}
+                <LoadingDots />
+              </span>
+            ) : (
+              t("add")
+            )}
           </button>
         </div>
         {error && <p className="text-sm text-red-600 font-semibold mt-3">{error}</p>}

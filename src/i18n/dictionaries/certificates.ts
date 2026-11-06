@@ -21,7 +21,7 @@ export const certificates = {
     notePlaceholder: "اكتب رسالة تقدير قصيرة للطالب...",
     cancelButton: "إلغاء",
     submitButton: "إصدار",
-    submittingLabel: "جارٍ الإصدار...",
+    submittingLabel: "جارٍ الإصدار",
     issueSuccess: "✅ تم إصدار الشهادة",
     issueFailed: "تعذر إصدار الشهادة",
 
@@ -56,7 +56,7 @@ export const certificates = {
     notePlaceholder: "Write a short note of appreciation for the student...",
     cancelButton: "Cancel",
     submitButton: "Issue",
-    submittingLabel: "Issuing...",
+    submittingLabel: "Issuing",
     issueSuccess: "✅ Certificate issued",
     issueFailed: "Failed to issue certificate",
 

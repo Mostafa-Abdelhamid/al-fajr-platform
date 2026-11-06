@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { admin } from "@/i18n/dictionaries/admin";
+import LoadingDots from "./LoadingDots";
 
 export default function DeleteUserButton({ userId, userName }: { userId: string; userName: string }) {
   const router = useRouter();
@@ -34,7 +35,14 @@ export default function DeleteUserButton({ userId, userName }: { userId: string;
       disabled={loading}
       className="text-xs font-bold text-red-600 hover:bg-red-50 px-3 py-2 rounded-full transition disabled:opacity-50"
     >
-      {loading ? t("deletingLabel") : t("deleteLabel")}
+      {loading ? (
+        <span className="inline-flex items-center gap-2">
+          {t("deletingLabel")}
+          <LoadingDots />
+        </span>
+      ) : (
+        t("deleteLabel")
+      )}
     </button>
   );
 }

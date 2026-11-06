@@ -6,6 +6,7 @@ import MonthCalendar, { dateKey } from "./MonthCalendar";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { student } from "@/i18n/dictionaries/student";
+import LoadingDots from "./LoadingDots";
 
 type Teacher = {
   id: string;
@@ -156,7 +157,14 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
                   disabled={loading || !selected}
                   className="w-full sm:w-auto bg-night text-white font-bold px-6 py-3 rounded-full text-sm hover:-translate-y-0.5 transition disabled:opacity-50"
                 >
-                  {loading ? t("bookingInProgress") : t("confirmBooking")}
+                  {loading ? (
+                    <span className="inline-flex items-center gap-2">
+                      {t("bookingInProgress")}
+                      <LoadingDots />
+                    </span>
+                  ) : (
+                    t("confirmBooking")
+                  )}
                 </button>
               </div>
             </div>

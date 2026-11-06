@@ -44,7 +44,7 @@ export const student = {
     focusQuestion: "ما الذي تريد التركيز عليه؟ (اختياري)",
     focusPlaceholder: "مثال: سورة البقرة، مراجعة التجويد...",
     bookingFailedDefault: "تعذر الحجز",
-    bookingInProgress: "جارٍ الحجز...",
+    bookingInProgress: "جارٍ الحجز",
     confirmBooking: "تأكيد الحجز",
 
     prevMonth: "الشهر السابق",
@@ -93,7 +93,7 @@ export const student = {
     focusQuestion: "What would you like to focus on? (optional)",
     focusPlaceholder: "e.g. Surah Al-Baqarah, Tajweed review...",
     bookingFailedDefault: "Booking failed",
-    bookingInProgress: "Booking...",
+    bookingInProgress: "Booking",
     confirmBooking: "Confirm Booking",
 
     prevMonth: "Previous month",

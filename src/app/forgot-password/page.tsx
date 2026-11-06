@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthShell from "@/components/AuthShell";
+import LoadingDots from "@/components/LoadingDots";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { auth } from "@/i18n/dictionaries/auth";
@@ -121,7 +122,14 @@ export default function ForgotPasswordPage() {
               disabled={loading}
               className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
             >
-              {loading ? t("sendingCode") : t("sendCodeButton")}
+              {loading ? (
+                <span className="inline-flex items-center gap-2">
+                  {t("sendingCode")}
+                  <LoadingDots />
+                </span>
+              ) : (
+                t("sendCodeButton")
+              )}
             </button>
           </form>
         )}
@@ -163,7 +171,14 @@ export default function ForgotPasswordPage() {
               disabled={loading}
               className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
             >
-              {loading ? t("savingPassword") : t("setPasswordButton")}
+              {loading ? (
+                <span className="inline-flex items-center gap-2">
+                  {t("savingPassword")}
+                  <LoadingDots />
+                </span>
+              ) : (
+                t("setPasswordButton")
+              )}
             </button>
             <button
               type="button"

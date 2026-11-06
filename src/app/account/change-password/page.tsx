@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { account } from "@/i18n/dictionaries/account";
+import LoadingDots from "@/components/LoadingDots";
 
 export default function ChangePasswordPage() {
   const { locale } = useLocale();
@@ -107,7 +108,14 @@ export default function ChangePasswordPage() {
           disabled={loading}
           className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
         >
-          {loading ? t("saving") : t("submit")}
+          {loading ? (
+            <span className="inline-flex items-center gap-2">
+              {t("saving")}
+              <LoadingDots />
+            </span>
+          ) : (
+            t("submit")
+          )}
         </button>
       </form>
     </div>

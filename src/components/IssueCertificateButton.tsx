@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { certificates } from "@/i18n/dictionaries/certificates";
+import LoadingDots from "./LoadingDots";
 
 export default function IssueCertificateButton({
   studentId,
@@ -91,7 +92,14 @@ export default function IssueCertificateButton({
               disabled={loading}
               className="flex-1 bg-gradient-to-l from-dawn to-gold text-white font-bold text-xs py-2 rounded-lg disabled:opacity-60"
             >
-              {loading ? t("submittingLabel") : t("submitButton")}
+              {loading ? (
+                <span className="inline-flex items-center gap-2">
+                  {t("submittingLabel")}
+                  <LoadingDots />
+                </span>
+              ) : (
+                t("submitButton")
+              )}
             </button>
             <button
               type="button"

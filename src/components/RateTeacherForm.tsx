@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { rateTeacher } from "@/i18n/dictionaries/rateTeacher";
+import LoadingDots from "./LoadingDots";
 
 function Stars({ value, size = "text-2xl" }: { value: number; size?: string }) {
   return (
@@ -97,7 +98,14 @@ export default function RateTeacherForm({
         disabled={rating === 0 || loading}
         className="w-full bg-gradient-to-l from-dawn to-gold text-white font-bold py-3 rounded-xl text-sm disabled:opacity-60"
       >
-        {loading ? t("submitting") : t("submit")}
+        {loading ? (
+          <span className="inline-flex items-center gap-2">
+            {t("submitting")}
+            <LoadingDots />
+          </span>
+        ) : (
+          t("submit")
+        )}
       </button>
     </div>
   );

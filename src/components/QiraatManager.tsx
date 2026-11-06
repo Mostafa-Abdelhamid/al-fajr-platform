@@ -6,6 +6,7 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { admin } from "@/i18n/dictionaries/admin";
 import { staggerDelay } from "@/lib/animation";
+import LoadingDots from "./LoadingDots";
 
 type QiraatGroup = { reciter: string; riwayat: { id: string; riwaya: string }[] };
 
@@ -89,7 +90,14 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
             disabled={loading}
             className="rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 text-sm shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:translate-y-0"
           >
-            {loading ? t("addingLabel") : t("addButtonLabel")}
+            {loading ? (
+              <span className="inline-flex items-center gap-2">
+                {t("addingLabel")}
+                <LoadingDots />
+              </span>
+            ) : (
+              t("addButtonLabel")
+            )}
           </button>
         </form>
         {error && (
@@ -122,7 +130,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
                         className="text-red-600 hover:text-red-800 disabled:opacity-50"
                         title={t("deleteTitle")}
                       >
-                        {deletingId === r.id ? "…" : "✕"}
+                        {deletingId === r.id ? <LoadingDots /> : "✕"}
                       </button>
                     </span>
                   ))}

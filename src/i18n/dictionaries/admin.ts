@@ -51,14 +51,14 @@ export const admin = {
     confirmDeleteUser:
       'هل أنت متأكد من حذف "{name}"؟ سيتم حذف كل بياناته (الحصص، التقدم، الشارات) نهائيًا ولا يمكن التراجع عن هذا الإجراء.',
     deleteUserFailed: "تعذر حذف المستخدم",
-    deletingLabel: "جارٍ الحذف...",
+    deletingLabel: "جارٍ الحذف",
     deleteLabel: "🗑️ حذف",
 
     // QiraatManager
     addNewRiwayaTitle: "إضافة رواية جديدة",
     reciterPlaceholder: "اسم القارئ (مثال: عاصم الكوفي)",
     riwayaPlaceholder: "اسم الرواية (مثال: حفص عن عاصم)",
-    addingLabel: "جارٍ الإضافة...",
+    addingLabel: "جارٍ الإضافة",
     addButtonLabel: "+ إضافة",
     addRiwayaFailed: "تعذرت إضافة الرواية",
     confirmDeleteRiwaya: 'هل تريد حذف رواية "{riwaya}" من قائمة القراءات؟',
@@ -69,7 +69,7 @@ export const admin = {
 
     // QiraatMultiSelect
     loadQiraatFailed: "تعذّر تحميل قائمة القراءات. الرجاء إعادة تحميل الصفحة.",
-    loadingQiraat: "جارٍ تحميل القراءات...",
+    loadingQiraat: "جارٍ تحميل القراءات",
 
     // AdminPagination
     showing: "عرض",
@@ -123,13 +123,13 @@ export const admin = {
     confirmDeleteUser:
       'Are you sure you want to delete "{name}"? All their data (sessions, progress, badges) will be permanently deleted and this cannot be undone.',
     deleteUserFailed: "Failed to delete the user",
-    deletingLabel: "Deleting...",
+    deletingLabel: "Deleting",
     deleteLabel: "🗑️ Delete",
 
     addNewRiwayaTitle: "Add a New Riwaya",
     reciterPlaceholder: "Reciter name (e.g. Aasim al-Kufi)",
     riwayaPlaceholder: "Riwaya name (e.g. Hafs an Aasim)",
-    addingLabel: "Adding...",
+    addingLabel: "Adding",
     addButtonLabel: "+ Add",
     addRiwayaFailed: "Failed to add the riwaya",
     confirmDeleteRiwaya: 'Delete the riwaya "{riwaya}" from the list?',
@@ -139,7 +139,7 @@ export const admin = {
     deleteTitle: "Delete",
 
     loadQiraatFailed: "Failed to load the qira'at list. Please reload the page.",
-    loadingQiraat: "Loading qira'at...",
+    loadingQiraat: "Loading qira'at",
 
     showing: "Showing",
     of: "of",
