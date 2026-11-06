@@ -26,6 +26,7 @@ model User {
   teacherSessions  Session[] @relation("TeacherSessions")
   progress         Progress[]
   badges           Badge[]
+  certificates     Certificate[]
   points           Int      @default(0)
   streak           Int      @default(0)
 }
@@ -40,6 +41,7 @@ model TeacherProfile {
   rating     Float    @default(5)
   ratingCount Int     @default(0)
   isVerified Boolean  @default(false)
+  points     Int      @default(0)
 
   availability Availability[]
 }
@@ -65,7 +67,9 @@ model Session {
   roomName    String
   surahFocus  String   @default("")
   teacherNotes String  @default("")
-  rating      Int?
+  rating      Int?     // teacher's rating of the student's performance
+  studentRating Int?   // student's rating of the teacher
+  studentFeedback String @default("")
   createdAt   DateTime @default(now())
 
   // A partial unique index on (teacherId, startAt) WHERE status = 'SCHEDULED'
@@ -106,6 +110,20 @@ model PasswordResetOtp {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+model Certificate {
+  id                String   @id @default(cuid())
+  studentId         String
+  student           User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  type              String   // "MILESTONE" | "MANUAL"
+  title             String
+  sessionsAtIssue   Int?
+  note              String   @default("")
+  issuedByTeacherId String?
+  createdAt         DateTime @default(now())
+
+  @@index([studentId])
 }
 
 model QiraatOption {
