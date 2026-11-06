@@ -26,7 +26,7 @@ export default async function TeacherDashboard() {
   const locale = await getLocale();
   const t = makeT(teacherDict, locale);
 
-  const [upcoming, missed, completed, profile] = await Promise.all([
+  const [upcoming, missed, completed, profile, issuedCertificates] = await Promise.all([
     prisma.session.findMany({
       where: { teacherId: user.id, status: "SCHEDULED", startAt: { gte: new Date() } },
       orderBy: { startAt: "asc" },
@@ -44,6 +44,11 @@ export default async function TeacherDashboard() {
       take: 8,
     }),
     prisma.teacherProfile.findUnique({ where: { userId: user.id } }),
+    prisma.certificate.findMany({
+      where: { issuedByTeacherId: user.id },
+      include: { student: true },
+      orderBy: { createdAt: "desc" },
+    }),
   ]);
 
   const studentMap = new Map<string, { id: string; name: string; avatarEmoji: string }>();
@@ -168,6 +173,45 @@ export default async function TeacherDashboard() {
                   <IssueCertificateButton studentId={st.id} studentName={st.name} />
                 </div>
                 <ProgressForm studentId={st.id} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <h3 className="font-extrabold text-night">{t("issuedCertificatesTitle")}</h3>
+          <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">
+            {issuedCertificates.length}
+          </span>
+        </div>
+        {issuedCertificates.length === 0 ? (
+          <p className="text-sm text-muted">{t("noIssuedCertificates")}</p>
+        ) : (
+          <ul className="divide-y">
+            {issuedCertificates.map((c) => (
+              <li key={c.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-3">
+                  <span className="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-base shrink-0">
+                    🎖️
+                  </span>
+                  <div>
+                    <p className="font-semibold text-sm">{c.title}</p>
+                    <p className="text-xs text-muted mt-0.5">
+                      {c.student.avatarEmoji} {c.student.name} • {t("certificateIssuedOn")}{" "}
+                      {formatDateTime(c.createdAt, locale)}
+                    </p>
+                  </div>
+                </div>
+                <a
+                  href={`/api/certificates/${c.id}/pdf`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-full transition shrink-0"
+                >
+                  📄
+                </a>
               </li>
             ))}
           </ul>

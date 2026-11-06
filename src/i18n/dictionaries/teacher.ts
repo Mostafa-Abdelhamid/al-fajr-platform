@@ -19,6 +19,9 @@ export const teacher = {
     noStudents: "سيظهر هنا طلابك بعد أول حصة محجوزة.",
     recentCompletedTitle: "آخر الحصص المكتملة",
     noCompleted: "لا توجد حصص مكتملة بعد.",
+    issuedCertificatesTitle: "الشهادات التي أصدرتها",
+    noIssuedCertificates: "لم تُصدر أي شهادات بعد — يمكنك إصدار شهادة لأي طالب من قائمة طلابك.",
+    certificateIssuedOn: "صدرت في",
 
     availabilityPageTitle: "أوقات تواجدي",
     availabilityPageSubtitle: "حدّد الأوقات الأسبوعية التي يمكن للطلاب حجز حصص معك خلالها.",
@@ -60,6 +63,9 @@ export const teacher = {
     noStudents: "Your students will appear here after the first booked session.",
     recentCompletedTitle: "Recently Completed Sessions",
     noCompleted: "No completed sessions yet.",
+    issuedCertificatesTitle: "Certificates You've Issued",
+    noIssuedCertificates: "You haven't issued any certificates yet — you can issue one to any student from your students list.",
+    certificateIssuedOn: "Issued on",
 
     availabilityPageTitle: "My Availability",
     availabilityPageSubtitle: "Set the weekly time windows students can book sessions with you in.",
