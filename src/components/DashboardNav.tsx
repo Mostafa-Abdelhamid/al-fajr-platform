@@ -42,6 +42,7 @@ export default function DashboardNav({
           { href: "/admin/students", label: t("adminStudents") },
           { href: "/admin/qiraat", label: t("adminQiraat") },
           { href: "/admin/leaderboard", label: t("adminLeaderboard") },
+          { href: "/admin/certificates", label: t("adminCertificates") },
         ];
 
   async function handleLogout() {

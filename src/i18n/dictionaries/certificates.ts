@@ -24,6 +24,15 @@ export const certificates = {
     submittingLabel: "جارٍ الإصدار...",
     issueSuccess: "✅ تم إصدار الشهادة",
     issueFailed: "تعذر إصدار الشهادة",
+
+    adminPageTitle: "الشهادات",
+    adminPageSubtitle: "كل الشهادات التي حصل عليها الطلاب، تلقائيًا أو من معلميهم.",
+    allCertificatesTitle: "كل الشهادات",
+    noCertificatesAtAll: "لا توجد شهادات مُصدرة على المنصة بعد.",
+    issuedToLabel: "الطالب",
+    issuedByLabel: "أصدرها",
+    issuedBySystem: "تلقائيًا (إنجاز)",
+    issuedByUnknownTeacher: "معلم محذوف",
   },
   en: {
     pageTitle: "My Certificates",
@@ -50,5 +59,14 @@ export const certificates = {
     submittingLabel: "Issuing...",
     issueSuccess: "✅ Certificate issued",
     issueFailed: "Failed to issue certificate",
+
+    adminPageTitle: "Certificates",
+    adminPageSubtitle: "Every certificate students have earned, automatically or from their teachers.",
+    allCertificatesTitle: "All Certificates",
+    noCertificatesAtAll: "No certificates have been issued on the platform yet.",
+    issuedToLabel: "Student",
+    issuedByLabel: "Issued by",
+    issuedBySystem: "Automatic (Achievement)",
+    issuedByUnknownTeacher: "Deleted teacher",
   },
 } as const;
