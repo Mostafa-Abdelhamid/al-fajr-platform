@@ -7,6 +7,7 @@ export const rateTeacher = {
     thankYouTitle: "شكرًا على تقييمك!",
     youRated: "لقد قيّمت {teacherName}",
     genericError: "حدث خطأ أثناء الإرسال، حاول مرة أخرى",
+    ratingSentToast: "تم إرسال تقييمك، شكرًا لك!",
   },
   en: {
     howWasSessionWith: "How was your session with {teacherName}?",
@@ -16,5 +17,6 @@ export const rateTeacher = {
     thankYouTitle: "Thanks for your rating!",
     youRated: "You rated {teacherName}",
     genericError: "Something went wrong, please try again",
+    ratingSentToast: "Your rating has been sent, thank you!",
   },
 } as const;

@@ -6,11 +6,13 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { admin } from "@/i18n/dictionaries/admin";
 import LoadingDots from "./LoadingDots";
+import { useToast } from "./ToastProvider";
 
 export default function DeleteUserButton({ userId, userName }: { userId: string; userName: string }) {
   const router = useRouter();
   const { locale } = useLocale();
   const t = makeT(admin, locale);
+  const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
 
   async function handleDelete() {
@@ -23,9 +25,10 @@ export default function DeleteUserButton({ userId, userName }: { userId: string;
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      window.alert(data.error || t("deleteUserFailed"));
+      showToast(data.error || t("deleteUserFailed"), "error");
       return;
     }
+    showToast(t("deleteUserSuccessToast"), "success");
     router.refresh();
   }
 

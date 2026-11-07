@@ -5,6 +5,7 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { rateTeacher } from "@/i18n/dictionaries/rateTeacher";
 import LoadingDots from "./LoadingDots";
+import { useToast } from "./ToastProvider";
 
 function Stars({ value, size = "text-2xl" }: { value: number; size?: string }) {
   return (
@@ -29,6 +30,7 @@ export default function RateTeacherForm({
 }) {
   const { locale } = useLocale();
   const t = makeT(rateTeacher, locale);
+  const { showToast } = useToast();
 
   const [rating, setRating] = useState(0);
   const [feedback, setFeedback] = useState("");
@@ -57,13 +59,17 @@ export default function RateTeacherForm({
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || t("genericError"));
+        const message = data.error || t("genericError");
+        setError(message);
+        showToast(message, "error");
         setLoading(false);
         return;
       }
       setSubmittedRating(rating);
+      showToast(t("ratingSentToast"), "success");
     } catch {
       setError(t("genericError"));
+      showToast(t("genericError"), "error");
     }
     setLoading(false);
   }

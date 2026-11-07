@@ -7,6 +7,7 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { student } from "@/i18n/dictionaries/student";
 import LoadingDots from "./LoadingDots";
+import { useToast } from "./ToastProvider";
 
 type Teacher = {
   id: string;
@@ -23,6 +24,7 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
   const router = useRouter();
   const { locale } = useLocale();
   const t = makeT(student, locale);
+  const { showToast } = useToast();
   const [open, setOpen] = useState(false);
   const [surahFocus, setSurahFocus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -63,10 +65,13 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
     });
     const data = await res.json();
     if (!res.ok) {
-      setError(data.error || t("bookingFailedDefault"));
+      const message = data.error || t("bookingFailedDefault");
+      setError(message);
+      showToast(message, "error");
       setLoading(false);
       return;
     }
+    showToast(t("bookingSuccessToast"), "success");
     router.push("/student/dashboard");
     router.refresh();
   }

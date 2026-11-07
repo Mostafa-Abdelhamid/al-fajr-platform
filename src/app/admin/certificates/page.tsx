@@ -6,6 +6,7 @@ import { admin } from "@/i18n/dictionaries/admin";
 import AdminSearchBar from "@/components/AdminSearchBar";
 import AdminPagination from "@/components/AdminPagination";
 import AnimatedNumber from "@/components/AnimatedNumber";
+import ExpandableListItem from "@/components/ExpandableListItem";
 import { staggerDelay } from "@/lib/animation";
 
 const PAGE_SIZE = 15;
@@ -95,38 +96,51 @@ export default async function AdminCertificatesPage({
                 : t("issuedByUnknownTeacher");
 
               return (
-                <li
+                <ExpandableListItem
                   key={c.id}
                   style={{ animationDelay: staggerDelay(i) }}
                   className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-rose-50 hover:border-rose-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
-                >
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 ${
-                        isMilestone ? "bg-amber-100" : "bg-purple-100"
-                      }`}
-                    >
-                      {isMilestone ? "🏅" : "🎖️"}
-                    </span>
-                    <div>
-                      <p className="font-semibold text-sm">{c.title}</p>
-                      <p className="text-xs text-muted mt-0.5">
-                        {t("issuedToLabel")}: {c.student.name} ({c.student.email}) • {t("issuedByLabel")}: {issuedBy}
+                  summary={
+                    <>
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 ${
+                            isMilestone ? "bg-amber-100" : "bg-purple-100"
+                          }`}
+                        >
+                          {isMilestone ? "🏅" : "🎖️"}
+                        </span>
+                        <div>
+                          <p className="font-semibold text-sm">{c.title}</p>
+                          <p className="text-xs text-muted mt-0.5">
+                            {t("issuedToLabel")}: {c.student.name} ({c.student.email}) • {t("issuedByLabel")}: {issuedBy}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs text-muted">{formatDateTime(c.createdAt, locale)}</span>
+                        <a
+                          href={`/api/certificates/${c.id}/pdf`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-full transition"
+                        >
+                          {t("downloadPdf")}
+                        </a>
+                      </div>
+                    </>
+                  }
+                  details={
+                    isMilestone ? (
+                      <p>{tAdmin("milestoneContext").replace("{count}", String(c.sessionsAtIssue ?? ""))}</p>
+                    ) : (
+                      <p>
+                        <span className="font-bold text-ink">{tAdmin("certificateNoteLabel")}:</span>{" "}
+                        {c.note || tAdmin("noCertificateNote")}
                       </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-muted">{formatDateTime(c.createdAt, locale)}</span>
-                    <a
-                      href={`/api/certificates/${c.id}/pdf`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-full transition"
-                    >
-                      {t("downloadPdf")}
-                    </a>
-                  </div>
-                </li>
+                    )
+                  }
+                />
               );
             })}
           </ul>

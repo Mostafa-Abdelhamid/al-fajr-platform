@@ -3,13 +3,23 @@ import DeleteUserButton from "@/components/DeleteUserButton";
 import DownloadReportButton from "@/components/DownloadReportButton";
 import AdminSearchBar from "@/components/AdminSearchBar";
 import AdminPagination from "@/components/AdminPagination";
+import ExpandableListItem from "@/components/ExpandableListItem";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { admin } from "@/i18n/dictionaries/admin";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { staggerDelay } from "@/lib/animation";
+import type { Locale } from "@/i18n/config";
 
 const PAGE_SIZE = 10;
+
+function formatJoinDate(d: Date, locale: Locale) {
+  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(d);
+}
 
 export default async function AdminStudentsPage({
   searchParams,
@@ -71,29 +81,43 @@ export default async function AdminStudentsPage({
         ) : (
           <ul className="space-y-3">
             {students.map((s, i) => (
-              <li
+              <ExpandableListItem
                 key={s.id}
                 style={{ animationDelay: staggerDelay(i) }}
                 className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-3 cursor-pointer hover:bg-blue-50 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg shrink-0">
-                    {s.avatarEmoji}
-                  </span>
-                  <div>
-                    <p className="font-semibold text-sm">
-                      {s.name} <span className="text-xs text-muted font-normal">({s.email})</span>
+                summary={
+                  <>
+                    <div className="flex items-center gap-3">
+                      <span className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg shrink-0">
+                        {s.avatarEmoji}
+                      </span>
+                      <div>
+                        <p className="font-semibold text-sm">
+                          {s.name} <span className="text-xs text-muted font-normal">({s.email})</span>
+                        </p>
+                        <p className="text-xs text-muted mt-0.5">
+                          ⭐ {s.points} {t("pointsLabel")} • 🔥 {s.streak} {t("streakLabel")}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <DownloadReportButton studentId={s.id} className="!px-3 !py-1.5 !text-xs !shadow-none" />
+                      <DeleteUserButton userId={s.id} userName={s.name} />
+                    </div>
+                  </>
+                }
+                details={
+                  <>
+                    <p>
+                      <span className="font-bold text-ink">{t("emailLabel")}:</span> {s.email}
                     </p>
-                    <p className="text-xs text-muted mt-0.5">
-                      ⭐ {s.points} {t("pointsLabel")} • 🔥 {s.streak} {t("streakLabel")}
+                    <p>
+                      <span className="font-bold text-ink">{t("joinedOnLabel")}:</span>{" "}
+                      {formatJoinDate(s.createdAt, locale)}
                     </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <DownloadReportButton studentId={s.id} className="!px-3 !py-1.5 !text-xs !shadow-none" />
-                  <DeleteUserButton userId={s.id} userName={s.name} />
-                </div>
-              </li>
+                  </>
+                }
+              />
             ))}
           </ul>
         )}

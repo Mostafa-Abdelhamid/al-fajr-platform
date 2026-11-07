@@ -5,10 +5,12 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { account } from "@/i18n/dictionaries/account";
 import LoadingDots from "@/components/LoadingDots";
+import { useToast } from "@/components/ToastProvider";
 
 export default function ChangePasswordPage() {
   const { locale } = useLocale();
   const t = makeT(account, locale);
+  const { showToast } = useToast();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,6 +25,7 @@ export default function ChangePasswordPage() {
 
     if (newPassword !== confirmPassword) {
       setError(t("mismatchError"));
+      showToast(t("mismatchError"), "error");
       return;
     }
 
@@ -35,7 +38,9 @@ export default function ChangePasswordPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || t("genericError"));
+        const message = data.error || t("genericError");
+        setError(message);
+        showToast(message, "error");
         setLoading(false);
         return;
       }
@@ -45,6 +50,7 @@ export default function ChangePasswordPage() {
       setConfirmPassword("");
     } catch {
       setError(t("connectionError"));
+      showToast(t("connectionError"), "error");
     } finally {
       setLoading(false);
     }

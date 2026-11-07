@@ -1,24 +1,14 @@
-import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { teacher as teacherDict } from "@/i18n/dictionaries/teacher";
-import ProgressForm from "@/components/ProgressForm";
-import IssueCertificateButton from "@/components/IssueCertificateButton";
 import TeacherStudentLeaderboard from "@/components/TeacherStudentLeaderboard";
 import DownloadScheduleButton from "@/components/DownloadScheduleButton";
 import AnimatedNumber from "@/components/AnimatedNumber";
-
-function formatDateTime(d: Date, locale: "ar" | "en") {
-  return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(d);
-}
+import TeacherSessionsList from "@/components/TeacherSessionsList";
+import TeacherStudentsList from "@/components/TeacherStudentsList";
+import TeacherCertificatesList from "@/components/TeacherCertificatesList";
 
 export default async function TeacherDashboard() {
   const user = await getCurrentUser();
@@ -42,7 +32,6 @@ export default async function TeacherDashboard() {
       where: { teacherId: user.id, status: "COMPLETED" },
       orderBy: { startAt: "desc" },
       include: { student: true },
-      take: 8,
     }),
     prisma.teacherProfile.findUnique({ where: { userId: user.id } }),
     prisma.certificate.findMany({
@@ -96,159 +85,15 @@ export default async function TeacherDashboard() {
 
       <TeacherStudentLeaderboard teacherId={user.id} />
 
-      <section className="hover-lift animate-fade-up stagger-3 bg-white rounded-2xl border border-gray-100 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-extrabold text-night">{t("upcomingSessionsTitle")}</h3>
-          <Link href="/teacher/availability" className="text-sm text-dawn font-bold">
-            {t("manageAvailabilityLink")}
-          </Link>
-        </div>
-        {upcoming.length === 0 ? (
-          <p className="text-sm text-muted">{t("noUpcoming")}</p>
-        ) : (
-          <ul className="divide-y">
-            {upcoming.map((s) => (
-              <li key={s.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="font-semibold text-sm">
-                    {s.student.avatarEmoji} {s.student.name}
-                  </p>
-                  <p className="text-xs text-muted">
-                    {formatDateTime(s.startAt, locale)}
-                    {s.surahFocus && ` • ${s.surahFocus}`}
-                  </p>
-                </div>
-                <Link
-                  href={`/session/${s.id}`}
-                  className="bg-gradient-to-l from-dawn to-gold text-white font-bold text-sm px-5 py-2 rounded-full hover:-translate-y-0.5 hover:shadow-lg transition-all"
-                >
-                  {t("enterSession")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <TeacherSessionsList sessions={upcoming} variant="upcoming" />
 
-      {missed.length > 0 && (
-        <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-red-200 p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <h3 className="font-extrabold text-night">{t("missedTitle")}</h3>
-            <span className="text-xs font-bold text-red-700 bg-red-100 rounded-full px-2.5 py-1">
-              <AnimatedNumber value={missed.length} />
-            </span>
-          </div>
-          <p className="text-xs text-muted -mt-2 mb-4">
-            {t("missedDesc")}
-          </p>
-          <ul className="divide-y">
-            {missed.map((s) => (
-              <li key={s.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="font-semibold text-sm">
-                    {s.student.avatarEmoji} {s.student.name}
-                  </p>
-                  <p className="text-xs text-muted">
-                    {formatDateTime(s.startAt, locale)}
-                    {s.surahFocus && ` • ${s.surahFocus}`}
-                  </p>
-                </div>
-                <Link
-                  href={`/session/${s.id}`}
-                  className="bg-red-100 text-red-800 font-bold text-sm px-5 py-2 rounded-full hover:bg-red-200 transition"
-                >
-                  {t("finishSession")}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <TeacherSessionsList sessions={missed} variant="missed" />
 
-      <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-        <h3 className="font-extrabold text-night mb-4">{t("studentsTitle")}</h3>
-        {students.length === 0 ? (
-          <p className="text-sm text-muted">{t("noStudents")}</p>
-        ) : (
-          <ul className="divide-y">
-            {students.map((st) => (
-              <li key={st.id} className="py-4">
-                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                  <p className="font-semibold text-sm">
-                    {st.avatarEmoji} {st.name}
-                  </p>
-                  <IssueCertificateButton studentId={st.id} studentName={st.name} />
-                </div>
-                <ProgressForm studentId={st.id} />
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <TeacherStudentsList students={students} />
 
-      <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <h3 className="font-extrabold text-night">{t("issuedCertificatesTitle")}</h3>
-          <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">
-            <AnimatedNumber value={issuedCertificates.length} />
-          </span>
-        </div>
-        {issuedCertificates.length === 0 ? (
-          <p className="text-sm text-muted">{t("noIssuedCertificates")}</p>
-        ) : (
-          <ul className="divide-y">
-            {issuedCertificates.map((c) => (
-              <li key={c.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
-                <div className="flex items-center gap-3">
-                  <span className="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-base shrink-0">
-                    🎖️
-                  </span>
-                  <div>
-                    <p className="font-semibold text-sm">{c.title}</p>
-                    <p className="text-xs text-muted mt-0.5">
-                      {c.student.avatarEmoji} {c.student.name} • {t("certificateIssuedOn")}{" "}
-                      {formatDateTime(c.createdAt, locale)}
-                    </p>
-                  </div>
-                </div>
-                <a
-                  href={`/api/certificates/${c.id}/pdf`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-full transition shrink-0"
-                >
-                  📄
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <TeacherCertificatesList certificates={issuedCertificates} />
 
-      <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
-        <h3 className="font-extrabold text-night mb-4">{t("recentCompletedTitle")}</h3>
-        {completed.length === 0 ? (
-          <p className="text-sm text-muted">{t("noCompleted")}</p>
-        ) : (
-          <ul className="divide-y">
-            {completed.map((s) => (
-              <li key={s.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="font-semibold text-sm">
-                    {s.student.avatarEmoji} {s.student.name}
-                  </p>
-                  <p className="text-xs text-muted">{formatDateTime(s.startAt, locale)}</p>
-                </div>
-                {s.rating && (
-                  <span className="text-gold font-bold text-sm">
-                    {"★".repeat(s.rating)}{"☆".repeat(5 - s.rating)}
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      <TeacherSessionsList sessions={completed} variant="completed" />
     </div>
   );
 }

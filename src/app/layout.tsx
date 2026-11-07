@@ -2,6 +2,7 @@ import { Cairo } from "next/font/google";
 import { getLocale } from "@/i18n/getLocale";
 import { dirForLocale } from "@/i18n/config";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
+import { ToastProvider } from "@/components/ToastProvider";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -30,7 +31,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang={locale} dir={dirForLocale(locale)} className={`${cairo.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-cream text-ink font-sans">
-        <LocaleProvider initialLocale={locale}>{children}</LocaleProvider>
+        <LocaleProvider initialLocale={locale}>
+          <ToastProvider>{children}</ToastProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

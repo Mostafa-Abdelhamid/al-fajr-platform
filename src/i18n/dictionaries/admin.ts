@@ -46,11 +46,15 @@ export const admin = {
     // VerifyToggle
     verifiedRevoke: "✅ موثّق — إلغاء التوثيق",
     unverifiedVerifyNow: "⏳ غير موثّق — توثيق الآن",
+    verifyToastVerified: "✅ تم توثيق المعلم",
+    verifyToastUnverified: "تم إلغاء توثيق المعلم",
+    verifyToggleFailed: "تعذر تحديث حالة التوثيق",
 
     // DeleteUserButton
     confirmDeleteUser:
       'هل أنت متأكد من حذف "{name}"؟ سيتم حذف كل بياناته (الحصص، التقدم، الشارات) نهائيًا ولا يمكن التراجع عن هذا الإجراء.',
     deleteUserFailed: "تعذر حذف المستخدم",
+    deleteUserSuccessToast: "تم حذف المستخدم",
     deletingLabel: "جارٍ الحذف",
     deleteLabel: "🗑️ حذف",
 
@@ -61,8 +65,10 @@ export const admin = {
     addingLabel: "جارٍ الإضافة",
     addButtonLabel: "+ إضافة",
     addRiwayaFailed: "تعذرت إضافة الرواية",
+    addRiwayaSuccessToast: "تمت إضافة الرواية بنجاح",
     confirmDeleteRiwaya: 'هل تريد حذف رواية "{riwaya}" من قائمة القراءات؟',
     deleteRiwayaFailed: "تعذر حذف الرواية",
+    deleteRiwayaSuccessToast: "تم حذف الرواية بنجاح",
     currentQiraatTitle: "القراءات الحالية",
     noQiraatYet: "لا توجد قراءات بعد.",
     deleteTitle: "حذف",
@@ -76,6 +82,24 @@ export const admin = {
     of: "من",
     previous: "السابق",
     next: "التالي",
+
+    // ExpandableListItem details (admin/dashboard, teachers, students, certificates)
+    emailLabel: "البريد الإلكتروني",
+    bioLabel: "نبذة عن المعلم",
+    noBioYet: "لا توجد نبذة.",
+    availabilityListTitle: "أوقات التواجد",
+    noAvailabilityYet: "لم يحدد أي أوقات تواجد بعد.",
+    joinedOnLabel: "تاريخ التسجيل",
+    sessionEndLabel: "تنتهي في",
+    sessionFocusLabel: "محور الحصة",
+    teacherNoteToStudentLabel: "ملاحظة المعلم للطالب",
+    teacherRatingOfStudentLabel: "تقييم المعلم للطالب",
+    studentRatingOfTeacherLabel: "تقييم الطالب للمعلم",
+    certificateNoteLabel: "ملاحظة الشهادة",
+    noCertificateNote: "لا توجد ملاحظة مرفقة.",
+    milestoneContext: "مُنحت تلقائيًا عند إتمام {count} حصة",
+    availabilityRangeFrom: "من",
+    availabilityRangeTo: "إلى",
   },
   en: {
     dashboardTitle: "Al-Fajr Platform Admin Dashboard",
@@ -119,10 +143,14 @@ export const admin = {
 
     verifiedRevoke: "✅ Verified — Revoke",
     unverifiedVerifyNow: "⏳ Unverified — Verify now",
+    verifyToastVerified: "✅ Teacher verified",
+    verifyToastUnverified: "Teacher verification revoked",
+    verifyToggleFailed: "Failed to update verification status",
 
     confirmDeleteUser:
       'Are you sure you want to delete "{name}"? All their data (sessions, progress, badges) will be permanently deleted and this cannot be undone.',
     deleteUserFailed: "Failed to delete the user",
+    deleteUserSuccessToast: "User deleted",
     deletingLabel: "Deleting",
     deleteLabel: "🗑️ Delete",
 
@@ -132,8 +160,10 @@ export const admin = {
     addingLabel: "Adding",
     addButtonLabel: "+ Add",
     addRiwayaFailed: "Failed to add the riwaya",
+    addRiwayaSuccessToast: "Riwaya added successfully",
     confirmDeleteRiwaya: 'Delete the riwaya "{riwaya}" from the list?',
     deleteRiwayaFailed: "Failed to delete the riwaya",
+    deleteRiwayaSuccessToast: "Riwaya deleted successfully",
     currentQiraatTitle: "Current Qira'at",
     noQiraatYet: "No qira'at yet.",
     deleteTitle: "Delete",
@@ -145,5 +175,23 @@ export const admin = {
     of: "of",
     previous: "Previous",
     next: "Next",
+
+    // ExpandableListItem details (admin/dashboard, teachers, students, certificates)
+    emailLabel: "Email",
+    bioLabel: "Teacher bio",
+    noBioYet: "No bio yet.",
+    availabilityListTitle: "Availability",
+    noAvailabilityYet: "No availability set yet.",
+    joinedOnLabel: "Joined on",
+    sessionEndLabel: "Ends at",
+    sessionFocusLabel: "Session focus",
+    teacherNoteToStudentLabel: "Teacher's note to the student",
+    teacherRatingOfStudentLabel: "Teacher's rating of the student",
+    studentRatingOfTeacherLabel: "Student's rating of the teacher",
+    certificateNoteLabel: "Certificate note",
+    noCertificateNote: "No note attached.",
+    milestoneContext: "Automatically awarded after completing {count} sessions",
+    availabilityRangeFrom: "from",
+    availabilityRangeTo: "to",
   },
 } as const;

@@ -44,6 +44,7 @@ export const student = {
     focusQuestion: "ما الذي تريد التركيز عليه؟ (اختياري)",
     focusPlaceholder: "مثال: سورة البقرة، مراجعة التجويد...",
     bookingFailedDefault: "تعذر الحجز",
+    bookingSuccessToast: "تم الحجز بنجاح",
     bookingInProgress: "جارٍ الحجز",
     confirmBooking: "تأكيد الحجز",
 
@@ -93,6 +94,7 @@ export const student = {
     focusQuestion: "What would you like to focus on? (optional)",
     focusPlaceholder: "e.g. Surah Al-Baqarah, Tajweed review...",
     bookingFailedDefault: "Booking failed",
+    bookingSuccessToast: "Booking confirmed",
     bookingInProgress: "Booking",
     confirmBooking: "Confirm Booking",
 

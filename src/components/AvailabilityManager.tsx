@@ -7,6 +7,7 @@ import { dirForLocale } from "@/i18n/config";
 import { makeT } from "@/i18n/t";
 import { teacher, DAYS_AR, DAYS_EN, DAYS_SHORT_AR, DAYS_SHORT_EN } from "@/i18n/dictionaries/teacher";
 import LoadingDots from "./LoadingDots";
+import { useToast } from "./ToastProvider";
 
 type Slot = { id: string; dayOfWeek: number; startTime: string; endTime: string };
 
@@ -16,6 +17,7 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
   const t = makeT(teacher, locale);
   const DAYS = locale === "ar" ? DAYS_AR : DAYS_EN;
   const DAYS_SHORT = locale === "ar" ? DAYS_SHORT_AR : DAYS_SHORT_EN;
+  const { showToast } = useToast();
   const [dayOfWeek, setDayOfWeek] = useState(0);
   const [startTime, setStartTime] = useState("16:00");
   const [endTime, setEndTime] = useState("20:00");
@@ -33,14 +35,22 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
     const data = await res.json();
     setLoading(false);
     if (!res.ok) {
-      setError(data.error || t("addFailed"));
+      const message = data.error || t("addFailed");
+      setError(message);
+      showToast(message, "error");
       return;
     }
+    showToast(t("addSuccessToast"), "success");
     router.refresh();
   }
 
   async function handleDelete(id: string) {
-    await fetch(`/api/availability/${id}`, { method: "DELETE" });
+    const res = await fetch(`/api/availability/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      showToast(t("deleteSuccessToast"), "success");
+    } else {
+      showToast(t("deleteFailedToast"), "error");
+    }
     router.refresh();
   }
 

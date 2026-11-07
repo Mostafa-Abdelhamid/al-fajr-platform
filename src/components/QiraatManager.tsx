@@ -7,6 +7,7 @@ import { makeT } from "@/i18n/t";
 import { admin } from "@/i18n/dictionaries/admin";
 import { staggerDelay } from "@/lib/animation";
 import LoadingDots from "./LoadingDots";
+import { useToast } from "./ToastProvider";
 
 type QiraatGroup = { reciter: string; riwayat: { id: string; riwaya: string }[] };
 
@@ -14,6 +15,7 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
   const router = useRouter();
   const { locale } = useLocale();
   const t = makeT(admin, locale);
+  const { showToast } = useToast();
   const [reciter, setReciter] = useState("");
   const [riwaya, setRiwaya] = useState("");
   const [error, setError] = useState("");
@@ -34,11 +36,14 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
     const data = await res.json();
     setLoading(false);
     if (!res.ok) {
-      setError(data.error || t("addRiwayaFailed"));
+      const message = data.error || t("addRiwayaFailed");
+      setError(message);
+      showToast(message, "error");
       return;
     }
     setReciter("");
     setRiwaya("");
+    showToast(t("addRiwayaSuccessToast"), "success");
     router.refresh();
   }
 
@@ -52,9 +57,10 @@ export default function QiraatManager({ groups }: { groups: QiraatGroup[] }) {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      window.alert(data.error || t("deleteRiwayaFailed"));
+      showToast(data.error || t("deleteRiwayaFailed"), "error");
       return;
     }
+    showToast(t("deleteRiwayaSuccessToast"), "success");
     router.refresh();
   }
 

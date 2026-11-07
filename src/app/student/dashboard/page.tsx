@@ -7,7 +7,7 @@ import { makeT } from "@/i18n/t";
 import { student, progressStatusLabel } from "@/i18n/dictionaries/student";
 import { badgeLabel } from "@/i18n/dictionaries/badges";
 import DownloadReportButton from "@/components/DownloadReportButton";
-import RateTeacherForm from "@/components/RateTeacherForm";
+import StudentHistoryList from "@/components/StudentHistoryList";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { staggerDelay } from "@/lib/animation";
 import type { Locale } from "@/i18n/config";
@@ -39,7 +39,6 @@ export default async function StudentDashboard() {
       where: { studentId: user.id, status: "COMPLETED" },
       orderBy: { startAt: "desc" },
       include: { teacher: true },
-      take: 5,
     }),
     prisma.progress.findMany({ where: { studentId: user.id } }),
     prisma.badge.findMany({ where: { studentId: user.id }, orderBy: { earnedAt: "desc" } }),
@@ -184,39 +183,7 @@ export default async function StudentDashboard() {
       {/* History */}
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <h3 className="font-extrabold text-night mb-4">{t("historyTitle")}</h3>
-        {past.length === 0 ? (
-          <p className="text-sm text-muted">{t("historyEmpty")}</p>
-        ) : (
-          <ul className="space-y-4">
-            {past.map((s) => (
-              <li key={s.id} className="pb-4 border-b border-gray-100 last:border-0 last:pb-0">
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <div>
-                    <p className="font-semibold text-sm">
-                      {s.teacher.avatarEmoji} {s.teacher.name}
-                    </p>
-                    <p className="text-xs text-muted">{formatDateTime(s.startAt, locale)}</p>
-                    {s.teacherNotes && (
-                      <p className="text-xs text-muted mt-1">{t("teacherNotePrefix")} {s.teacherNotes}</p>
-                    )}
-                  </div>
-                  {s.rating && (
-                    <span className="text-gold font-bold text-sm">
-                      {"★".repeat(s.rating)}{"☆".repeat(5 - s.rating)}
-                    </span>
-                  )}
-                </div>
-                <div className="mt-3">
-                  <RateTeacherForm
-                    sessionId={s.id}
-                    teacherName={s.teacher.name}
-                    initialStudentRating={s.studentRating}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+        <StudentHistoryList sessions={past} />
       </section>
     </div>
   );

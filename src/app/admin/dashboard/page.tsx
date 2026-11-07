@@ -5,8 +5,12 @@ import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { admin } from "@/i18n/dictionaries/admin";
 import AnimatedNumber from "@/components/AnimatedNumber";
+import AdminPagination from "@/components/AdminPagination";
+import ExpandableListItem from "@/components/ExpandableListItem";
 import { staggerDelay } from "@/lib/animation";
 import type { Locale } from "@/i18n/config";
+
+const PAGE_SIZE = 10;
 
 function formatDateTime(d: Date, locale: Locale) {
   return new Intl.DateTimeFormat(locale === "ar" ? "ar-SA" : "en-US", {
@@ -17,24 +21,41 @@ function formatDateTime(d: Date, locale: Locale) {
   }).format(d);
 }
 
-export default async function AdminDashboard() {
+export default async function AdminDashboard({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const locale = await getLocale();
   const t = makeT(admin, locale);
+  const { page: pageParam } = await searchParams;
+  const page = Math.max(1, Number(pageParam) || 1);
 
-  const [studentCount, teacherCount, scheduledCount, completedCount, pointsAgg, teachers, recentSessions] =
-    await Promise.all([
-      prisma.user.count({ where: { role: "STUDENT" } }),
-      prisma.user.count({ where: { role: "TEACHER" } }),
-      prisma.session.count({ where: { status: "SCHEDULED", startAt: { gte: new Date() } } }),
-      prisma.session.count({ where: { status: "COMPLETED" } }),
-      prisma.user.aggregate({ where: { role: "STUDENT" }, _sum: { points: true } }),
-      prisma.teacherProfile.findMany(),
-      prisma.session.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 10,
-        include: { student: true, teacher: true },
-      }),
-    ]);
+  const [
+    studentCount,
+    teacherCount,
+    scheduledCount,
+    completedCount,
+    pointsAgg,
+    teachers,
+    recentSessionsCount,
+    recentSessions,
+  ] = await Promise.all([
+    prisma.user.count({ where: { role: "STUDENT" } }),
+    prisma.user.count({ where: { role: "TEACHER" } }),
+    prisma.session.count({ where: { status: "SCHEDULED", startAt: { gte: new Date() } } }),
+    prisma.session.count({ where: { status: "COMPLETED" } }),
+    prisma.user.aggregate({ where: { role: "STUDENT" }, _sum: { points: true } }),
+    prisma.teacherProfile.findMany(),
+    prisma.session.count(),
+    prisma.session.findMany({
+      orderBy: { createdAt: "desc" },
+      skip: (page - 1) * PAGE_SIZE,
+      take: PAGE_SIZE,
+      include: { student: true, teacher: true },
+    }),
+  ]);
+  const totalPages = Math.max(1, Math.ceil(recentSessionsCount / PAGE_SIZE));
 
   const avgRating =
     teachers.length > 0 ? teachers.reduce((sum, t) => sum + t.rating, 0) / teachers.length : null;
@@ -80,23 +101,64 @@ export default async function AdminDashboard() {
             {recentSessions.map((s, i) => {
               const effectiveStatus = getEffectiveStatus(s);
               return (
-                <li
+                <ExpandableListItem
                   key={s.id}
                   style={{ animationDelay: staggerDelay(i) }}
                   className="animate-fade-up rounded-2xl border border-gray-200 bg-gray-50 shadow-sm p-4 flex items-center justify-between flex-wrap gap-2 text-sm cursor-pointer hover:bg-purple-50 hover:border-purple-300 hover:shadow-lg hover:-translate-y-0.5 transition-all"
-                >
-                  <span>
-                    {s.student.avatarEmoji} {s.student.name} {t("sessionArrow")} {s.teacher.avatarEmoji} {s.teacher.name}
-                  </span>
-                  <span className="text-xs text-muted">{formatDateTime(s.startAt, locale)}</span>
-                  <span className={`text-xs font-bold px-3 py-1 rounded-full ${STATUS_BADGE_CLASSES[effectiveStatus]}`}>
-                    {statusLabel(effectiveStatus, locale)}
-                  </span>
-                </li>
+                  summary={
+                    <>
+                      <span>
+                        {s.student.avatarEmoji} {s.student.name} {t("sessionArrow")} {s.teacher.avatarEmoji} {s.teacher.name}
+                      </span>
+                      <span className="text-xs text-muted">{formatDateTime(s.startAt, locale)}</span>
+                      <span className={`text-xs font-bold px-3 py-1 rounded-full ${STATUS_BADGE_CLASSES[effectiveStatus]}`}>
+                        {statusLabel(effectiveStatus, locale)}
+                      </span>
+                    </>
+                  }
+                  details={
+                    <>
+                      <p>
+                        <span className="font-bold text-ink">{t("sessionEndLabel")}:</span>{" "}
+                        {formatDateTime(s.endAt, locale)}
+                      </p>
+                      {s.surahFocus && (
+                        <p>
+                          <span className="font-bold text-ink">{t("sessionFocusLabel")}:</span> {s.surahFocus}
+                        </p>
+                      )}
+                      {s.teacherNotes && (
+                        <p>
+                          <span className="font-bold text-ink">{t("teacherNoteToStudentLabel")}:</span>{" "}
+                          {s.teacherNotes}
+                        </p>
+                      )}
+                      {s.rating !== null && (
+                        <p>
+                          <span className="font-bold text-ink">{t("teacherRatingOfStudentLabel")}:</span>{" "}
+                          {"★".repeat(s.rating)}
+                          {"☆".repeat(5 - s.rating)}
+                        </p>
+                      )}
+                      {s.studentRating !== null && (
+                        <p>
+                          <span className="font-bold text-ink">{t("studentRatingOfTeacherLabel")}:</span>{" "}
+                          {"★".repeat(s.studentRating)}
+                          {"☆".repeat(5 - s.studentRating)}
+                        </p>
+                      )}
+                      <Link href={`/session/${s.id}`} className="inline-block text-dawn font-bold hover:underline">
+                        {t("sessionArrow")} /session/{s.id}
+                      </Link>
+                    </>
+                  }
+                />
               );
             })}
           </ul>
         )}
+
+        <AdminPagination page={page} totalPages={totalPages} totalCount={recentSessionsCount} pageSize={PAGE_SIZE} />
       </section>
     </div>
   );

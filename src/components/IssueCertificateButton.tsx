@@ -6,6 +6,7 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import { makeT } from "@/i18n/t";
 import { certificates } from "@/i18n/dictionaries/certificates";
 import LoadingDots from "./LoadingDots";
+import { useToast } from "./ToastProvider";
 
 export default function IssueCertificateButton({
   studentId,
@@ -17,6 +18,7 @@ export default function IssueCertificateButton({
   const router = useRouter();
   const { locale } = useLocale();
   const t = makeT(certificates, locale);
+  const { showToast } = useToast();
 
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -37,13 +39,16 @@ export default function IssueCertificateButton({
     const data = await res.json();
     setLoading(false);
     if (!res.ok) {
-      setError(data.error || t("issueFailed"));
+      const message = data.error || t("issueFailed");
+      setError(message);
+      showToast(message, "error");
       return;
     }
     setSuccess(true);
     setTitle("");
     setNote("");
     router.refresh();
+    showToast(t("issueSuccess"), "success");
     setTimeout(() => {
       setSuccess(false);
       setOpen(false);

@@ -9,6 +9,7 @@ import { session as sessionDict } from "@/i18n/dictionaries/session";
 import { badgeLabel } from "@/i18n/dictionaries/badges";
 import RateTeacherForm from "./RateTeacherForm";
 import LoadingDots from "./LoadingDots";
+import { useToast } from "./ToastProvider";
 
 type SessionData = {
   id: string;
@@ -34,6 +35,7 @@ export default function SessionRoom({
   const router = useRouter();
   const { locale } = useLocale();
   const t = makeT(sessionDict, locale);
+  const { showToast } = useToast();
   const [showComplete, setShowComplete] = useState(false);
   const [notes, setNotes] = useState("");
   const [rating, setRating] = useState(5);
@@ -53,6 +55,9 @@ export default function SessionRoom({
     setLoading(false);
     if (res.ok) {
       setResult(data.reward);
+      showToast(t("completedSuccess"), "success");
+    } else {
+      showToast(data.error || t("completeFailed"), "error");
     }
   }
 
