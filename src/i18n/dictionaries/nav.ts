@@ -15,6 +15,8 @@ export const nav = {
     streak: "متتالية",
     changePassword: "تغيير كلمة المرور",
     logout: "خروج",
+    openMenu: "فتح القائمة",
+    closeMenu: "إغلاق القائمة",
   },
   en: {
     brand: "Al-Fajr Platform",
@@ -32,5 +34,7 @@ export const nav = {
     streak: "streak",
     changePassword: "Change Password",
     logout: "Log out",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
   },
 } as const;

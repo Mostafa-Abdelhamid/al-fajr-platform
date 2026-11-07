@@ -95,7 +95,7 @@ export default async function AdminTeachersPage({
                         </p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-col items-stretch gap-2 w-full sm:w-auto sm:flex-row sm:items-center">
                       <DownloadScheduleButton teacherId={t2.user.id} />
                       <VerifyToggle teacherProfileId={t2.id} initialVerified={t2.isVerified} />
                       <DeleteUserButton userId={t2.user.id} userName={t2.user.name} />

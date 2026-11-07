@@ -3,7 +3,7 @@ import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { landing } from "@/i18n/dictionaries/landing";
 import { nav } from "@/i18n/dictionaries/nav";
-import LocaleSwitcher from "@/components/LocaleSwitcher";
+import LandingHeader from "@/components/LandingHeader";
 import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
@@ -50,30 +50,14 @@ export default async function Home() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-cream/80 backdrop-blur-lg border-b border-black/5">
-        <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
-          <div className="font-extrabold text-xl text-night flex items-center gap-2">
-            <span className="animate-float inline-block">🌅</span> {tNav("brand")}
-          </div>
-          <nav className="hidden sm:flex items-center gap-7">
-            <a href="#features" className="text-sm font-semibold hover:text-dawn transition">{t("navFeatures")}</a>
-            <a href="#how" className="text-sm font-semibold hover:text-dawn transition">{t("navHow")}</a>
-            <a href="#faq" className="text-sm font-semibold hover:text-dawn transition">{t("navFaq")}</a>
-          </nav>
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-bold text-night hidden sm:inline">
-              {t("navLogin")}
-            </Link>
-            <Link
-              href="/register"
-              className="bg-gradient-to-l from-dawn to-gold text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 transition"
-            >
-              {t("navRegister")}
-            </Link>
-            <LocaleSwitcher variant="light" />
-          </div>
-        </div>
-      </header>
+      <LandingHeader
+        brand={tNav("brand")}
+        navFeatures={t("navFeatures")}
+        navHow={t("navHow")}
+        navFaq={t("navFaq")}
+        navLogin={t("navLogin")}
+        navRegister={t("navRegister")}
+      />
 
       <section className="relative overflow-hidden bg-fajr-night text-white py-28">
         <div className="absolute inset-0 bg-dot-grid opacity-40" />

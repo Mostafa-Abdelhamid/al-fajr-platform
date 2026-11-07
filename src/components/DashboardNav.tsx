@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useLocale } from "@/i18n/LocaleProvider";
@@ -25,6 +26,11 @@ export default function DashboardNav({
   const pathname = usePathname();
   const { locale } = useLocale();
   const t = makeT(nav, locale);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
 
   const links =
     role === "STUDENT"
@@ -52,14 +58,26 @@ export default function DashboardNav({
     router.refresh();
   }
 
+  const pointsStreak =
+    role === "STUDENT" ? (
+      <div className="flex items-center gap-2 text-sm">
+        <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-gold-light transition-transform hover:scale-105">
+          ⭐ <AnimatedNumber value={points ?? 0} duration={800} /> {t("points")}
+        </span>
+        <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-amber-300 transition-transform hover:scale-105">
+          🔥 <AnimatedNumber value={streak ?? 0} duration={800} /> {t("streak")}
+        </span>
+      </div>
+    ) : null;
+
   return (
     <header className="bg-fajr-night text-white sticky top-0 z-40 shadow-lg shadow-night/20">
-      <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between flex-wrap gap-4">
-        <Link href="/" className="font-extrabold text-lg flex items-center gap-2">
+      <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-4">
+        <Link href="/" className="font-extrabold text-lg flex items-center gap-2 shrink-0">
           <span className="animate-float inline-block">🌅</span> {t("brand")}
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="hidden sm:flex items-center gap-6">
           {links.map((l) => (
             <Link
               key={l.href}
@@ -76,31 +94,15 @@ export default function DashboardNav({
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
-          {role === "STUDENT" && (
-            <div className="flex items-center gap-2 text-sm">
-              <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-gold-light transition-transform hover:scale-105">
-                ⭐ <AnimatedNumber value={points ?? 0} duration={800} /> {t("points")}
-              </span>
-              <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-amber-300 transition-transform hover:scale-105">
-                🔥 <AnimatedNumber value={streak ?? 0} duration={800} /> {t("streak")}
-              </span>
-            </div>
-          )}
+        <div className="hidden sm:flex items-center gap-4">
+          {pointsStreak}
           <Link
             href="/account/change-password"
-            className="hidden sm:flex items-center gap-2 text-sm text-gray-300 hover:text-white transition"
+            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition"
             title={t("changePassword")}
           >
             <span className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">{avatarEmoji}</span>
             {name}
-          </Link>
-          <Link
-            href="/account/change-password"
-            className="sm:hidden text-sm font-bold bg-white/10 hover:bg-white/20 rounded-full px-3 py-2 transition"
-            title={t("changePassword")}
-          >
-            ⚙️
           </Link>
           <LocaleSwitcher />
           <button
@@ -110,7 +112,56 @@ export default function DashboardNav({
             {t("logout")}
           </button>
         </div>
+
+        <button
+          onClick={() => setMenuOpen((v) => !v)}
+          className="sm:hidden w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition shrink-0"
+          aria-label={menuOpen ? t("closeMenu") : t("openMenu")}
+          aria-expanded={menuOpen}
+        >
+          <span className="text-lg leading-none">{menuOpen ? "✕" : "☰"}</span>
+        </button>
       </div>
+
+      {menuOpen && (
+        <div className="sm:hidden border-t border-white/10 px-5 py-4 space-y-4 animate-fade-up">
+          <nav className="flex flex-col gap-1">
+            {links.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
+                  pathname === l.href ? "bg-white/10 text-gold" : "text-gray-300 hover:bg-white/5 hover:text-white"
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+
+          {pointsStreak && <div className="px-1">{pointsStreak}</div>}
+
+          <div className="flex items-center justify-between gap-3 pt-3 border-t border-white/10">
+            <Link
+              href="/account/change-password"
+              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white transition"
+            >
+              <span className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                {avatarEmoji}
+              </span>
+              <span className="truncate">{name}</span>
+            </Link>
+            <LocaleSwitcher className="shrink-0" />
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="w-full text-sm font-bold bg-white/10 hover:bg-white/20 rounded-full px-4 py-2.5 transition"
+          >
+            {t("logout")}
+          </button>
+        </div>
+      )}
     </header>
   );
 }
