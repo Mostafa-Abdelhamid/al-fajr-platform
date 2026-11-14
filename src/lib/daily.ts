@@ -63,3 +63,56 @@ export async function createVideoRoom(baseId: string, endAt: Date): Promise<stri
     return roomName;
   }
 }
+
+/**
+ * Creates a short-lived Daily.co meeting token scoping one user's join to
+ * one room. Giving the teacher `isOwner: true` is what unlocks Daily
+ * Prebuilt's built-in "mute this participant" control in its own
+ * participant list — no custom call UI needed, it's a native owner
+ * privilege (see Daily's meeting-token docs: owners "can perform
+ * administrative actions like muting other participants").
+ *
+ * Returns null when DAILY_API_KEY isn't configured or `roomUrl` isn't a
+ * real Daily room (e.g. the legacy Jitsi fallback) — SessionRoom then
+ * just joins without a token, same as before this feature existed.
+ */
+export async function createMeetingToken(
+  roomUrl: string,
+  userName: string,
+  isOwner: boolean
+): Promise<string | null> {
+  const apiKey = process.env.DAILY_API_KEY;
+  if (!apiKey || !roomUrl.startsWith("http")) return null;
+
+  const roomName = new URL(roomUrl).pathname.split("/").filter(Boolean).pop();
+  if (!roomName) return null;
+
+  try {
+    const res = await fetch("https://api.daily.co/v1/meeting-tokens", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        properties: {
+          room_name: roomName,
+          user_name: userName,
+          is_owner: isOwner,
+          exp: Math.floor(Date.now() / 1000) + 4 * 60 * 60, // 4h — generous for one session
+        },
+      }),
+    });
+
+    if (!res.ok) {
+      console.error("Failed to create Daily.co meeting token:", await res.text());
+      return null;
+    }
+
+    const data = await res.json();
+    return data.token || null;
+  } catch (err) {
+    console.error("Daily.co meeting token request failed:", err);
+    return null;
+  }
+}

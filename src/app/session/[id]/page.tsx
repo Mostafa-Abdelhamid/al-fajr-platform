@@ -6,6 +6,7 @@ import { makeT } from "@/i18n/t";
 import { session as sessionDict } from "@/i18n/dictionaries/session";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import SessionRoom from "@/components/SessionRoom";
+import { createMeetingToken } from "@/lib/daily";
 
 export default async function SessionPage({ params }: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser();
@@ -27,6 +28,10 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
 
   const locale = await getLocale();
   const t = makeT(sessionDict, locale);
+
+  // The teacher joins as the Daily "owner", which unlocks Daily Prebuilt's
+  // native per-participant mute control in its own participant list.
+  const videoToken = await createMeetingToken(session.roomName, user.name, isTeacher);
 
   return (
     <div className="flex-1 flex flex-col">
@@ -50,6 +55,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         }}
         isTeacher={isTeacher}
         dashboardHref={isTeacher ? "/teacher/dashboard" : "/student/dashboard"}
+        videoToken={videoToken}
       />
     </div>
   );

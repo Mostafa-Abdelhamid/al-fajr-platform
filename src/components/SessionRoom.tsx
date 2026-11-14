@@ -27,10 +27,12 @@ export default function SessionRoom({
   session,
   isTeacher,
   dashboardHref,
+  videoToken,
 }: {
   session: SessionData;
   isTeacher: boolean;
   dashboardHref: string;
+  videoToken: string | null;
 }) {
   const router = useRouter();
   const { locale } = useLocale();
@@ -97,7 +99,9 @@ export default function SessionRoom({
   // keep those working by falling back to meet.jit.si for them.
   const isDailyRoom = session.roomName.startsWith("http");
   const videoUrl = isDailyRoom
-    ? session.roomName
+    ? videoToken
+      ? `${session.roomName}?t=${videoToken}`
+      : session.roomName
     : `https://meet.jit.si/${session.roomName}#config.prejoinPageEnabled=false&userInfo.displayName=%22${encodeURIComponent(
         session.otherPartyName
       )}%22`;
@@ -156,6 +160,12 @@ export default function SessionRoom({
             </p>
           )}
         </div>
+
+        {isTeacher && session.status !== "COMPLETED" && (
+          <div className="mt-5 bg-amber-50 border border-amber-100 rounded-2xl p-4">
+            <p className="text-xs text-dawn font-semibold">💡 {t("muteStudentHint")}</p>
+          </div>
+        )}
 
         {!isTeacher && session.status === "COMPLETED" && (
           <div className="mt-5">

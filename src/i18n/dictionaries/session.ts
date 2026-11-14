@@ -19,6 +19,7 @@ export const session = {
     teacherNoteLabel: "ملاحظة معلمك",
     enterFullscreen: "ملء الشاشة",
     exitFullscreen: "الخروج من ملء الشاشة",
+    muteStudentHint: "تقدر تكتم صوت الطالب مباشرة: افتح قائمة المشاركين داخل نافذة المكالمة واضغط على أيقونة المايك بجانب اسمه.",
   },
   en: {
     roomHeader: "🌅 Al-Fajr Platform — Session Room",
@@ -40,5 +41,6 @@ export const session = {
     teacherNoteLabel: "Your teacher's note",
     enterFullscreen: "Fullscreen",
     exitFullscreen: "Exit fullscreen",
+    muteStudentHint: "You can mute the student directly: open the participants list inside the call window and click the mic icon next to their name.",
   },
 } as const;
