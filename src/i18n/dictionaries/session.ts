@@ -17,6 +17,8 @@ export const session = {
     studentEarnedBadges: "حصل الطالب على شارات جديدة:",
     backToDashboardArrow: "العودة للوحتي →",
     teacherNoteLabel: "ملاحظة معلمك",
+    enterFullscreen: "ملء الشاشة",
+    exitFullscreen: "الخروج من ملء الشاشة",
   },
   en: {
     roomHeader: "🌅 Al-Fajr Platform — Session Room",
@@ -36,5 +38,7 @@ export const session = {
     studentEarnedBadges: "The student earned new badges:",
     backToDashboardArrow: "Back to My Dashboard →",
     teacherNoteLabel: "Your teacher's note",
+    enterFullscreen: "Fullscreen",
+    exitFullscreen: "Exit fullscreen",
   },
 } as const;

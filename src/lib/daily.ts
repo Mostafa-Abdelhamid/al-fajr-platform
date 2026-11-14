@@ -37,6 +37,15 @@ export async function createVideoRoom(baseId: string, endAt: Date): Promise<stri
           enable_network_ui: true,
           enable_noise_cancellation_ui: true,
           enable_video_processing_ui: true,
+          // Every session room here is a strict 1:1 call (max_participants: 2),
+          // so keep it peer-to-peer instead of routing through Daily's SFU —
+          // one less media hop means lower latency and less re-encoding, which
+          // in practice gives noticeably better video/audio quality for 1:1
+          // calls when both sides have a workable direct connection. Daily
+          // still falls back to a relay automatically if a direct P2P path
+          // can't be established, so this doesn't trade away reliability.
+          sfu_switchover: 2,
+          enable_adaptive_simulcast: true,
         },
       }),
     });

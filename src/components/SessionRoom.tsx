@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLocale } from "@/i18n/LocaleProvider";
@@ -43,6 +43,37 @@ export default function SessionRoom({
   const [result, setResult] = useState<{ newlyEarned: { icon: string; label: string; type: string }[] } | null>(
     null
   );
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fallbackFullscreen, setFallbackFullscreen] = useState(false);
+
+  useEffect(() => {
+    function handleChange() {
+      setIsFullscreen(!!document.fullscreenElement);
+    }
+    document.addEventListener("fullscreenchange", handleChange);
+    return () => document.removeEventListener("fullscreenchange", handleChange);
+  }, []);
+
+  async function toggleFullscreen() {
+    const el = videoContainerRef.current;
+    if (!el) return;
+    if (document.fullscreenElement) {
+      await document.exitFullscreen().catch(() => {});
+      setFallbackFullscreen(false);
+      return;
+    }
+    if (el.requestFullscreen) {
+      try {
+        await el.requestFullscreen();
+        return;
+      } catch {
+        // Some browsers (older iOS Safari) reject requestFullscreen on
+        // arbitrary elements — fall back to a full-viewport overlay below.
+      }
+    }
+    setFallbackFullscreen((v) => !v);
+  }
 
   async function handleComplete() {
     setLoading(true);
@@ -73,7 +104,14 @@ export default function SessionRoom({
 
   return (
     <div className="flex-1 flex flex-col lg:flex-row gap-0 lg:h-[calc(100vh-72px)]">
-      <div className="h-[55vh] min-h-[320px] shrink-0 lg:h-auto lg:min-h-0 lg:flex-1 bg-black">
+      <div
+        ref={videoContainerRef}
+        className={`relative bg-black ${
+          fallbackFullscreen
+            ? "fixed inset-0 z-[100]"
+            : "h-[55vh] min-h-[320px] shrink-0 lg:h-auto lg:min-h-0 lg:flex-1"
+        }`}
+      >
         {session.status === "COMPLETED" ? (
           <div className="h-full flex items-center justify-center text-white text-center p-8">
             <div>
@@ -83,11 +121,22 @@ export default function SessionRoom({
             </div>
           </div>
         ) : (
-          <iframe
-            src={videoUrl}
-            allow="camera; microphone; fullscreen; display-capture; autoplay"
-            className="w-full h-full border-0"
-          />
+          <>
+            <iframe
+              src={videoUrl}
+              allow="camera; microphone; fullscreen; display-capture; autoplay"
+              allowFullScreen
+              className="w-full h-full border-0"
+            />
+            <button
+              onClick={toggleFullscreen}
+              title={isFullscreen || fallbackFullscreen ? t("exitFullscreen") : t("enterFullscreen")}
+              aria-label={isFullscreen || fallbackFullscreen ? t("exitFullscreen") : t("enterFullscreen")}
+              className="absolute bottom-3 end-3 z-10 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center text-lg transition"
+            >
+              {isFullscreen || fallbackFullscreen ? "⤡" : "⛶"}
+            </button>
+          </>
         )}
       </div>
 
