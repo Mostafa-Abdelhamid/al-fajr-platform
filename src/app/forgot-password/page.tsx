@@ -78,10 +78,10 @@ export default function ForgotPasswordPage() {
 
   return (
     <AuthShell eyebrow={t("forgotEyebrow")} headline={t("forgotHeadline")}>
-      <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl shadow-night/10 animate-scale-in">
+      <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl animate-scale-in">
         <div className="text-center mb-6">
           <Link href="/" className="lg:hidden text-2xl font-extrabold text-night">
-            🌅 {tNav("brand")}
+            {tNav("brand")}
           </Link>
           <h2 className="text-xl font-extrabold text-night mt-1">
             {step === "email" && t("stepEmailTitle")}
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
+              className="w-full rounded-xl bg-dawn text-white hover:bg-[#b8861a] font-bold py-3.5 shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
             >
               {loading ? (
                 <span className="inline-flex items-center gap-2">
@@ -169,7 +169,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
+              className="w-full rounded-xl bg-dawn text-white hover:bg-[#b8861a] font-bold py-3.5 shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
             >
               {loading ? (
                 <span className="inline-flex items-center gap-2">
@@ -192,13 +192,13 @@ export default function ForgotPasswordPage() {
 
         {step === "done" && (
           <div className="text-center animate-fade-up">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-3xl mx-auto mb-4 animate-scale-in">
-              ✅
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center text-2xl font-bold text-green-600 mx-auto mb-4 animate-scale-in">
+              ✓
             </div>
             <p className="font-bold text-night mb-5">{t("doneMessage")}</p>
             <button
               onClick={() => router.push("/login")}
-              className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-xl transition-all"
+              className="w-full rounded-xl bg-dawn text-white hover:bg-[#b8861a] font-bold py-3.5 shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all"
             >
               {t("goToLogin")}
             </button>

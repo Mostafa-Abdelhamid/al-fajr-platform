@@ -12,7 +12,7 @@ export const auth = {
     passwordPlaceholderMin: "6 أحرف على الأقل",
 
     loginEyebrow: "أهلًا بعودتك",
-    loginHeadline: "واصل رحلتك في حفظ القرآن والقراءات",
+    loginHeadline: "تابع حفظ القرآن والقراءات مع معلمك",
     loginTitle: "تسجيل الدخول",
     loginSubtitle: "أهلًا بعودتك، أدخل بياناتك للمتابعة",
     forgotPasswordLink: "نسيت كلمة المرور؟",
@@ -22,7 +22,7 @@ export const auth = {
     registerNow: "سجّل الآن",
 
     registerEyebrow: "انضم إلينا",
-    registerHeadline: "ابدأ رحلتك في تعلّم القرآن والقراءات اليوم",
+    registerHeadline: "ابدأ تعلّم القرآن والقراءات اليوم",
     registerTitle: "إنشاء حساب جديد",
     registerSubtitle: "أنشئ حسابك وابدأ في أقل من دقيقة",
     roleStudent: "طالب / ولي أمر",
@@ -67,7 +67,7 @@ export const auth = {
     passwordPlaceholderMin: "At least 6 characters",
 
     loginEyebrow: "Welcome back",
-    loginHeadline: "Continue your journey memorizing the Quran and Qira'at",
+    loginHeadline: "Pick up where you left off with your teacher",
     loginTitle: "Log In",
     loginSubtitle: "Welcome back, enter your details to continue",
     forgotPasswordLink: "Forgot your password?",
@@ -77,7 +77,7 @@ export const auth = {
     registerNow: "Sign up now",
 
     registerEyebrow: "Join Us",
-    registerHeadline: "Start your journey learning Quran and Qira'at today",
+    registerHeadline: "Start learning Quran and Qira'at today",
     registerTitle: "Create a New Account",
     registerSubtitle: "Create your account and get started in under a minute",
     roleStudent: "Student / Guardian",

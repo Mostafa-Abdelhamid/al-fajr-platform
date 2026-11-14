@@ -19,7 +19,6 @@ type TeacherRow = {
   ratingCount: number;
 };
 
-const MEDAL = ["🥇", "🥈", "🥉"];
 const RANK_COLOR = ["text-amber-500", "text-gray-400", "text-amber-700"];
 
 function byNameSearch<T extends { name: string }>(item: T, query: string) {
@@ -115,7 +114,7 @@ export default function LeaderboardTabs({
             tab === "students" ? "bg-white text-night shadow-sm" : "text-muted hover:text-night"
           }`}
         >
-          🧑‍🎓 {t("studentsTab")}
+          {t("studentsTab")}
         </button>
         <button
           onClick={() => setTab("teachers")}
@@ -123,7 +122,7 @@ export default function LeaderboardTabs({
             tab === "teachers" ? "bg-white text-night shadow-sm" : "text-muted hover:text-night"
           }`}
         >
-          👨‍🏫 {t("teachersTab")}
+          {t("teachersTab")}
         </button>
       </div>
 
@@ -163,7 +162,7 @@ export default function LeaderboardTabs({
                             rank < 3 ? RANK_COLOR[rank] : "text-muted"
                           }`}
                         >
-                          {rank < 3 ? MEDAL[rank] : rank + 1}
+                          {rank + 1}
                         </span>
                         <span className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-lg shrink-0">
                           {s.avatarEmoji}
@@ -172,10 +171,10 @@ export default function LeaderboardTabs({
                       </div>
                       <div className="flex items-center gap-4 text-xs font-bold">
                         <span className="text-gold bg-amber-50 rounded-full px-3 py-1.5">
-                          ⭐ <AnimatedNumber value={s.points} /> {t("pointsLabel")}
+                          <AnimatedNumber value={s.points} /> {t("pointsLabel")}
                         </span>
                         <span className="text-rose-500 bg-rose-50 rounded-full px-3 py-1.5">
-                          🔥 <AnimatedNumber value={s.streak} /> {t("streakLabel")}
+                          <AnimatedNumber value={s.streak} /> {t("streakLabel")}
                         </span>
                       </div>
                     </li>
@@ -229,7 +228,7 @@ export default function LeaderboardTabs({
                           rank < 3 ? RANK_COLOR[rank] : "text-muted"
                         }`}
                       >
-                        {rank < 3 ? MEDAL[rank] : rank + 1}
+                        {rank + 1}
                       </span>
                       <span className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-lg shrink-0">
                         {tr.avatarEmoji}
@@ -238,10 +237,10 @@ export default function LeaderboardTabs({
                     </div>
                     <div className="flex items-center gap-4 text-xs font-bold">
                       <span className="text-teal-600 bg-teal-50 rounded-full px-3 py-1.5">
-                        ⭐ <AnimatedNumber value={tr.rating} decimals={1} /> (<AnimatedNumber value={tr.ratingCount} /> {t("ratingsLabel")})
+                        <AnimatedNumber value={tr.rating} decimals={1} /> (<AnimatedNumber value={tr.ratingCount} /> {t("ratingsLabel")})
                       </span>
                       <span className="text-gold bg-amber-50 rounded-full px-3 py-1.5">
-                        🏅 <AnimatedNumber value={tr.points} /> {t("pointsLabel")}
+                        <AnimatedNumber value={tr.points} /> {t("pointsLabel")}
                       </span>
                     </div>
                   </li>

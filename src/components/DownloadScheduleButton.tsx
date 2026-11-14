@@ -18,7 +18,7 @@ export default function DownloadScheduleButton({
     <a
       href={`/api/teachers/${teacherId}/schedule`}
       download
-      className={`text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-full transition inline-block ${className}`}
+      className={`text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-xl transition inline-block ${className}`}
     >
       {t("downloadSchedule")}
     </a>

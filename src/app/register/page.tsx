@@ -58,10 +58,10 @@ export default function RegisterPage() {
 
   return (
     <AuthShell eyebrow={t("registerEyebrow")} headline={t("registerHeadline")}>
-      <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl shadow-night/10 animate-scale-in">
+      <div className="w-full max-w-md bg-white rounded-3xl p-8 shadow-2xl animate-scale-in">
         <div className="text-center mb-6">
           <Link href="/" className="lg:hidden text-2xl font-extrabold text-night">
-            🌅 {tNav("brand")}
+            {tNav("brand")}
           </Link>
           <h2 className="text-xl font-extrabold text-night mt-1">{t("registerTitle")}</h2>
           <p className="text-muted mt-1 text-sm">{t("registerSubtitle")}</p>
@@ -151,7 +151,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-gradient-to-l from-dawn to-gold text-white font-bold py-3.5 shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-300/50 transition-all disabled:opacity-60 disabled:translate-y-0"
+            className="w-full rounded-xl bg-dawn text-white hover:bg-[#b8861a] font-bold py-3.5 shadow-lg hover:-translate-y-0.5 hover:shadow-xl transition-all disabled:opacity-60 disabled:translate-y-0"
           >
             {loading ? (
               <span className="inline-flex items-center gap-2">

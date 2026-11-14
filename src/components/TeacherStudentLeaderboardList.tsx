@@ -8,7 +8,6 @@ import { staggerDelay } from "@/lib/animation";
 import Pagination from "./Pagination";
 import AnimatedNumber from "./AnimatedNumber";
 
-const MEDAL = ["🥇", "🥈", "🥉"];
 const RANK_COLOR = ["text-amber-500", "text-gray-400", "text-amber-700"];
 
 type StudentRow = { id: string; name: string; avatarEmoji: string; points: number; streak: number };
@@ -41,7 +40,7 @@ export default function TeacherStudentLeaderboardList({ students }: { students: 
                 >
                   <div className="flex items-center gap-3">
                     <span className={`w-7 text-center font-extrabold ${rank < 3 ? RANK_COLOR[rank] : "text-muted"}`}>
-                      {rank < 3 ? MEDAL[rank] : rank + 1}
+                      {rank + 1}
                     </span>
                     <span className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-base shrink-0">
                       {s.avatarEmoji}
@@ -50,10 +49,10 @@ export default function TeacherStudentLeaderboardList({ students }: { students: 
                   </div>
                   <div className="flex items-center gap-3 text-xs font-bold">
                     <span className="text-gold bg-amber-50 rounded-full px-3 py-1.5">
-                      ⭐ <AnimatedNumber value={s.points} /> {t("pointsLabel")}
+                      <AnimatedNumber value={s.points} /> {t("pointsLabel")}
                     </span>
                     <span className="text-rose-500 bg-rose-50 rounded-full px-3 py-1.5">
-                      🔥 <AnimatedNumber value={s.streak} /> {t("streakLabel")}
+                      <AnimatedNumber value={s.streak} /> {t("streakLabel")}
                     </span>
                   </div>
                 </li>

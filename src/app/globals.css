@@ -62,17 +62,6 @@ details summary::-webkit-details-marker {
   to   { opacity: 1; transform: scale(1); }
 }
 
-@keyframes fajr-pulse-ring {
-  0%   { box-shadow: 0 0 0 0 rgba(232, 185, 35, 0.45); }
-  70%  { box-shadow: 0 0 0 10px rgba(232, 185, 35, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(232, 185, 35, 0); }
-}
-
-@keyframes fajr-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
-
 @keyframes fajr-grow-width {
   from { width: 0%; }
   to   { width: var(--bar-width, 100%); }
@@ -92,12 +81,6 @@ details summary::-webkit-details-marker {
 .animate-scale-in {
   animation: fajr-scale-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.animate-float {
-  animation: fajr-float 5s ease-in-out infinite;
-}
-.animate-pulse-ring {
-  animation: fajr-pulse-ring 2s ease-out infinite;
-}
 .animate-grow-bar {
   width: var(--bar-width, 100%);
   animation: fajr-grow-width 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -114,7 +97,7 @@ details summary::-webkit-details-marker {
 .stagger-6 { animation-delay: 0.36s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-up, .animate-fade-in, .animate-scale-in, .animate-float, .animate-pulse-ring, .animate-grow-bar, .animate-dot-bounce {
+  .animate-fade-up, .animate-fade-in, .animate-scale-in, .animate-grow-bar, .animate-dot-bounce {
     animation: none !important;
   }
 }
@@ -128,37 +111,14 @@ details summary::-webkit-details-marker {
   box-shadow: 0 16px 32px rgba(74, 13, 31, 0.16);
 }
 
-/* ---------- Decorative "dawn glow" backgrounds ---------- */
+/* ---------- Brand backgrounds ---------- */
 
 .bg-fajr-night {
-  background:
-    radial-gradient(circle at 15% 15%, rgba(232, 185, 35, 0.18), transparent 40%),
-    radial-gradient(circle at 85% 0%, rgba(236, 72, 153, 0.14), transparent 45%),
-    radial-gradient(circle at 50% 100%, rgba(255, 232, 163, 0.07), transparent 50%),
-    linear-gradient(160deg, #4a0d1f 0%, #8a1538 60%, #4a0d1f 100%);
+  background: linear-gradient(160deg, #4a0d1f 0%, #8a1538 100%);
 }
 
 .bg-fajr-sunrise {
-  background:
-    radial-gradient(ellipse at 50% 120%, rgba(255, 232, 163, 0.5), transparent 60%),
-    radial-gradient(ellipse at 50% 150%, rgba(236, 72, 153, 0.35), transparent 65%),
-    linear-gradient(180deg, #4a0d1f 0%, #8a1538 100%);
-}
-
-.bg-dot-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-
-.bg-dot-grid-dark {
-  background-image: radial-gradient(rgba(18, 24, 51, 0.08) 1px, transparent 1px);
-  background-size: 22px 22px;
-}
-
-.glass-panel {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(180deg, #4a0d1f 0%, #8a1538 100%);
 }
 
 .text-gradient-dawn {
@@ -166,12 +126,4 @@ details summary::-webkit-details-marker {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-}
-
-/* soft blurred color orbs used as absolutely-positioned decoration */
-.fajr-orb {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(60px);
-  pointer-events: none;
 }

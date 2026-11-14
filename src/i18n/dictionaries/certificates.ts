@@ -1,11 +1,11 @@
 export const certificates = {
   ar: {
     pageTitle: "شهاداتي",
-    pageSubtitle: "الشهادات التي حصلت عليها خلال رحلتك التعليمية.",
-    noCertificatesYet: "لا توجد شهادات بعد. أكمل حصصك واستمر لتحصل على أول شهادة!",
+    pageSubtitle: "الشهادات التي حصلت عليها أثناء دراستك.",
+    noCertificatesYet: "لا توجد شهادات بعد. أكمل حصصك لتحصل على أول شهادة.",
     milestoneType: "شهادة إنجاز",
     manualType: "شهادة تقدير",
-    downloadPdf: "📄 تنزيل PDF",
+    downloadPdf: "تنزيل PDF",
     issuedOn: "تاريخ الإصدار",
     milestoneCongrats: "تهانينا! لقد أكملت بنجاح {count} حصة تعليمية على منصة الفجر.",
     manualCongrats: "يسعدنا منح هذه الشهادة تقديرًا لتميزك وجهدك.",
@@ -13,7 +13,7 @@ export const certificates = {
     sealText: "منصة الفجر",
     platformTagline: "منصة تعليمية لتعلّم القرآن والقراءات",
 
-    issueCertButton: "🏅 إصدار شهادة",
+    issueCertButton: "إصدار شهادة",
     issueCertFormTitle: "إصدار شهادة جديدة",
     titleLabel: "عنوان الشهادة",
     titlePlaceholder: "مثال: شهادة تقدير وتميّز",
@@ -22,7 +22,7 @@ export const certificates = {
     cancelButton: "إلغاء",
     submitButton: "إصدار",
     submittingLabel: "جارٍ الإصدار",
-    issueSuccess: "✅ تم إصدار الشهادة",
+    issueSuccess: "تم إصدار الشهادة",
     issueFailed: "تعذر إصدار الشهادة",
 
     adminPageTitle: "الشهادات",
@@ -36,11 +36,11 @@ export const certificates = {
   },
   en: {
     pageTitle: "My Certificates",
-    pageSubtitle: "Certificates you've earned throughout your learning journey.",
-    noCertificatesYet: "No certificates yet. Keep completing sessions to earn your first one!",
+    pageSubtitle: "Certificates you've earned during your studies.",
+    noCertificatesYet: "No certificates yet. Keep completing sessions to earn your first one.",
     milestoneType: "Achievement Certificate",
     manualType: "Recognition Certificate",
-    downloadPdf: "📄 Download PDF",
+    downloadPdf: "Download PDF",
     issuedOn: "Issued on",
     milestoneCongrats: "Congratulations! You've successfully completed {count} learning sessions on Al-Fajr Platform.",
     manualCongrats: "We're pleased to award this certificate in recognition of your excellence and effort.",
@@ -48,7 +48,7 @@ export const certificates = {
     sealText: "Al-Fajr Platform",
     platformTagline: "An educational platform for learning Quran and Qira'at",
 
-    issueCertButton: "🏅 Issue Certificate",
+    issueCertButton: "Issue Certificate",
     issueCertFormTitle: "Issue a New Certificate",
     titleLabel: "Certificate Title",
     titlePlaceholder: "e.g. Certificate of Excellence",
@@ -57,7 +57,7 @@ export const certificates = {
     cancelButton: "Cancel",
     submitButton: "Issue",
     submittingLabel: "Issuing",
-    issueSuccess: "✅ Certificate issued",
+    issueSuccess: "Certificate issued",
     issueFailed: "Failed to issue certificate",
 
     adminPageTitle: "Certificates",

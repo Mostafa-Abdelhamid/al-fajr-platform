@@ -20,11 +20,7 @@ export default function AuthShell({
   const t = makeT(auth, locale);
   const tNav = makeT(nav, locale);
 
-  const HIGHLIGHTS = [
-    { icon: "🎥", text: t("highlight1") },
-    { icon: "📅", text: t("highlight2") },
-    { icon: "🏅", text: t("highlight3") },
-  ];
+  const HIGHLIGHTS = [t("highlight1"), t("highlight2"), t("highlight3")];
 
   return (
     <main className="relative flex-1 grid lg:grid-cols-2 min-h-[calc(100vh-0px)]">
@@ -33,12 +29,8 @@ export default function AuthShell({
       </div>
       {/* Decorative panel */}
       <div className="relative hidden lg:flex flex-col justify-between bg-fajr-night text-white p-12 overflow-hidden">
-        <div className="absolute inset-0 bg-dot-grid opacity-60" />
-        <div className="fajr-orb w-72 h-72 bg-gold/30 -top-10 -right-10" />
-        <div className="fajr-orb w-80 h-80 bg-dawn/30 bottom-0 -left-16" />
-
-        <Link href="/" className="relative z-10 text-2xl font-extrabold flex items-center gap-2 w-fit">
-          🌅 {tNav("brand")}
+        <Link href="/" className="relative z-10 text-2xl font-extrabold w-fit">
+          {tNav("brand")}
         </Link>
 
         <div className="relative z-10 animate-fade-up">
@@ -51,11 +43,10 @@ export default function AuthShell({
           <div className="mt-8 space-y-3">
             {HIGHLIGHTS.map((h, i) => (
               <div
-                key={h.text}
-                className={`animate-fade-up stagger-${i + 1} flex items-center gap-3 glass-panel rounded-2xl px-4 py-3 w-fit`}
+                key={h}
+                className={`animate-fade-up stagger-${i + 1} bg-white/10 border border-white/10 rounded-2xl px-4 py-3 w-fit`}
               >
-                <span className="text-xl">{h.icon}</span>
-                <span className="text-sm text-gray-200">{h.text}</span>
+                <span className="text-sm text-gray-200">{h}</span>
               </div>
             ))}
           </div>

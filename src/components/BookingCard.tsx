@@ -88,14 +88,14 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
             <p className="text-sm text-dawn font-semibold">{teacher.qiraat.join("، ")}</p>
             <p className="text-xs text-muted mt-1 max-w-sm">{teacher.bio}</p>
             <div className="flex items-center gap-3 mt-2 text-xs text-muted">
-              <span>⭐ {teacher.rating.toFixed(1)} ({teacher.ratingCount} {t("reviewsSuffix")})</span>
-              <span>📘 {teacher.yearsExperience} {t("yearsExperienceSuffix")}</span>
+              <span>{teacher.rating.toFixed(1)} ({teacher.ratingCount} {t("reviewsSuffix")})</span>
+              <span>{teacher.yearsExperience} {t("yearsExperienceSuffix")}</span>
             </div>
           </div>
         </div>
         <button
           onClick={() => setOpen((v) => !v)}
-          className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-5 py-2.5 rounded-full text-sm hover:-translate-y-0.5 hover:shadow-lg transition-all"
+          className="bg-dawn text-white hover:bg-[#b8861a] font-bold px-5 py-2.5 rounded-xl text-sm hover:-translate-y-0.5 transition-all"
         >
           {open ? t("close") : t("viewSlotsAndBook")}
         </button>
@@ -160,7 +160,7 @@ export default function BookingCard({ teacher, slots }: { teacher: Teacher; slot
                 <button
                   onClick={handleBook}
                   disabled={loading || !selected}
-                  className="w-full sm:w-auto bg-night text-white font-bold px-6 py-3 rounded-full text-sm hover:-translate-y-0.5 transition disabled:opacity-50"
+                  className="w-full sm:w-auto bg-night text-white font-bold px-6 py-3 rounded-xl text-sm hover:-translate-y-0.5 transition disabled:opacity-50"
                 >
                   {loading ? (
                     <span className="inline-flex items-center gap-2">

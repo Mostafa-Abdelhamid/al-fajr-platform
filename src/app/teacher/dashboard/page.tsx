@@ -54,29 +54,23 @@ export default async function TeacherDashboard() {
   return (
     <div className="space-y-10">
       <div className="relative overflow-hidden bg-fajr-night text-white rounded-3xl p-7 animate-fade-up">
-        <div className="absolute inset-0 bg-dot-grid opacity-30" />
-        <div className="fajr-orb w-64 h-64 bg-gold/25 -top-20 -left-10" />
-        <div className="relative flex items-center gap-3">
-          <span className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-2xl">👨‍🏫</span>
-          <div>
-            <h1 className="text-2xl font-extrabold">{t("greeting")}{user.name}</h1>
-            <p className="text-gray-300 mt-1 text-sm">{t("dashboardSubtitle")}</p>
-          </div>
+        <div className="relative">
+          <h1 className="text-2xl font-extrabold">{t("greeting")}{user.name}</h1>
+          <p className="text-gray-300 mt-1 text-sm">{t("dashboardSubtitle")}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-        <StatCard icon="📅" label={t("statUpcoming")} value={upcoming.length} delay={1} />
-        <StatCard icon="✅" label={t("statCompleted")} value={completed.length} delay={2} />
-        <StatCard icon="🧑‍🎓" label={t("statStudentCount")} value={students.length} delay={3} />
+        <StatCard label={t("statUpcoming")} value={upcoming.length} delay={1} />
+        <StatCard label={t("statCompleted")} value={completed.length} delay={2} />
+        <StatCard label={t("statStudentCount")} value={students.length} delay={3} />
         <StatCard
-          icon="⭐"
           label={t("statRating")}
           value={profile ? Number(profile.rating.toFixed(1)) : 5}
           decimals={1}
           delay={4}
         />
-        <StatCard icon="🏆" label={t("statPoints")} value={profile?.points ?? 0} delay={5} />
+        <StatCard label={t("statPoints")} value={profile?.points ?? 0} delay={5} />
       </div>
 
       <div className="flex justify-end">
@@ -99,13 +93,11 @@ export default async function TeacherDashboard() {
 }
 
 function StatCard({
-  icon,
   label,
   value,
   decimals = 0,
   delay = 0,
 }: {
-  icon: string;
   label: string;
   value: number;
   decimals?: number;
@@ -113,7 +105,6 @@ function StatCard({
 }) {
   return (
     <div className={`hover-lift animate-fade-up stagger-${delay} bg-white rounded-2xl border border-gray-100 p-5 text-center`}>
-      <div className="text-2xl mb-1">{icon}</div>
       <div className="text-xl font-extrabold text-night">
         <AnimatedNumber value={value} decimals={decimals} />
       </div>

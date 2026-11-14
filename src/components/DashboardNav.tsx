@@ -61,20 +61,20 @@ export default function DashboardNav({
   const pointsStreak =
     role === "STUDENT" ? (
       <div className="flex items-center gap-2 text-sm">
-        <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-gold-light transition-transform hover:scale-105">
-          ⭐ <AnimatedNumber value={points ?? 0} duration={800} /> {t("points")}
+        <span className="bg-white/10 border border-white/10 rounded-full px-3 py-1.5 font-bold text-gold-light transition-transform hover:scale-105">
+          <AnimatedNumber value={points ?? 0} duration={800} /> {t("points")}
         </span>
-        <span className="glass-panel rounded-full px-3 py-1.5 font-bold text-amber-300 transition-transform hover:scale-105">
-          🔥 <AnimatedNumber value={streak ?? 0} duration={800} /> {t("streak")}
+        <span className="bg-white/10 border border-white/10 rounded-full px-3 py-1.5 font-bold text-amber-300 transition-transform hover:scale-105">
+          <AnimatedNumber value={streak ?? 0} duration={800} /> {t("streak")}
         </span>
       </div>
     ) : null;
 
   return (
-    <header className="bg-fajr-night text-white sticky top-0 z-40 shadow-lg shadow-night/20">
+    <header className="bg-fajr-night text-white sticky top-0 z-40 shadow-lg">
       <div className="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between gap-4">
         <Link href="/" className="font-extrabold text-lg flex items-center gap-2 shrink-0">
-          <span className="animate-float inline-block">🌅</span> {t("brand")}
+          {t("brand")}
         </Link>
 
         <nav className="hidden sm:flex items-center gap-6">
@@ -107,7 +107,7 @@ export default function DashboardNav({
           <LocaleSwitcher />
           <button
             onClick={handleLogout}
-            className="text-sm font-bold bg-white/10 hover:bg-white/20 rounded-full px-4 py-2 transition"
+            className="text-sm font-bold bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 transition"
           >
             {t("logout")}
           </button>
@@ -156,7 +156,7 @@ export default function DashboardNav({
 
           <button
             onClick={handleLogout}
-            className="w-full text-sm font-bold bg-white/10 hover:bg-white/20 rounded-full px-4 py-2.5 transition"
+            className="w-full text-sm font-bold bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2.5 transition"
           >
             {t("logout")}
           </button>

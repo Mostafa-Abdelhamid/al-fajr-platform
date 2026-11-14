@@ -87,7 +87,7 @@ export default function TeacherSessionsList({
                 {isUpcoming && (
                   <Link
                     href={`/session/${s.id}`}
-                    className="bg-gradient-to-l from-dawn to-gold text-white font-bold text-sm px-5 py-2 rounded-full hover:-translate-y-0.5 hover:shadow-lg transition-all"
+                    className="bg-dawn text-white hover:bg-[#b8861a] font-bold text-sm px-5 py-2 rounded-xl hover:-translate-y-0.5 transition-all"
                   >
                     {t("enterSession")}
                   </Link>
@@ -95,7 +95,7 @@ export default function TeacherSessionsList({
                 {isMissed && (
                   <Link
                     href={`/session/${s.id}`}
-                    className="bg-red-100 text-red-800 font-bold text-sm px-5 py-2 rounded-full hover:bg-red-200 transition"
+                    className="bg-red-100 text-red-800 font-bold text-sm px-5 py-2 rounded-xl hover:bg-red-200 transition"
                   >
                     {t("finishSession")}
                   </Link>

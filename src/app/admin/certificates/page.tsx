@@ -72,7 +72,6 @@ export default async function AdminCertificatesPage({
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
           <div className="flex items-center gap-2">
-            <span className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center text-lg">🏅</span>
             <h3 className="font-extrabold text-night">{t("allCertificatesTitle")}</h3>
             <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">
               <AnimatedNumber value={totalCount} />
@@ -104,11 +103,11 @@ export default async function AdminCertificatesPage({
                     <>
                       <div className="flex items-center gap-3">
                         <span
-                          className={`w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 ${
-                            isMilestone ? "bg-amber-100" : "bg-purple-100"
+                          className={`text-[11px] font-bold px-2.5 py-1 rounded-lg shrink-0 ${
+                            isMilestone ? "bg-amber-100 text-amber-800" : "bg-purple-100 text-purple-800"
                           }`}
                         >
-                          {isMilestone ? "🏅" : "🎖️"}
+                          {isMilestone ? tAdmin("certificateTypeMilestone") : tAdmin("certificateTypeManual")}
                         </span>
                         <div>
                           <p className="font-semibold text-sm">{c.title}</p>
@@ -123,7 +122,7 @@ export default async function AdminCertificatesPage({
                           href={`/api/certificates/${c.id}/pdf`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-full transition"
+                          className="text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-xl transition"
                         >
                           {t("downloadPdf")}
                         </a>

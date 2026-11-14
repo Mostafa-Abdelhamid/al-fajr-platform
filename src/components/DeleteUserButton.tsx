@@ -36,7 +36,7 @@ export default function DeleteUserButton({ userId, userName }: { userId: string;
     <button
       onClick={handleDelete}
       disabled={loading}
-      className="text-xs font-bold text-red-600 hover:bg-red-50 px-3 py-2 rounded-full transition disabled:opacity-50"
+      className="text-xs font-bold text-red-600 hover:bg-red-50 px-3 py-2 rounded-xl transition disabled:opacity-50"
     >
       {loading ? (
         <span className="inline-flex items-center gap-2">

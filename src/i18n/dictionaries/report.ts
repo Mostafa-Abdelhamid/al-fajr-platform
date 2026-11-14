@@ -1,8 +1,8 @@
 export const report = {
   ar: {
-    downloadReport: "📊 تنزيل تقرير التقدم",
+    downloadReport: "تنزيل تقرير التقدم",
     reportTitle: "تقرير التقدم",
-    reportSubtitle: "ملخص شامل لرحلة الطالب التعليمية في منصة الفجر",
+    reportSubtitle: "ملخص شامل لتقدم الطالب في منصة الفجر",
     pointsLabel: "النقاط",
     streakLabel: "التتابع اليومي",
     completedSessionsLabel: "الحصص المكتملة",
@@ -28,9 +28,9 @@ export const report = {
     daysUnit: "يوم",
   },
   en: {
-    downloadReport: "📊 Download Progress Report",
+    downloadReport: "Download Progress Report",
     reportTitle: "Progress Report",
-    reportSubtitle: "A complete summary of the student's learning journey on Al-Fajr",
+    reportSubtitle: "A complete summary of the student's progress on Al-Fajr",
     pointsLabel: "Points",
     streakLabel: "Daily Streak",
     completedSessionsLabel: "Completed Sessions",

@@ -44,9 +44,9 @@ export const admin = {
     qiraatPageSubtitle: "أضف أو احذف الروايات التي يمكن للمعلمين اختيارها عند التسجيل.",
 
     // VerifyToggle
-    verifiedRevoke: "✅ موثّق — إلغاء التوثيق",
-    unverifiedVerifyNow: "⏳ غير موثّق — توثيق الآن",
-    verifyToastVerified: "✅ تم توثيق المعلم",
+    verifiedRevoke: "موثّق — إلغاء التوثيق",
+    unverifiedVerifyNow: "غير موثّق — توثيق الآن",
+    verifyToastVerified: "تم توثيق المعلم",
     verifyToastUnverified: "تم إلغاء توثيق المعلم",
     verifyToggleFailed: "تعذر تحديث حالة التوثيق",
 
@@ -56,7 +56,7 @@ export const admin = {
     deleteUserFailed: "تعذر حذف المستخدم",
     deleteUserSuccessToast: "تم حذف المستخدم",
     deletingLabel: "جارٍ الحذف",
-    deleteLabel: "🗑️ حذف",
+    deleteLabel: "حذف",
 
     // QiraatManager
     addNewRiwayaTitle: "إضافة رواية جديدة",
@@ -100,6 +100,8 @@ export const admin = {
     milestoneContext: "مُنحت تلقائيًا عند إتمام {count} حصة",
     availabilityRangeFrom: "من",
     availabilityRangeTo: "إلى",
+    certificateTypeMilestone: "تلقائية",
+    certificateTypeManual: "يدوية",
   },
   en: {
     dashboardTitle: "Al-Fajr Platform Admin Dashboard",
@@ -141,9 +143,9 @@ export const admin = {
     qiraatPageTitle: "Manage Qira'at",
     qiraatPageSubtitle: "Add or remove the riwayat teachers can choose from when registering.",
 
-    verifiedRevoke: "✅ Verified — Revoke",
-    unverifiedVerifyNow: "⏳ Unverified — Verify now",
-    verifyToastVerified: "✅ Teacher verified",
+    verifiedRevoke: "Verified — Revoke",
+    unverifiedVerifyNow: "Unverified — Verify now",
+    verifyToastVerified: "Teacher verified",
     verifyToastUnverified: "Teacher verification revoked",
     verifyToggleFailed: "Failed to update verification status",
 
@@ -152,7 +154,7 @@ export const admin = {
     deleteUserFailed: "Failed to delete the user",
     deleteUserSuccessToast: "User deleted",
     deletingLabel: "Deleting",
-    deleteLabel: "🗑️ Delete",
+    deleteLabel: "Delete",
 
     addNewRiwayaTitle: "Add a New Riwaya",
     reciterPlaceholder: "Reciter name (e.g. Aasim al-Kufi)",
@@ -193,5 +195,7 @@ export const admin = {
     milestoneContext: "Automatically awarded after completing {count} sessions",
     availabilityRangeFrom: "from",
     availabilityRangeTo: "to",
+    certificateTypeMilestone: "Automatic",
+    certificateTypeManual: "Manual",
   },
 } as const;

@@ -1,6 +1,6 @@
 export const session = {
   ar: {
-    roomHeader: "🌅 منصة الفجر — غرفة الحصة",
+    roomHeader: "منصة الفجر — غرفة الحصة",
     alreadyCompleted: "تم إنهاء هذه الحصة بالفعل",
     reviewFromDashboard: "يمكنك مراجعة تفاصيلها من لوحتك.",
     backToDashboard: "← العودة للوحتي",
@@ -12,7 +12,7 @@ export const session = {
     rateStudentPerformance: "تقييم أداء الطالب",
     saving: "جارٍ الحفظ",
     saveAndEnd: "حفظ وإنهاء الحصة",
-    completedSuccess: "✅ تم إنهاء الحصة بنجاح",
+    completedSuccess: "تم إنهاء الحصة بنجاح",
     completeFailed: "تعذر إنهاء الحصة، حاول مرة أخرى",
     studentEarnedBadges: "حصل الطالب على شارات جديدة:",
     backToDashboardArrow: "العودة للوحتي →",
@@ -22,7 +22,7 @@ export const session = {
     muteStudentHint: "تقدر تكتم صوت الطالب مباشرة: افتح قائمة المشاركين داخل نافذة المكالمة واضغط على أيقونة المايك بجانب اسمه.",
   },
   en: {
-    roomHeader: "🌅 Al-Fajr Platform — Session Room",
+    roomHeader: "Al-Fajr Platform — Session Room",
     alreadyCompleted: "This session has already ended",
     reviewFromDashboard: "You can review its details from your dashboard.",
     backToDashboard: "← Back to My Dashboard",
@@ -34,7 +34,7 @@ export const session = {
     rateStudentPerformance: "Rate the student's performance",
     saving: "Saving",
     saveAndEnd: "Save & End Session",
-    completedSuccess: "✅ Session ended successfully",
+    completedSuccess: "Session ended successfully",
     completeFailed: "Couldn't end the session, please try again",
     studentEarnedBadges: "The student earned new badges:",
     backToDashboardArrow: "Back to My Dashboard →",

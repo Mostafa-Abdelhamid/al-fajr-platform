@@ -102,7 +102,7 @@ export default function RateTeacherForm({
       <button
         onClick={handleSubmit}
         disabled={rating === 0 || loading}
-        className="w-full bg-gradient-to-l from-dawn to-gold text-white font-bold py-3 rounded-xl text-sm disabled:opacity-60"
+        className="w-full bg-dawn text-white hover:bg-[#b8861a] font-bold py-3 rounded-xl text-sm disabled:opacity-60"
       >
         {loading ? (
           <span className="inline-flex items-center gap-2">

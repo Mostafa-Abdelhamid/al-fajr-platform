@@ -99,7 +99,7 @@ export default function AvailabilityManager({ initialSlots }: { initialSlots: Sl
           <button
             onClick={handleAdd}
             disabled={loading}
-            className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-2.5 rounded-full text-sm hover:-translate-y-0.5 transition disabled:opacity-60"
+            className="bg-dawn text-white hover:bg-[#b8861a] font-bold px-6 py-2.5 rounded-xl text-sm hover:-translate-y-0.5 transition disabled:opacity-60"
           >
             {loading ? (
               <span className="inline-flex items-center gap-2">

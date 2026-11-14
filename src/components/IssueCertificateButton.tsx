@@ -60,7 +60,7 @@ export default function IssueCertificateButton({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-full px-3 py-2 transition"
+        className="text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-xl px-3 py-2 transition"
       >
         {t("issueCertButton")}
       </button>
@@ -95,7 +95,7 @@ export default function IssueCertificateButton({
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-gradient-to-l from-dawn to-gold text-white font-bold text-xs py-2 rounded-lg disabled:opacity-60"
+              className="flex-1 bg-dawn text-white hover:bg-[#b8861a] font-bold text-xs py-2 rounded-lg disabled:opacity-60"
             >
               {loading ? (
                 <span className="inline-flex items-center gap-2">

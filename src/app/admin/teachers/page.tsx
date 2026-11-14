@@ -59,7 +59,6 @@ export default async function AdminTeachersPage({
       <section className="hover-lift animate-fade-up bg-white rounded-2xl border border-gray-100 p-6">
         <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
           <div className="flex items-center gap-2">
-            <span className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center text-lg">👨‍🏫</span>
             <h3 className="font-extrabold text-night">{t("allTeachersTitle")}</h3>
             <span className="text-xs font-bold text-muted bg-gray-100 rounded-full px-2.5 py-1">
               <AnimatedNumber value={totalCount} />
@@ -91,7 +90,7 @@ export default async function AdminTeachersPage({
                           <span className="text-xs text-muted font-normal">({t2.user.email})</span>
                         </p>
                         <p className="text-xs text-muted mt-0.5">
-                          {t2.qiraat.join(t("listSeparator"))} • ⭐ {t2.rating.toFixed(1)} ({t2.ratingCount} {t("ratingsLabel")}) • {t2.availability.length} {t("availabilitySlotsLabel")} • 🏆 {t2.points} {t("teacherPointsLabel")}
+                          {t2.qiraat.join(t("listSeparator"))} • {t2.rating.toFixed(1)} ({t2.ratingCount} {t("ratingsLabel")}) • {t2.availability.length} {t("availabilitySlotsLabel")} • {t2.points} {t("teacherPointsLabel")}
                         </p>
                       </div>
                     </div>

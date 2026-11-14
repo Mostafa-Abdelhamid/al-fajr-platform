@@ -119,7 +119,6 @@ export default function SessionRoom({
         {session.status === "COMPLETED" ? (
           <div className="h-full flex items-center justify-center text-white text-center p-8">
             <div>
-              <p className="text-4xl mb-3">✅</p>
               <p className="text-lg font-bold">{t("alreadyCompleted")}</p>
               <p className="text-gray-400 text-sm mt-2">{t("reviewFromDashboard")}</p>
             </div>
@@ -163,7 +162,7 @@ export default function SessionRoom({
 
         {isTeacher && session.status !== "COMPLETED" && (
           <div className="mt-5 bg-amber-50 border border-amber-100 rounded-2xl p-4">
-            <p className="text-xs text-dawn font-semibold">💡 {t("muteStudentHint")}</p>
+            <p className="text-xs text-dawn font-semibold">{t("muteStudentHint")}</p>
           </div>
         )}
 
@@ -212,7 +211,7 @@ export default function SessionRoom({
                   <button
                     onClick={handleComplete}
                     disabled={loading}
-                    className="w-full bg-gradient-to-l from-dawn to-gold text-white font-bold py-3 rounded-xl text-sm disabled:opacity-60"
+                    className="w-full bg-dawn text-white hover:bg-[#b8861a] font-bold py-3 rounded-xl text-sm disabled:opacity-60"
                   >
                     {loading ? (
                       <span className="inline-flex items-center gap-2">

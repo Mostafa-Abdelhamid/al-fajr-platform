@@ -91,7 +91,7 @@ export function buildCertificateHtml(
 
         <div style="position:relative; text-align:center; padding:38px 72px 26px;">
           <div style="display:inline-flex; align-items:center; gap:10px; font-weight:800; font-size:19px; color:#8A1538; margin-bottom:4px;">
-            🌅 ${t("sealText")}
+            ${t("sealText")}
           </div>
           <p style="font-size:12px; color:#8a8a8a; margin:0 0 18px;">${t("platformTagline")}</p>
 

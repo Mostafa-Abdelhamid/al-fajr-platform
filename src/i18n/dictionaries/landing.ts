@@ -6,7 +6,7 @@ export const landing = {
     navLogin: "تسجيل الدخول",
     navRegister: "سجّل الآن",
 
-    heroBadge: "🎉 النسخة التجريبية متاحة الآن",
+    heroBadge: "النسخة التجريبية متاحة الآن",
     heroTitlePrefix: "تعلّم",
     heroTitleHighlight: "القرآن والقراءات",
     heroTitleSuffix: "مباشرة من معلمين مؤهلين",
@@ -23,8 +23,8 @@ export const landing = {
     statScheduleDesc: "مرن حسب وقتك",
 
     featuresEyebrow: "لماذا منصة الفجر",
-    featuresTitle: "تجربة تعليمية متكاملة من أول حصة",
-    featuresSubtitle: "كل ما تحتاجه لتعلّم القرآن والقراءات بجدية واستمرارية، في مكان واحد.",
+    featuresTitle: "معلم، جدول، ومتابعة — من أول حصة",
+    featuresSubtitle: "معلمون مؤهلون، حصص بالفيديو، ومتابعة حقيقية لتقدمك.",
 
     feature1Title: "معلمون موثوقون",
     feature1Desc: "معلمون ومعلمات مؤهلون بإجازات في القراءات المختلفة (حفص، ورش، وغيرها).",
@@ -42,7 +42,7 @@ export const landing = {
     step2Title: "اختر معلمك المناسب",
     step2Desc: "تصفّح المعلمين المتاحين واحجز موعدًا من جدولهم مباشرة.",
     step3Title: "ابدأ حصتك الأولى",
-    step3Desc: "ادخل مكالمة الفيديو في الموعد المحدد وابدأ رحلتك التعليمية.",
+    step3Desc: "ادخل مكالمة الفيديو في الموعد المحدد وابدأ أول حصة مع معلمك.",
 
     teacherCtaTitle: "هل أنت معلم/ـة قرآن؟",
     teacherCtaDesc: "انضم إلى النسخة التجريبية كمعلم، وابدأ بتدريس طلابك عبر المنصة من أول يوم.",
@@ -74,7 +74,7 @@ export const landing = {
     navLogin: "Log In",
     navRegister: "Sign Up",
 
-    heroBadge: "🎉 Pilot version available now",
+    heroBadge: "Pilot version available now",
     heroTitlePrefix: "Learn",
     heroTitleHighlight: "Quran & Qira'at",
     heroTitleSuffix: "live with qualified teachers",
@@ -91,8 +91,8 @@ export const landing = {
     statScheduleDesc: "Fits your schedule",
 
     featuresEyebrow: "Why Al-Fajr",
-    featuresTitle: "A complete learning experience from day one",
-    featuresSubtitle: "Everything you need to learn Quran and Qira'at seriously and consistently, in one place.",
+    featuresTitle: "A teacher, a schedule, and real tracking — from day one",
+    featuresSubtitle: "Qualified teachers, live video sessions, and real progress tracking.",
 
     feature1Title: "Trusted Teachers",
     feature1Desc: "Qualified teachers certified (ijazah) in different Qira'at (Hafs, Warsh, and others).",
@@ -110,7 +110,7 @@ export const landing = {
     step2Title: "Choose Your Teacher",
     step2Desc: "Browse available teachers and book a slot directly from their schedule.",
     step3Title: "Start Your First Session",
-    step3Desc: "Join the video call at your scheduled time and begin your learning journey.",
+    step3Desc: "Join the video call at your scheduled time and start your first session with them.",
 
     teacherCtaTitle: "Are you a Quran teacher?",
     teacherCtaDesc: "Join the pilot as a teacher, and start teaching your students on the platform from day one.",

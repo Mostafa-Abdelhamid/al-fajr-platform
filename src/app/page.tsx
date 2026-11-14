@@ -24,10 +24,10 @@ export default async function Home() {
   ];
 
   const FEATURES = [
-    { icon: "👨‍🏫", title: t("feature1Title"), desc: t("feature1Desc"), colors: "from-blue-100 to-blue-200" },
-    { icon: "🎥", title: t("feature2Title"), desc: t("feature2Desc"), colors: "from-purple-100 to-purple-200" },
-    { icon: "📅", title: t("feature3Title"), desc: t("feature3Desc"), colors: "from-teal-100 to-teal-200" },
-    { icon: "📈", title: t("feature4Title"), desc: t("feature4Desc"), colors: "from-rose-100 to-rose-200" },
+    { title: t("feature1Title"), desc: t("feature1Desc"), color: "bg-blue-500" },
+    { title: t("feature2Title"), desc: t("feature2Desc"), color: "bg-purple-500" },
+    { title: t("feature3Title"), desc: t("feature3Desc"), color: "bg-teal-500" },
+    { title: t("feature4Title"), desc: t("feature4Desc"), color: "bg-rose-500" },
   ];
 
   const STEPS = [
@@ -60,9 +60,6 @@ export default async function Home() {
       />
 
       <section className="relative overflow-hidden bg-fajr-night text-white py-28">
-        <div className="absolute inset-0 bg-dot-grid opacity-40" />
-        <div className="fajr-orb w-96 h-96 bg-gold/25 -top-20 -right-20" />
-        <div className="fajr-orb w-80 h-80 bg-dawn/25 bottom-0 -left-10" />
         <div className="relative max-w-3xl mx-auto px-5 flex flex-col items-center text-center gap-6">
           <span className="animate-fade-up inline-flex items-center gap-2 bg-white/10 border border-white/25 px-5 py-2 rounded-full text-sm font-bold text-gold-light">
             {t("heroBadge")}
@@ -80,13 +77,13 @@ export default async function Home() {
           <div className="animate-fade-up stagger-3 flex flex-wrap gap-4 justify-center mt-2">
             <Link
               href="/register"
-              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full shadow-lg shadow-amber-300/40 hover:-translate-y-0.5 hover:shadow-amber-300/60 transition-all"
+              className="bg-dawn text-white hover:bg-[#b8861a] font-bold px-7 py-3.5 rounded-xl shadow-lg hover:-translate-y-0.5 transition-all"
             >
               {t("heroCtaPrimary")}
             </Link>
             <a
               href="#features"
-              className="border-2 border-white text-white font-bold px-7 py-3.5 rounded-full hover:bg-white hover:text-night transition-all"
+              className="border-2 border-white text-white font-bold px-7 py-3.5 rounded-xl hover:bg-white hover:text-night transition-all"
             >
               {t("heroCtaSecondary")}
             </a>
@@ -115,9 +112,7 @@ export default async function Home() {
                 key={f.title}
                 className={`hover-lift animate-fade-up stagger-${Math.min(i + 1, 6)} bg-white border border-[#efe6d8] rounded-2xl p-7 hover:shadow-xl`}
               >
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${f.colors} flex items-center justify-center text-2xl mb-4`}>
-                  {f.icon}
-                </div>
+                <div className={`h-1 w-10 rounded-full ${f.color} mb-4`} />
                 <h3 className="font-bold text-night mb-2">{f.title}</h3>
                 <p className="text-sm text-muted">{f.desc}</p>
               </div>
@@ -135,7 +130,7 @@ export default async function Home() {
           <div className="grid sm:grid-cols-3 gap-8">
             {STEPS.map((s, i) => (
               <div key={s.num} className={`animate-fade-up stagger-${i + 1} text-center px-3`}>
-                <div className="w-12 h-12 rounded-full bg-night text-gold font-extrabold flex items-center justify-center mx-auto mb-4 animate-pulse-ring">
+                <div className="w-12 h-12 rounded-full bg-night text-gold font-extrabold flex items-center justify-center mx-auto mb-4">
                   {s.num}
                 </div>
                 <h3 className="font-bold text-night mb-2">{s.title}</h3>
@@ -147,14 +142,13 @@ export default async function Home() {
       </section>
 
       <section className="relative overflow-hidden bg-fajr-night py-20">
-        <div className="absolute inset-0 bg-dot-grid opacity-30" />
         <div className="relative max-w-5xl mx-auto px-5">
           <h2 className="text-center text-2xl font-extrabold text-white mb-12">{t("platformStatsTitle")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {PLATFORM_STATS.map(([value, label, color], i) => (
               <div
                 key={label}
-                className={`hover-lift animate-fade-up stagger-${i + 1} glass-panel rounded-2xl py-8 text-center`}
+                className={`hover-lift animate-fade-up stagger-${i + 1} bg-white/10 border border-white/10 rounded-2xl py-8 text-center`}
               >
                 <b className={`block text-4xl font-extrabold ${color}`}>{value}</b>
                 <span className="text-sm text-gray-300 mt-2 block">{label}</span>
@@ -167,8 +161,6 @@ export default async function Home() {
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-5">
           <div className="relative overflow-hidden bg-fajr-night text-white rounded-[28px] p-10 sm:p-14 flex flex-wrap items-center justify-between gap-7 hover-lift">
-            <div className="absolute inset-0 bg-dot-grid opacity-30" />
-            <div className="fajr-orb w-56 h-56 bg-gold/30 -top-16 -left-10" />
             <div className="relative">
               <h3 className="text-2xl font-extrabold mb-2">{t("teacherCtaTitle")}</h3>
               <p className="text-gray-300 max-w-md">
@@ -177,7 +169,7 @@ export default async function Home() {
             </div>
             <Link
               href="/register"
-              className="relative bg-gradient-to-l from-dawn to-gold text-white font-bold px-7 py-3.5 rounded-full hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-400/30 transition-all"
+              className="relative bg-dawn text-white hover:bg-[#b8861a] font-bold px-7 py-3.5 rounded-xl hover:-translate-y-0.5 hover:shadow-xl transition-all"
             >
               {t("teacherCtaButton")}
             </Link>
@@ -209,10 +201,9 @@ export default async function Home() {
       </section>
 
       <footer className="relative overflow-hidden bg-fajr-night text-gray-400 pt-16 pb-8">
-        <div className="absolute inset-0 bg-dot-grid opacity-20" />
         <div className="relative max-w-6xl mx-auto px-5 grid sm:grid-cols-3 gap-10 text-center sm:text-start">
           <div>
-            <div className="font-extrabold text-white text-lg mb-2">🌅 {tNav("brand")}</div>
+            <div className="font-extrabold text-white text-lg mb-2">{tNav("brand")}</div>
             <p className="text-sm max-w-xs mx-auto sm:mx-0">{t("footerTagline")}</p>
           </div>
           <div>

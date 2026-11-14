@@ -38,9 +38,9 @@ export async function sendEmail(to: string, subject: string, html: string) {
 export function otpEmailHtml(code: string) {
   return `
     <div dir="rtl" style="font-family:sans-serif;max-width:420px;margin:0 auto">
-      <h2 style="color:#121833">🌅 منصة الفجر</h2>
+      <h2 style="color:#4a0d1f">منصة الفجر</h2>
       <p>رمز إعادة تعيين كلمة المرور الخاص بك هو:</p>
-      <p style="font-size:28px;font-weight:bold;letter-spacing:4px;color:#f2704a">${code}</p>
+      <p style="font-size:28px;font-weight:bold;letter-spacing:4px;color:#8a1538">${code}</p>
       <p style="color:#6b7089;font-size:13px">هذا الرمز صالح لمدة 10 دقائق. إن لم تطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذه الرسالة.</p>
     </div>
   `;

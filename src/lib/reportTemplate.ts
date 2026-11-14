@@ -117,7 +117,7 @@ export async function buildStudentReportHtml(studentId: string, locale: Locale):
   const body = `
   <div style="padding:0 0 48px 0;">
     <div style="background:linear-gradient(135deg,#4a0d1f 0%,#8a1538 100%); color:#fff; padding:40px 48px;">
-      <div style="font-size:14px; font-weight:700; opacity:0.85;">🌅 Al-Fajr Platform</div>
+      <div style="font-size:14px; font-weight:700; opacity:0.85;">Al-Fajr Platform</div>
       <h1 style="font-size:30px; font-weight:800; margin:10px 0 4px;">${t("reportTitle")}</h1>
       <p style="font-size:14px; opacity:0.85; margin:0 0 18px;">${t("reportSubtitle")}</p>
       <div style="display:flex; align-items:center; gap:12px; margin-top:10px;">

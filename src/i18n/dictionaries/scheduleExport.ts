@@ -1,8 +1,8 @@
 export const scheduleExport = {
   ar: {
-    downloadSchedule: "📊 تنزيل الجدول (Excel)",
+    downloadSchedule: "تنزيل الجدول (Excel)",
   },
   en: {
-    downloadSchedule: "📊 Download Schedule (Excel)",
+    downloadSchedule: "Download Schedule (Excel)",
   },
 } as const;

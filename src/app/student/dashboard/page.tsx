@@ -61,9 +61,9 @@ export default async function StudentDashboard() {
         <div className="flex items-center gap-3 flex-wrap">
           <Link
             href="/student/certificates"
-            className="text-sm font-bold text-night bg-white border border-gray-200 rounded-full px-5 py-2.5 hover:border-dawn/40 transition"
+            className="text-sm font-bold text-night bg-white border border-gray-200 rounded-xl px-5 py-2.5 hover:border-dawn/40 transition"
           >
-            🏅 {t("myCertificatesLink")}
+            {t("myCertificatesLink")}
           </Link>
           <DownloadReportButton studentId={user.id} />
         </div>
@@ -71,16 +71,14 @@ export default async function StudentDashboard() {
 
       {/* Stats row */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <StatCard icon="⭐" label={t("pointsLabel")} value={user.points} delay={1} />
-        <StatCard icon="🔥" label={t("streakLabel")} value={user.streak} suffix={t("streakSuffix")} delay={2} />
-        <StatCard icon="✅" label={t("completedSessionsLabel")} value={completedCount} delay={3} />
-        <StatCard icon="🏅" label={t("badgesLabel")} value={badges.length} delay={4} />
+        <StatCard label={t("pointsLabel")} value={user.points} delay={1} />
+        <StatCard label={t("streakLabel")} value={user.streak} suffix={t("streakSuffix")} delay={2} />
+        <StatCard label={t("completedSessionsLabel")} value={completedCount} delay={3} />
+        <StatCard label={t("badgesLabel")} value={badges.length} delay={4} />
       </div>
 
       {/* Next session */}
       <section className="relative overflow-hidden animate-fade-up stagger-3 bg-fajr-night text-white rounded-3xl p-7">
-        <div className="absolute inset-0 bg-dot-grid opacity-30" />
-        <div className="fajr-orb w-56 h-56 bg-gold/25 -top-16 -right-10" />
         {nextSession ? (
           <div className="relative flex flex-wrap items-center justify-between gap-5">
             <div>
@@ -95,9 +93,9 @@ export default async function StudentDashboard() {
             </div>
             <Link
               href={`/session/${nextSession.id}`}
-              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 rounded-full hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-400/30 transition-all animate-pulse-ring"
+              className="bg-dawn text-white hover:bg-[#b8861a] font-bold px-6 py-3 rounded-xl hover:-translate-y-0.5 transition-all"
             >
-              🎥 {t("enterSession")}
+              {t("enterSession")}
             </Link>
           </div>
         ) : (
@@ -108,7 +106,7 @@ export default async function StudentDashboard() {
             </div>
             <Link
               href="/student/book"
-              className="bg-gradient-to-l from-dawn to-gold text-white font-bold px-6 py-3 rounded-full hover:-translate-y-0.5 hover:shadow-lg hover:shadow-amber-400/30 transition-all"
+              className="bg-dawn text-white hover:bg-[#b8861a] font-bold px-6 py-3 rounded-xl hover:-translate-y-0.5 transition-all"
             >
               {t("bookNow")}
             </Link>
@@ -190,13 +188,11 @@ export default async function StudentDashboard() {
 }
 
 function StatCard({
-  icon,
   label,
   value,
   suffix = "",
   delay = 0,
 }: {
-  icon: string;
   label: string;
   value: number;
   suffix?: string;
@@ -206,7 +202,6 @@ function StatCard({
     <div
       className={`hover-lift animate-fade-up stagger-${delay} bg-white rounded-2xl border border-gray-100 p-5 text-center`}
     >
-      <div className="text-2xl mb-1">{icon}</div>
       <div className="text-xl font-extrabold text-night">
         <AnimatedNumber value={value} suffix={suffix} />
       </div>

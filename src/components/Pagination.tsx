@@ -54,7 +54,7 @@ export default function Pagination({
             key={n}
             onClick={() => onPageChange(n)}
             className={`text-xs font-bold rounded-lg w-8 h-8 transition ${
-              n === page ? "bg-gradient-to-l from-dawn to-gold text-white" : "bg-gray-50 text-night hover:bg-gray-100"
+              n === page ? "bg-dawn text-white" : "bg-gray-50 text-night hover:bg-gray-100"
             }`}
           >
             {n}

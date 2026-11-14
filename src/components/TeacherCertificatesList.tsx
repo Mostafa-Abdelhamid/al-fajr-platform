@@ -46,25 +46,20 @@ export default function TeacherCertificatesList({ certificates }: { certificates
           <ul className="divide-y">
             {pageItems.map((c) => (
               <li key={c.id} className="py-3 flex items-center justify-between flex-wrap gap-2">
-                <div className="flex items-center gap-3">
-                  <span className="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-base shrink-0">
-                    🎖️
-                  </span>
-                  <div>
-                    <p className="font-semibold text-sm">{c.title}</p>
-                    <p className="text-xs text-muted mt-0.5">
-                      {c.student.avatarEmoji} {c.student.name} • {t("certificateIssuedOn")}{" "}
-                      {formatDateTime(c.createdAt, locale)}
-                    </p>
-                  </div>
+                <div>
+                  <p className="font-semibold text-sm">{c.title}</p>
+                  <p className="text-xs text-muted mt-0.5">
+                    {c.student.avatarEmoji} {c.student.name} • {t("certificateIssuedOn")}{" "}
+                    {formatDateTime(c.createdAt, locale)}
+                  </p>
                 </div>
                 <a
                   href={`/api/certificates/${c.id}/pdf`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-full transition shrink-0"
+                  className="text-xs font-bold text-dawn hover:bg-amber-50 px-3 py-2 rounded-xl transition shrink-0"
                 >
-                  📄
+                  {t("downloadPdf")}
                 </a>
               </li>
             ))}
