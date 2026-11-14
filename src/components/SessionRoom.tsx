@@ -72,8 +72,8 @@ export default function SessionRoom({
       )}%22`;
 
   return (
-    <div className="flex-1 flex flex-col lg:flex-row gap-0 h-[calc(100vh-72px)]">
-      <div className="flex-1 bg-black">
+    <div className="flex-1 flex flex-col lg:flex-row gap-0 lg:h-[calc(100vh-72px)]">
+      <div className="h-[55vh] min-h-[320px] shrink-0 lg:h-auto lg:min-h-0 lg:flex-1 bg-black">
         {session.status === "COMPLETED" ? (
           <div className="h-full flex items-center justify-center text-white text-center p-8">
             <div>
@@ -91,7 +91,7 @@ export default function SessionRoom({
         )}
       </div>
 
-      <aside className="w-full lg:w-80 bg-cream p-6 overflow-y-auto">
+      <aside className="w-full lg:w-80 bg-cream p-6 lg:overflow-y-auto">
         <Link href={dashboardHref} className="text-sm text-muted font-bold">
           {t("backToDashboard")}
         </Link>

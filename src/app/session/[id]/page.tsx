@@ -30,9 +30,11 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="flex-1 flex flex-col">
-      <div className="bg-night text-white px-5 py-3 flex items-center justify-between">
-        <span className="font-extrabold">{t("roomHeader")}</span>
-        <LocaleSwitcher />
+      <div className="bg-night text-white px-5 py-3 flex items-center justify-between gap-3">
+        <span className="font-extrabold text-sm sm:text-base whitespace-nowrap overflow-hidden text-ellipsis">
+          {t("roomHeader")}
+        </span>
+        <LocaleSwitcher className="shrink-0" />
       </div>
       <SessionRoom
         session={{
