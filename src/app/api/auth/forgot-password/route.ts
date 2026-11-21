@@ -1,19 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { randomInt } from "crypto";
 import { prisma } from "@/lib/prisma";
 import { assertRealEmail } from "@/lib/emailCheck";
 import { sendEmail, otpEmailHtml } from "@/lib/email";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { apiMessages } from "@/i18n/dictionaries/apiMessages";
 
 function generateOtp() {
-  return String(Math.floor(100000 + Math.random() * 900000));
+  // crypto.randomInt is a CSPRNG, unlike Math.random().
+  return String(randomInt(100000, 1000000));
 }
 
 export async function POST(req: NextRequest) {
   const locale = await getLocale();
   const t = makeT(apiMessages, locale);
+
+  if (!rateLimit(`forgot-password:${clientIp(req)}`, 5, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: t("tooManyRequests") }, { status: 429 });
+  }
 
   const { email } = await req.json();
   if (!email) {

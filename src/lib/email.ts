@@ -35,6 +35,44 @@ export async function sendEmail(to: string, subject: string, html: string) {
   return { ok: true, dev: false };
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+export function sessionReminderEmailHtml(params: {
+  recipientName: string;
+  otherPartyName: string;
+  startAt: Date;
+  surahFocus: string;
+  sessionUrl: string;
+}) {
+  const { recipientName, otherPartyName, startAt, surahFocus, sessionUrl } = params;
+  const timeStr = new Intl.DateTimeFormat("ar-SA", {
+    weekday: "long",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(startAt);
+
+  return `
+    <div dir="rtl" style="font-family:sans-serif;max-width:420px;margin:0 auto">
+      <h2 style="color:#4a0d1f">منصة الفجر</h2>
+      <p>مرحبًا ${escapeHtml(recipientName)}،</p>
+      <p>حصتك مع <strong>${escapeHtml(otherPartyName)}</strong> تبدأ بعد 30 دقيقة (${timeStr}).</p>
+      ${surahFocus ? `<p style="color:#555">محور الحصة: ${escapeHtml(surahFocus)}</p>` : ""}
+      <p style="margin-top:20px">
+        <a href="${sessionUrl}" style="display:inline-block;background:#c99a1f;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;font-weight:bold">
+          الدخول للحصة
+        </a>
+      </p>
+      <p style="color:#6b7089;font-size:13px;margin-top:20px">تأكد من تسجيل الدخول إلى حسابك على منصة الفجر قبل الضغط على الرابط.</p>
+    </div>
+  `;
+}
+
 export function otpEmailHtml(code: string) {
   return `
     <div dir="rtl" style="font-family:sans-serif;max-width:420px;margin:0 auto">

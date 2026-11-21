@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { checkPasswordStrength } from "@/lib/password";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { apiMessages } from "@/i18n/dictionaries/apiMessages";
@@ -19,8 +20,10 @@ export async function POST(req: NextRequest) {
   if (!currentPassword || !newPassword) {
     return NextResponse.json({ error: t("fillAllFields") }, { status: 400 });
   }
-  if (String(newPassword).length < 6) {
-    return NextResponse.json({ error: t("newPasswordMinLength") }, { status: 400 });
+  const strength = checkPasswordStrength(newPassword);
+  if (!strength.ok) {
+    const message = strength.reason === "tooCommon" ? t("passwordTooCommon") : t("newPasswordMinLength");
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 
   const valid = await bcrypt.compare(currentPassword, user.password);

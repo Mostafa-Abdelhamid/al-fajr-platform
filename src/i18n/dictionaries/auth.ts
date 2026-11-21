@@ -9,7 +9,7 @@ export const auth = {
     connectionError: "تعذر الاتصال بالخادم",
     emailLabel: "البريد الإلكتروني",
     passwordLabel: "كلمة المرور",
-    passwordPlaceholderMin: "6 أحرف على الأقل",
+    passwordPlaceholderMin: "8 أحرف على الأقل، بحرف ورقم",
 
     loginEyebrow: "أهلًا بعودتك",
     loginHeadline: "تابع حفظ القرآن والقراءات مع معلمك",
@@ -64,7 +64,7 @@ export const auth = {
     connectionError: "Couldn't connect to the server",
     emailLabel: "Email",
     passwordLabel: "Password",
-    passwordPlaceholderMin: "At least 6 characters",
+    passwordPlaceholderMin: "At least 8 characters, with a letter and a number",
 
     loginEyebrow: "Welcome back",
     loginHeadline: "Pick up where you left off with your teacher",

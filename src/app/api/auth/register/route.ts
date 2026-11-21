@@ -3,6 +3,8 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { createSessionCookie } from "@/lib/auth";
 import { assertRealEmail } from "@/lib/emailCheck";
+import { checkPasswordStrength } from "@/lib/password";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 import { getLocale } from "@/i18n/getLocale";
 import { makeT } from "@/i18n/t";
 import { apiMessages } from "@/i18n/dictionaries/apiMessages";
@@ -10,6 +12,10 @@ import { apiMessages } from "@/i18n/dictionaries/apiMessages";
 export async function POST(req: NextRequest) {
   const locale = await getLocale();
   const t = makeT(apiMessages, locale);
+
+  if (!rateLimit(`register:${clientIp(req)}`, 5, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: t("tooManyRequests") }, { status: 429 });
+  }
 
   const body = await req.json();
   const { name, email, password, role, qiraat } = body as {
@@ -22,6 +28,12 @@ export async function POST(req: NextRequest) {
 
   if (!name || !email || !password || !role) {
     return NextResponse.json({ error: t("fillAllFields") }, { status: 400 });
+  }
+
+  const strength = checkPasswordStrength(password);
+  if (!strength.ok) {
+    const message = strength.reason === "tooCommon" ? t("passwordTooCommon") : t("passwordMinLength");
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 
   const emailError = await assertRealEmail(email, locale);

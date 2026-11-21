@@ -3,6 +3,16 @@ import { makeT } from "@/i18n/t";
 import { certificates } from "@/i18n/dictionaries/certificates";
 import { dirForLocale, type Locale } from "@/i18n/config";
 
+// cert.title/studentName/note are free text a teacher or the system wrote
+// into the DB — never trust them as safe HTML when building the PDF markup.
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 // A reusable ornamental corner flourish. Placed once per corner and mirrored
 // via CSS transforms, so the same markup covers all four — no image assets
 // needed, Chromium renders inline SVG (and the Arabic text around it) with
@@ -55,7 +65,7 @@ export function buildCertificateHtml(
     cert.type === "MILESTONE"
       ? t("milestoneCongrats").replace("{count}", String(cert.sessionsAtIssue ?? ""))
       : cert.note
-      ? cert.note
+      ? escapeHtml(cert.note)
       : t("manualCongrats");
 
   const typeLabel = cert.type === "MILESTONE" ? t("milestoneType") : t("manualType");
@@ -100,14 +110,14 @@ export function buildCertificateHtml(
           </div>
 
           <h1 style="font-weight:800; font-size:36px; color:#4a0d1f; margin:0 0 10px; line-height:1.3;">
-            ${cert.title || t("certificateDefaultTitle")}
+            ${cert.title ? escapeHtml(cert.title) : t("certificateDefaultTitle")}
           </h1>
 
           ${sectionDivider()}
 
           <p style="font-size:15px; color:#555; margin:0 0 8px;">${locale === "ar" ? "مُنحت لـ" : "Awarded to"}</p>
           <p style="font-weight:800; font-size:34px; color:#8A1538; margin:0 0 22px; display:inline-block; position:relative; padding:0 16px 10px;">
-            ${cert.studentName}
+            ${escapeHtml(cert.studentName)}
             <span style="position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:70%; height:3px; background:linear-gradient(90deg, transparent, #E8B923, transparent);"></span>
           </p>
 

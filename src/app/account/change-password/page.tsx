@@ -78,7 +78,7 @@ export default function ChangePasswordPage() {
           <input
             required
             type="password"
-            minLength={6}
+            minLength={8}
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"
@@ -90,7 +90,7 @@ export default function ChangePasswordPage() {
           <input
             required
             type="password"
-            minLength={6}
+            minLength={8}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm focus:border-dawn focus:ring-4 focus:ring-dawn/10 focus:outline-none transition-shadow"

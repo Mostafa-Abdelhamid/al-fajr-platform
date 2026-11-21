@@ -3,6 +3,14 @@ import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 
 const COOKIE_NAME = "fajr_session";
+
+// Fail fast rather than silently signing sessions with a known, public
+// secret: if JWT_SECRET is ever missing in production, anyone could forge
+// a valid session (including an admin one) using this string. Only the
+// local dev fallback is allowed to be weak.
+if (!process.env.JWT_SECRET && process.env.NODE_ENV === "production") {
+  throw new Error("JWT_SECRET must be set in production — refusing to start with an insecure default.");
+}
 const secret = new TextEncoder().encode(
   process.env.JWT_SECRET || "al-fajr-local-dev-secret-change-me"
 );
@@ -22,6 +30,7 @@ export async function createSessionCookie(payload: SessionPayload) {
   const store = await cookies();
   store.set(COOKIE_NAME, token, {
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
