@@ -1,0 +1,15 @@
+name: Session reminders
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger session-reminder check
+        run: |
+          curl -fsS -X GET "${{ secrets.APP_URL }}/api/cron/session-reminders" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}"

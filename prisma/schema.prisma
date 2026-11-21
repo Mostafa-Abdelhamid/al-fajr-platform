@@ -70,6 +70,7 @@ model Session {
   rating      Int?     // teacher's rating of the student's performance
   studentRating Int?   // student's rating of the teacher
   studentFeedback String @default("")
+  reminderSent Boolean @default(false)
   createdAt   DateTime @default(now())
 
   // A partial unique index on (teacherId, startAt) WHERE status = 'SCHEDULED'
